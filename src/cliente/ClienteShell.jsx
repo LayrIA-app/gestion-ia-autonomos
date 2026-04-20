@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import './sections.css'
+import '../sections.css'
 
 const notificaciones = [
   {titulo:'F-005 · Vence el 1 de junio',meta:'Próxima factura · 2.904 € · Te avisamos con 2 semanas de antelación',time:'Hoy',unread:true,sec:'facturas'},
