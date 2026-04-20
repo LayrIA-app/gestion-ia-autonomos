@@ -18,6 +18,7 @@ import MailingSection from './MailingSection'
 import ProyeccionSection from './ProyeccionSection'
 import BenchmarkSection from './BenchmarkSection'
 import AsistenteSection from './AsistenteSection'
+import ClienteShell from './ClienteShell'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -293,5 +294,6 @@ export default function App() {
   function handleSelectRole(r) { setRole(r); setScreen('login') }
   if (screen === 'role') return <RoleScreen onSelectRole={handleSelectRole} />
   if (screen === 'login') return <LoginScreen role={role} onLogin={() => setScreen('app')} onBack={() => setScreen('role')} />
+  if (role === 'cliente') return <ClienteShell onLogout={() => setScreen('role')} />
   return <AppShell onLogout={() => setScreen('role')} />
 }
