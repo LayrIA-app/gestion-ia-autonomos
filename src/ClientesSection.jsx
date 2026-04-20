@@ -1,164 +1,152 @@
 import { useState } from 'react'
+import Modal from './Modal'
 import './sections.css'
 
-const thStyle = { textAlign:'left', padding:'8px 12px', fontSize:'0.65rem', fontWeight:600, letterSpacing:'0.08em', textTransform:'uppercase', color:'rgba(28,45,68,0.45)' }
+const clientes = [
+  {id:'metalurgica',nombre:'Metalúrgica Goi',contacto:'Mikel Goikoetxea',sector:'Industria · Metalurgia',estado:'Activo',eColor:'#22A06B',eBg:'rgba(34,160,107,0.1)',facturado:'12.000 €',proyecto:'Digitalización almacén',inicio:'Feb 2025',iniciales:'MG',iColor:'#22A06B',iBg:'rgba(34,160,107,0.12)',email:'mikel@metalurgicagoi.eus',tel:'+34 943 210 450',cif:'B-48291034',direccion:'Pol. Ind. Ugaldeguren, 12 · Zamudio',empleados:'85',facturacion_anual:'12M €'},
+  {id:'digiform',nombre:'Digiform SL',contacto:'Txema García',sector:'Formación · Digital',estado:'Activo',eColor:'#22A06B',eBg:'rgba(34,160,107,0.1)',facturado:'9.000 €',proyecto:'Optimización procesos',inicio:'Nov 2025',iniciales:'D',iColor:'#2E5A8C',iBg:'rgba(46,90,140,0.12)',email:'txema@digiformsl.com',tel:'+34 944 123 456',cif:'B-48391045',direccion:'Gran Vía, 45 · Bilbao',empleados:'12',facturacion_anual:'2.4M €'},
+  {id:'bodegas',nombre:'Bodegas Iriarte',contacto:'Ana Ruiz',sector:'Agroalimentario · Vino',estado:'Propuesta',eColor:'#C65D4A',eBg:'rgba(198,93,74,0.1)',facturado:'—',proyecto:'Estrategia digital',inicio:'Mar 2026',iniciales:'BI',iColor:'#C65D4A',iBg:'rgba(198,93,74,0.1)',email:'ana@bodegasiriarte.com',tel:'+34 945 678 901',cif:'A-01234567',direccion:'Ctra. Laguardia, km 3 · Álava',empleados:'28',facturacion_anual:'4.2M €'},
+  {id:'garapen',nombre:'Garapen Consulting',contacto:'Ane Etxebarria',sector:'Consultoría · RRHH',estado:'Activo',eColor:'#22A06B',eBg:'rgba(34,160,107,0.1)',facturado:'6.000 €',proyecto:'Planificación Q2',inicio:'Ene 2026',iniciales:'GC',iColor:'#8B5E34',iBg:'rgba(212,165,116,0.15)',email:'ane@garapenconsulting.eus',tel:'+34 943 345 678',cif:'B-20345678',direccion:'Zubieta 4 · San Sebastián',empleados:'15',facturacion_anual:'1.8M €'},
+  {id:'innotek',nombre:'Innotek Basque',contacto:'Iker Mendoza',sector:'Tecnología · I+D',estado:'Activo',eColor:'#22A06B',eBg:'rgba(34,160,107,0.1)',facturado:'4.800 €',proyecto:'Consultoría digital',inicio:'Oct 2025',iniciales:'IB',iColor:'#2E5A8C',iBg:'rgba(46,90,140,0.1)',email:'iker@innotekbasque.eus',tel:'+34 946 234 567',cif:'A-48234567',direccion:'Parque Tecnológico, 123 · Zamudio',empleados:'42',facturacion_anual:'6.8M €'},
+]
+
+const kanban = [
+  {col:'Lead frío',color:'rgba(28,45,68,0.04)',border:'rgba(28,45,68,0.08)',items:[{nombre:'Construcciones Mendía',val:'7.200 €',sub:'Contacto inicial'},{nombre:'Agintech SL',val:'?',sub:'LinkedIn · frío'}]},
+  {col:'Propuesta enviada',color:'rgba(46,90,140,0.04)',border:'rgba(46,90,140,0.15)',items:[{nombre:'Bodegas Iriarte',val:'28.000 €',sub:'Reunión mañana ⚡',urgent:true}]},
+  {col:'Negociación',color:'rgba(212,165,116,0.06)',border:'rgba(212,165,116,0.2)',items:[{nombre:'Digiform SL',val:'8.500 €',sub:'Ampliación retainer'}]},
+  {col:'Cliente activo',color:'rgba(34,160,107,0.04)',border:'rgba(34,160,107,0.15)',items:[{nombre:'Metalúrgica Goi',val:'2.400/mes',sub:'Mes 3/6 ✓'},{nombre:'Garapen Consulting',val:'2.000/mes',sub:'Mes 2/6 ✓'},{nombre:'Innotek Basque',val:'1.600/mes',sub:'Mes 4/6 ✓'}]},
+]
+
+function ModalFichaCliente({ open, onClose, cliente }) {
+  if (!cliente) return null
+  return (
+    <Modal open={open} onClose={onClose} maxWidth={560}>
+      <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:16}}>
+        <div style={{width:48,height:48,borderRadius:12,background:cliente.iBg,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'var(--serif)',fontSize:'1.1rem',fontWeight:600,color:cliente.iColor,flexShrink:0}}>{cliente.iniciales}</div>
+        <div><div className="dm-title" style={{marginBottom:2}}>{cliente.nombre}</div><div style={{fontSize:'0.78rem',color:'rgba(28,45,68,0.55)'}}>{cliente.sector}</div></div>
+        <span style={{marginLeft:'auto',fontSize:'0.72rem',fontWeight:600,padding:'4px 10px',borderRadius:100,background:cliente.eBg,color:cliente.eColor}}>{cliente.estado}</span>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
+        <div className="dm-info-box"><div className="dm-info-lbl">Contacto principal</div><div className="dm-info-val"><strong>{cliente.contacto}</strong><br/>{cliente.email}<br/>{cliente.tel}</div></div>
+        <div className="dm-info-box"><div className="dm-info-lbl">Empresa</div><div className="dm-info-val">{cliente.empleados} empleados<br/>{cliente.facturacion_anual} facturación<br/>{cliente.cif}</div></div>
+        <div className="dm-info-box"><div className="dm-info-lbl">Proyecto actual</div><div className="dm-info-val">{cliente.proyecto}<br/>Inicio: {cliente.inicio}</div></div>
+        <div className="dm-info-box"><div className="dm-info-lbl">Facturado total</div><div className="dm-info-val" style={{fontFamily:'var(--serif)',fontSize:'1.1rem',color:'#1C2D44'}}>{cliente.facturado}</div></div>
+      </div>
+      <div className="dm-info-box" style={{background:'rgba(28,45,68,0.02)',marginBottom:14}}>
+        <div className="dm-info-lbl">Dirección</div>
+        <div className="dm-info-val">{cliente.direccion}</div>
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
+        <button className="dm-btn-ghost">Nueva propuesta</button>
+        <button className="dm-btn-primary">Ir al proyecto →</button>
+      </div>
+    </Modal>
+  )
+}
+
+function ModalNuevoCliente({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Nuevo cliente" subtitle="La IA enriquecerá el perfil automáticamente">
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Nombre empresa</div><input className="dm-input" type="text" placeholder="Empresa SL"/></div>
+        <div className="dm-field"><div className="dm-label">Sector</div><input className="dm-input" type="text" placeholder="Industria · Tech..."/></div>
+      </div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Contacto principal</div><input className="dm-input" type="text" placeholder="Nombre y apellidos"/></div>
+        <div className="dm-field"><div className="dm-label">Email</div><input className="dm-input" type="email" placeholder="contacto@empresa.com"/></div>
+      </div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Teléfono</div><input className="dm-input" type="tel" placeholder="+34 600 000 000"/></div>
+        <div className="dm-field"><div className="dm-label">Estado inicial</div><select className="dm-select"><option>Lead frío</option><option>Propuesta enviada</option><option>Negociación</option><option>Cliente activo</option></select></div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Contexto del cliente, cómo llegó, necesidades..."/></div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">✦ Crear cliente</button>
+      </div>
+    </Modal>
+  )
+}
 
 export default function ClientesSection() {
-  const [vista, setVista] = useState('lista')
+  const [fichaCliente, setFichaCliente] = useState(null)
+  const [nuevoCliente, setNuevoCliente] = useState(false)
 
   return (
     <div>
+      <ModalFichaCliente open={!!fichaCliente} onClose={() => setFichaCliente(null)} cliente={fichaCliente} />
+      <ModalNuevoCliente open={nuevoCliente} onClose={() => setNuevoCliente(false)} />
+
       <div className="page-header">
         <div>
           <h1 className="page-title">Clientes</h1>
-          <p className="page-subtitle">Tu cartera activa · 8 clientes · Pipeline comercial gestionado por IA.</p>
-          <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA detectó oportunidad de upsell en Metalúrgica Goi · NPS 82</span></div>
+          <p className="page-subtitle">CRM de clientes activos · Pipeline de ventas · Historial completo.</p>
+          <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA detecta oportunidad: Innotek lleva 3 meses sin propuesta de ampliación</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost" style={vista==='lista'?{fontWeight:600}:{}} onClick={() => setVista('lista')}>Lista</button>
-          <button className="btn-ghost" style={vista==='kanban'?{fontWeight:600}:{}} onClick={() => setVista('kanban')}>Pipeline</button>
-          <button className="btn-ghost" onClick={() => alert('Importando CSV…')}>Importar</button>
-          <button className="btn-primary" onClick={() => alert('Abriendo nuevo cliente…')}>+ Nuevo cliente</button>
+          <button className="btn-ghost">Exportar</button>
+          <button className="btn-primary" onClick={() => setNuevoCliente(true)}>+ Nuevo cliente</button>
         </div>
       </div>
 
-      {/* KPIs */}
       <div className="dia-kpis" style={{marginBottom:18}}>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Clientes activos</div><div className="dia-kpi-val">8</div><div className="dia-kpi-trend up">↑ +2 este mes</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Facturación media</div><div className="dia-kpi-val">1.425 €</div><div className="dia-kpi-trend up">↑ /mes por cliente</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">NPS promedio</div><div className="dia-kpi-val">78</div><div className="dia-kpi-trend up">↑ Sector: 58</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">En pipeline</div><div className="dia-kpi-val">3</div><div className="dia-kpi-trend warn">⚡ 1 decide esta semana</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Clientes activos</div><div className="dia-kpi-val">5</div><div className="dia-kpi-trend up">↑ 2 este trimestre</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Facturación mensual</div><div className="dia-kpi-val">9.600 €</div><div className="dia-kpi-trend up">↑ retainers activos</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Pipeline activo</div><div className="dia-kpi-val">39.700 €</div><div className="dia-kpi-trend up">en negociación</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">NPS medio</div><div className="dia-kpi-val">78</div><div className="dia-kpi-trend up">↑ excelente</div></div>
       </div>
 
-      {/* VISTA LISTA */}
-      {vista === 'lista' && (
-        <div className="dia-card">
-          <div className="dia-card-head">
-            <div className="dia-card-ttl">Todos los clientes</div>
-            <div className="dia-card-sub">Ordenados por última actividad</div>
-          </div>
-          <div style={{overflowX:'auto'}}>
-            <table style={{width:'100%',borderCollapse:'collapse',fontSize:'0.82rem',minWidth:600}}>
-              <thead>
-                <tr style={{borderBottom:'1.5px solid rgba(28,45,68,0.08)'}}>
-                  <th style={thStyle}>Cliente</th>
-                  <th style={thStyle}>Proyecto</th>
-                  <th style={thStyle}>Facturación</th>
-                  <th style={thStyle}>Estado</th>
-                  <th style={thStyle}>NPS</th>
-                  <th style={{padding:'8px 12px'}}></th>
+      {/* Tabla clientes */}
+      <div className="dia-card" style={{marginBottom:14}}>
+        <div className="dia-card-head"><div className="dia-card-ttl">Clientes activos</div><div className="dia-card-sub">Pulsa en cualquier fila para ver la ficha completa</div></div>
+        <div style={{overflowX:'auto'}}>
+          <table style={{width:'100%',borderCollapse:'collapse',fontSize:'0.84rem',minWidth:600}}>
+            <thead><tr style={{borderBottom:'1.5px solid rgba(28,45,68,0.08)'}}>
+              {['Cliente','Contacto','Sector','Proyecto actual','Facturado','Estado',''].map((h,i) => (
+                <th key={i} style={{padding:'10px 12px',textAlign:'left',fontSize:'0.68rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>
+              {clientes.map((c,i) => (
+                <tr key={i} style={{borderBottom:'0.5px solid rgba(28,45,68,0.06)',cursor:'pointer',transition:'background .15s'}} onMouseEnter={e=>e.currentTarget.style.background='rgba(28,45,68,0.02)'} onMouseLeave={e=>e.currentTarget.style.background=''} onClick={() => setFichaCliente(c)}>
+                  <td style={{padding:12}}>
+                    <div style={{display:'flex',alignItems:'center',gap:10}}>
+                      <div style={{width:32,height:32,borderRadius:8,background:c.iBg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'0.7rem',fontWeight:700,color:c.iColor,flexShrink:0}}>{c.iniciales}</div>
+                      <span style={{fontWeight:500,color:'#1C2D44'}}>{c.nombre}</span>
+                    </div>
+                  </td>
+                  <td style={{padding:12,color:'rgba(28,45,68,0.7)'}}>{c.contacto}</td>
+                  <td style={{padding:12,color:'rgba(28,45,68,0.6)',fontSize:'0.8rem'}}>{c.sector}</td>
+                  <td style={{padding:12,color:'rgba(28,45,68,0.7)'}}>{c.proyecto}</td>
+                  <td style={{padding:12,fontWeight:500,color:'#1C2D44'}}>{c.facturado}</td>
+                  <td style={{padding:12}}><span style={{fontSize:'0.72rem',fontWeight:600,padding:'3px 10px',borderRadius:100,background:c.eBg,color:c.eColor}}>{c.estado}</span></td>
+                  <td style={{padding:12}}><button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={e=>{e.stopPropagation();setFichaCliente(c)}}>Ver ficha →</button></td>
                 </tr>
-              </thead>
-              <tbody>
-                {[
-                  { nombre:'Metalúrgica Goi', contacto:'Mikel Goikoetxea · mikel@metalurgicagoi.eus', proyecto:'Digitalización almacén · F3', facturacion:'2.400 €/mes', pendiente:false, estado:'Activo', estadoColor:'rgba(34,160,107,0.12)', estadoTxt:'#22A06B', nps:82 },
-                  { nombre:'Digiform SL', contacto:'Txema García · txema@digiformsl.com', proyecto:'Optimización procesos · M2', facturacion:'1.800 €/mes', pendiente:true, estado:'Activo', estadoColor:'rgba(34,160,107,0.12)', estadoTxt:'#22A06B', nps:74 },
-                  { nombre:'Construcciones Mendía', contacto:'Miren Mendía · miren@mendiaconstrucciones.com', proyecto:'Digitalización RRHH · M4', facturacion:'1.200 €/mes', pendiente:false, estado:'Iguala', estadoColor:'rgba(188,212,232,0.3)', estadoTxt:'#2E5A8C', nps:71 },
-                  { nombre:'Garapen Consulting', contacto:'Ane Zubiria · ane@garapenconsulting.eus', proyecto:'Estrategia internacional · M1', facturacion:'3.200 €/mes', pendiente:false, estado:'Activo', estadoColor:'rgba(34,160,107,0.12)', estadoTxt:'#22A06B', nps:88 },
-                  { nombre:'Innotek Basque', contacto:'Iñaki Lasarte · inaki@innotekbasque.com', proyecto:'Innovación producto · M6', facturacion:'2.100 €/mes', pendiente:false, estado:'Activo', estadoColor:'rgba(34,160,107,0.12)', estadoTxt:'#22A06B', nps:79 },
-                  { nombre:'Ikasbi Formación', contacto:'Leire Aginaga · leire@ikasbi.eus', proyecto:'Plataforma e-learning · F1', facturacion:'950 €/mes', pendiente:false, estado:'Activo', estadoColor:'rgba(34,160,107,0.12)', estadoTxt:'#22A06B', nps:65 },
-                  { nombre:'Talleres Oñati', contacto:'Joseba Aranburu · joseba@talleresonati.eus', proyecto:'Lean manufacturing · Propuesta', facturacion:'—', pendiente:false, estado:'Propuesta', estadoColor:'rgba(46,90,140,0.1)', estadoTxt:'#2E5A8C', nps:null },
-                  { nombre:'Bodegas Iriarte', contacto:'Ana Ruiz · ana@bodegasiriarte.com', proyecto:'Estrategia digital · Negociación', facturacion:'28.000 € (proyecto)', pendiente:false, estado:'Pipeline', estadoColor:'rgba(212,165,116,0.2)', estadoTxt:'#8B5E34', nps:null },
-                ].map((c, i) => (
-                  <tr key={i} style={{borderBottom:'0.5px solid rgba(28,45,68,0.05)',cursor:'pointer'}} onMouseEnter={e=>e.currentTarget.style.background='rgba(28,45,68,0.02)'} onMouseLeave={e=>e.currentTarget.style.background=''}>
-                    <td style={{padding:'11px 12px'}}><strong>{c.nombre}</strong><br/><span style={{fontSize:'0.71rem',color:'rgba(28,45,68,0.5)'}}>{c.contacto}</span></td>
-                    <td style={{padding:'11px 12px',color:'rgba(28,45,68,0.7)'}}>{c.proyecto}</td>
-                    <td style={{padding:'11px 12px',fontWeight:600,color:c.pendiente?'#C65D4A':'#1C2D44'}}>{c.facturacion}{c.pendiente && <span style={{fontSize:'0.68rem',fontWeight:400}}> ⚡ pend.</span>}</td>
-                    <td style={{padding:'11px 12px'}}><span style={{background:c.estadoColor,color:c.estadoTxt,fontSize:'0.7rem',fontWeight:600,padding:'3px 8px',borderRadius:100}}>{c.estado}</span></td>
-                    <td style={{padding:'11px 12px',fontWeight:500,color:'#1C2D44'}}>{c.nps ?? '—'}</td>
-                    <td style={{padding:'11px 12px'}}>
-                      <div style={{display:'flex',gap:6}}>
-                        <button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={e=>{e.stopPropagation();alert('Abriendo ficha…')}}>Ficha →</button>
-                        <button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={e=>{e.stopPropagation();alert('Nueva factura…')}}>Factura</button>
-                        <button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={e=>{e.stopPropagation();alert(`Email a ${c.nombre}…`)}}>Email</button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-      )}
+      </div>
 
-      {/* VISTA PIPELINE / KANBAN */}
-      {vista === 'kanban' && (
+      {/* Pipeline kanban */}
+      <div className="dia-card">
+        <div className="dia-card-head"><div className="dia-card-ttl">Pipeline de ventas</div><div className="dia-card-sub">Estado de cada oportunidad</div></div>
         <div className="cl-kanban">
-
-          {/* Propuesta */}
-          <div style={{background:'rgba(46,90,140,0.04)',borderRadius:12,padding:14}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
-              <span style={{fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#2E5A8C'}}>Propuesta</span>
-              <span style={{fontSize:'0.72rem',fontWeight:600,background:'rgba(46,90,140,0.15)',color:'#2E5A8C',padding:'1px 7px',borderRadius:100}}>2</span>
-            </div>
-            <div style={{display:'flex',flexDirection:'column',gap:8}}>
-              {[{n:'Talleres Oñati',sub:'Joseba Aranburu',val:'8.500 €',tipo:'Lean manufacturing',fecha:'Enviada: 14 abr'},{n:'Tecnalia Research',sub:'Iñigo Madariaga',val:'12.000 €',tipo:'Consultoría I+D',fecha:'Enviada: 10 abr'}].map((c,i)=>(
-                <div key={i} style={{background:'#FFFFFF',border:'0.5px solid rgba(46,90,140,0.2)',borderRadius:9,padding:12,cursor:'pointer'}}>
-                  <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>{c.n}</div>
-                  <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)',marginBottom:6}}>{c.sub}</div>
-                  <div style={{fontSize:'0.78rem',fontWeight:600,color:'#2E5A8C',marginBottom:4}}>{c.val}</div>
-                  <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.4)'}}>{c.tipo}</div>
-                  <div style={{marginTop:8,paddingTop:8,borderTop:'0.5px solid rgba(28,45,68,0.06)',display:'flex',justifyContent:'space-between'}}>
-                    <span style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.4)'}}>{c.fecha}</span>
-                    <button onClick={()=>alert('Seguimiento')} style={{fontSize:'0.68rem',fontWeight:500,color:'#2E5A8C',background:'none',border:'none',cursor:'pointer',padding:0}}>Seguir</button>
-                  </div>
+          {kanban.map((col,i) => (
+            <div key={i} style={{background:col.color,border:`0.5px solid ${col.border}`,borderRadius:10,padding:14}}>
+              <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:10}}>{col.col}</div>
+              {col.items.map((item,j) => (
+                <div key={j} style={{padding:10,background:'#FFFFFF',borderRadius:8,marginBottom:8,border:`0.5px solid ${item.urgent?'rgba(198,93,74,0.3)':'rgba(28,45,68,0.08)'}`,cursor:'pointer'}} onMouseEnter={e=>e.currentTarget.style.boxShadow='0 2px 8px rgba(28,45,68,0.1)'} onMouseLeave={e=>e.currentTarget.style.boxShadow=''}>
+                  <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>{item.nombre}</div>
+                  <div style={{fontSize:'0.73rem',color:item.urgent?'#C65D4A':'rgba(28,45,68,0.55)'}}>{item.sub}</div>
+                  {item.val !== '?' && <div style={{fontFamily:'var(--serif)',fontSize:'0.9rem',fontWeight:500,color:'#1C2D44',marginTop:4}}>{item.val}</div>}
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Negociación */}
-          <div style={{background:'rgba(212,165,116,0.06)',borderRadius:12,padding:14}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
-              <span style={{fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#8B5E34'}}>Negociación</span>
-              <span style={{fontSize:'0.72rem',fontWeight:600,background:'rgba(212,165,116,0.25)',color:'#8B5E34',padding:'1px 7px',borderRadius:100}}>1</span>
-            </div>
-            <div style={{background:'#FFFFFF',border:'0.5px solid rgba(212,165,116,0.3)',borderRadius:9,padding:12,cursor:'pointer',position:'relative'}}>
-              <div style={{position:'absolute',top:8,right:8,fontSize:'0.62rem',fontWeight:600,background:'rgba(198,93,74,0.1)',color:'#C65D4A',padding:'1px 6px',borderRadius:100}}>⚡ Decide hoy</div>
-              <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>Bodegas Iriarte</div>
-              <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)',marginBottom:6}}>Ana Ruiz</div>
-              <div style={{fontSize:'0.78rem',fontWeight:600,color:'#D4A574',marginBottom:4}}>28.000 €</div>
-              <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.4)'}}>Estrategia digital</div>
-              <div style={{marginTop:8,paddingTop:8,borderTop:'0.5px solid rgba(28,45,68,0.06)',display:'flex',justifyContent:'space-between'}}>
-                <span style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.4)'}}>Reunión: mañana 09h</span>
-                <button onClick={()=>alert('Abriendo ficha…')} style={{fontSize:'0.68rem',fontWeight:500,color:'#8B5E34',background:'none',border:'none',cursor:'pointer',padding:0}}>Ver ficha</button>
-              </div>
-            </div>
-          </div>
-
-          {/* Activo */}
-          <div style={{background:'rgba(34,160,107,0.04)',borderRadius:12,padding:14}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
-              <span style={{fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#22A06B'}}>Activo</span>
-              <span style={{fontSize:'0.72rem',fontWeight:600,background:'rgba(34,160,107,0.15)',color:'#22A06B',padding:'1px 7px',borderRadius:100}}>5</span>
-            </div>
-            <div style={{display:'flex',flexDirection:'column',gap:8}}>
-              {[{n:'Garapen Consulting',f:'3.200 €/mes',info:'NPS 88 · M1'},{n:'Metalúrgica Goi',f:'2.400 €/mes',info:'NPS 82 · F3'},{n:'Innotek Basque',f:'2.100 €/mes',info:'NPS 79 · M6'},{n:'Digiform SL',f:'1.800 €/mes',info:'NPS 74 · M2 ⚠️'},{n:'Ikasbi Formación',f:'950 €/mes',info:'NPS 65 · F1'}].map((c,i)=>(
-                <div key={i} style={{background:'#FFFFFF',border:'0.5px solid rgba(34,160,107,0.15)',borderRadius:9,padding:12,cursor:'pointer'}}>
-                  <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:2}}>{c.n}</div>
-                  <div style={{fontSize:'0.72rem',fontWeight:600,color:'#22A06B'}}>{c.f}</div>
-                  <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.4)',marginTop:3}}>{c.info}</div>
-                </div>
-              ))}
-              <div style={{background:'#FFFFFF',border:'0.5px solid rgba(188,212,232,0.4)',borderRadius:9,padding:12,cursor:'pointer'}}>
-                <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:2}}>Construcciones Mendía</div>
-                <div style={{fontSize:'0.72rem',fontWeight:600,color:'#2E5A8C'}}>1.200 €/mes</div>
-                <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.4)',marginTop:3}}>Iguala · M4</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Pausado */}
-          <div style={{background:'rgba(28,45,68,0.02)',borderRadius:12,padding:14,opacity:0.7}}>
-            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}}>
-              <span style={{fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)'}}>Pausado</span>
-              <span style={{fontSize:'0.72rem',fontWeight:600,background:'rgba(28,45,68,0.08)',color:'rgba(28,45,68,0.4)',padding:'1px 7px',borderRadius:100}}>0</span>
-            </div>
-            <div style={{textAlign:'center',padding:'20px 10px',fontSize:'0.76rem',color:'rgba(28,45,68,0.35)'}}>Sin clientes pausados</div>
-          </div>
-
+          ))}
         </div>
-      )}
+      </div>
     </div>
   )
 }

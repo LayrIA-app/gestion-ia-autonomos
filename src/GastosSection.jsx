@@ -1,9 +1,16 @@
 import { useState } from 'react'
+import Modal from './Modal'
 import './sections.css'
 
 const cats = ['Comida de trabajo','Transporte','Material oficina','Software','Formación','Otros']
 
-const gastos = [
+const ticketsData = [
+  {icoColor:'#C65D4A',concepto:'Ticket restaurante · 47,20 €',desc:'Hoy · IA detecta: Comida de trabajo · 100% deducible · Con cliente Mikel Goikoetxea',catInicial:'Comida de trabajo'},
+  {icoColor:'#D4A574',concepto:'Gasolinera · 68,40 €',desc:'Ayer · IA detecta: Transporte · 50% deducible · Desplazamiento cliente San Sebastián',catInicial:'Transporte'},
+  {icoColor:'#2E5A8C',concepto:'Apple iCloud Storage · 2,99 €',desc:'16 abr · IA detecta: Software/Suscripción · 100% deducible',catInicial:'Software'},
+]
+
+const gastosData = [
   {concepto:'Claude Pro · Suscripción',cat:'Software',cBg:'rgba(46,90,140,0.1)',cColor:'#2E5A8C',fecha:'15 abr',imp:'20,00 €',ded:'100% ✓',dColor:'#22A06B'},
   {concepto:'Notion · Suscripción anual',cat:'Software',cBg:'rgba(46,90,140,0.1)',cColor:'#2E5A8C',fecha:'12 abr',imp:'96,00 €',ded:'100% ✓',dColor:'#22A06B'},
   {concepto:'Comida con Mikel Goikoetxea',cat:'Comida trabajo',cBg:'rgba(212,165,116,0.2)',cColor:'#8B5E34',fecha:'10 abr',imp:'63,40 €',ded:'100% ✓',dColor:'#22A06B'},
@@ -13,14 +20,62 @@ const gastos = [
   {concepto:'Curso IA aplicada a consultoría',cat:'Formación',cBg:'rgba(34,160,107,0.1)',cColor:'#22A06B',fecha:'01 abr',imp:'297,00 €',ded:'100% ✓',dColor:'#22A06B'},
 ]
 
-const tickets = [
-  {icoColor:'#C65D4A',concepto:'Ticket restaurante · 47,20 €',desc:'Hoy · IA detecta: Comida de trabajo · 100% deducible · Con cliente Mikel Goikoetxea',catInicial:'Comida de trabajo'},
-  {icoColor:'#D4A574',concepto:'Gasolinera · 68,40 €',desc:'Ayer · IA detecta: Transporte · 50% deducible · Desplazamiento cliente San Sebastián',catInicial:'Transporte'},
-  {icoColor:'#2E5A8C',concepto:'Apple iCloud Storage · 2,99 €',desc:'16 abr · IA detecta: Software/Suscripción · 100% deducible',catInicial:'Software'},
-]
+function ModalNuevoGasto({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Nuevo gasto" subtitle="La IA clasificará automáticamente y calculará la deducibilidad">
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Concepto</div><input className="dm-input" type="text" placeholder="Ej: Comida de trabajo · Material..."/></div>
+        <div className="dm-field"><div className="dm-label">Importe</div><input className="dm-input" type="text" placeholder="0,00 €"/></div>
+      </div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Fecha</div><input className="dm-input" type="date" defaultValue="2026-04-18"/></div>
+        <div className="dm-field"><div className="dm-label">Categoría</div><select className="dm-select">{cats.map(c => <option key={c}>{c}</option>)}</select></div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Deducibilidad</div>
+        <select className="dm-select"><option>100% deducible</option><option>50% deducible</option><option>No deducible</option></select>
+      </div>
+      <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Con qué cliente, para qué proyecto..."/></div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">✦ Añadir gasto</button>
+      </div>
+    </Modal>
+  )
+}
 
-function Ticket({ ticket }) {
+function ModalOCR({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Subir ticket · OCR" subtitle="La IA extraerá automáticamente todos los datos">
+      <div style={{border:'2px dashed rgba(28,45,68,0.15)',borderRadius:12,padding:32,textAlign:'center',marginBottom:14,cursor:'pointer',background:'rgba(28,45,68,0.02)'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#1C2D44'} onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(28,45,68,0.15)'}>
+        <div style={{fontSize:'2rem',marginBottom:8}}>📷</div>
+        <div style={{fontSize:'0.86rem',fontWeight:500,color:'#1C2D44',marginBottom:4}}>Arrastra la foto aquí</div>
+        <div style={{fontSize:'0.76rem',color:'rgba(28,45,68,0.5)'}}>o pulsa para seleccionar · JPG, PNG, PDF</div>
+      </div>
+      <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C'}}>✦ La IA extrae proveedor, importe, IVA y fecha. Tú solo confirmas.</div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">Procesar con IA</button>
+      </div>
+    </Modal>
+  )
+}
+
+function Ticket({ ticket, onConfirm }) {
   const [cat, setCat] = useState(ticket.catInicial)
+  const [confirmed, setConfirmed] = useState(false)
+
+  if (confirmed) return (
+    <div style={{padding:14,background:'rgba(34,160,107,0.06)',border:'0.5px solid rgba(34,160,107,0.2)',borderRadius:10,display:'flex',alignItems:'center',gap:12}}>
+      <div style={{width:38,height:38,borderRadius:9,background:'rgba(34,160,107,0.15)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22A06B" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div>
+        <div style={{fontSize:'0.86rem',fontWeight:500,color:'#1C2D44'}}>{ticket.concepto}</div>
+        <div style={{fontSize:'0.73rem',color:'#22A06B'}}>✓ Confirmado como {cat} · añadido al libro de gastos</div>
+      </div>
+    </div>
+  )
+
   return (
     <div style={{display:'flex',alignItems:'center',gap:14,padding:14,background:'rgba(198,93,74,0.04)',border:'0.5px solid rgba(198,93,74,0.15)',borderRadius:10,flexWrap:'wrap'}}>
       <div style={{width:38,height:38,borderRadius:9,background:ticket.icoColor,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
@@ -33,14 +88,20 @@ function Ticket({ ticket }) {
       <select value={cat} onChange={e => setCat(e.target.value)} style={{fontSize:'0.76rem',padding:'5px 8px',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:7,fontFamily:'var(--sans)',color:'#1C2D44',background:'#FFFFFF'}}>
         {cats.map(c => <option key={c} value={c}>{c}</option>)}
       </select>
-      <button style={{padding:'7px 14px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.78rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer',whiteSpace:'nowrap'}}>Confirmar ✓</button>
+      <button onClick={() => setConfirmed(true)} style={{padding:'7px 14px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.78rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer',whiteSpace:'nowrap'}}>Confirmar ✓</button>
     </div>
   )
 }
 
 export default function GastosSection() {
+  const [nuevoOpen, setNuevoOpen] = useState(false)
+  const [ocrOpen, setOcrOpen] = useState(false)
+
   return (
     <div>
+      <ModalNuevoGasto open={nuevoOpen} onClose={() => setNuevoOpen(false)} />
+      <ModalOCR open={ocrOpen} onClose={() => setOcrOpen(false)} />
+
       <div className="page-header">
         <div>
           <h1 className="page-title">Gastos</h1>
@@ -48,9 +109,9 @@ export default function GastosSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA procesó 3 tickets OCR · 68,40€ deducible pendiente de confirmar</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">📷 Subir ticket</button>
+          <button className="btn-ghost" onClick={() => setOcrOpen(true)}>📷 Subir ticket</button>
           <button className="btn-ghost">Exportar</button>
-          <button className="btn-primary">+ Nuevo gasto</button>
+          <button className="btn-primary" onClick={() => setNuevoOpen(true)}>+ Nuevo gasto</button>
         </div>
       </div>
 
@@ -63,11 +124,9 @@ export default function GastosSection() {
 
       <div className="dia-grid">
         <div className="dia-card" style={{gridColumn:'1/-1'}}>
-          <div className="dia-card-head">
-            <div><div className="dia-card-ttl">Tickets pendientes · la IA sugiere clasificación</div><div className="dia-card-sub">Confirma o edita — se añaden automáticamente al libro de gastos</div></div>
-          </div>
+          <div className="dia-card-head"><div><div className="dia-card-ttl">Tickets pendientes · la IA sugiere clasificación</div><div className="dia-card-sub">Confirma o edita — se añaden automáticamente al libro de gastos</div></div></div>
           <div style={{display:'flex',flexDirection:'column',gap:8}}>
-            {tickets.map((t,i) => <Ticket key={i} ticket={t} />)}
+            {ticketsData.map((t,i) => <Ticket key={i} ticket={t} />)}
           </div>
         </div>
 
@@ -81,7 +140,7 @@ export default function GastosSection() {
                 ))}
               </tr></thead>
               <tbody>
-                {gastos.map((g,i) => (
+                {gastosData.map((g,i) => (
                   <tr key={i} style={{borderBottom:'0.5px solid rgba(28,45,68,0.05)'}}>
                     <td style={{padding:'10px 12px',fontWeight:500,color:'#1C2D44'}}>{g.concepto}</td>
                     <td style={{padding:'10px 12px'}}><span style={{fontSize:'0.7rem',padding:'2px 8px',borderRadius:100,background:g.cBg,color:g.cColor,fontWeight:600}}>{g.cat}</span></td>

@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import Modal from './Modal'
 import './sections.css'
 
 const meses = [
@@ -16,9 +18,37 @@ const movimientos = [
   {fecha:'01 abr',concepto:'Cobro Construcciones Mendía · F-2026-027',cat:'Cobro cliente',cBg:'rgba(34,160,107,0.1)',cColor:'#22A06B',imp:'+1.272 €',iColor:'#22A06B',saldo:'11.298 €'},
 ]
 
+function ModalNuevoMovimiento({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Nuevo movimiento" subtitle="Añadir entrada o salida manualmente">
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Tipo</div>
+          <select className="dm-select"><option>Entrada (cobro)</option><option>Salida (pago)</option></select>
+        </div>
+        <div className="dm-field"><div className="dm-label">Importe</div><input className="dm-input" type="text" placeholder="0,00 €"/></div>
+      </div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Fecha</div><input className="dm-input" type="date" defaultValue="2026-04-18"/></div>
+        <div className="dm-field"><div className="dm-label">Categoría</div>
+          <select className="dm-select"><option>Cobro cliente</option><option>Cuotas SS</option><option>Alquiler</option><option>Software</option><option>Material</option><option>Otros</option></select>
+        </div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Concepto</div><input className="dm-input" type="text" placeholder="Ej: Cobro factura F-2026-043 · Cuota RETA abril..."/></div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">Añadir movimiento</button>
+      </div>
+    </Modal>
+  )
+}
+
 export default function TesoreriaSection() {
+  const [nuevoOpen, setNuevoOpen] = useState(false)
+
   return (
     <div>
+      <ModalNuevoMovimiento open={nuevoOpen} onClose={() => setNuevoOpen(false)} />
+
       <div className="page-header">
         <div>
           <h1 className="page-title">Tesorería</h1>
@@ -27,7 +57,7 @@ export default function TesoreriaSection() {
         </div>
         <div className="page-actions">
           <button className="btn-ghost">Exportar</button>
-          <button className="btn-primary">+ Movimiento</button>
+          <button className="btn-primary" onClick={() => setNuevoOpen(true)}>+ Movimiento</button>
         </div>
       </div>
 
@@ -52,7 +82,7 @@ export default function TesoreriaSection() {
               </div>
             ))}
           </div>
-          <div style={{background:'rgba(198,93,74,0.06)',border:'0.5px solid rgba(198,93,74,0.2)',borderRadius:8,padding:'10px 14px',fontSize:'0.78rem',color:'#C65D4A'}}>
+          <div style={{background:'rgba(198,93,74,0.06)',border:'0.5px solid rgba(198,93,74,0.2)',borderRadius:8,padding:'10px 14px',fontSize:'0.78rem',color:'#C65D4A',marginTop:16}}>
             ⚠ <strong>Alerta IA:</strong> En junio hay pago de IRPF 2T (~6.800 €) + gastos recurrentes. Saldo neto muy ajustado. Considera anticipar factura de Metalúrgica Goi.
           </div>
         </div>
