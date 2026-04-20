@@ -4,6 +4,9 @@ import InicioSection from './InicioSection'
 import AgendaSection from './AgendaSection'
 import ComunicacionSection from './ComunicacionSection'
 import ClientesSection from './ClientesSection'
+import PropuestasSection from './PropuestasSection'
+import VentasSection from './VentasSection'
+import ProyectosSection from './ProyectosSection'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -198,8 +201,20 @@ function AppShell({ onLogout }) {
             <div className={`section-panel${activeSection==='clientes'?' active':''}`}>
               <ClientesSection />
             </div>
-            {/* RESTO DE SECCIONES — se añaden en próximos pasos */}
-            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes'].includes(i.id)).map(item => (
+            {/* PROPUESTAS */}
+            <div className={`section-panel${activeSection==='propuestas'?' active':''}`}>
+              <PropuestasSection />
+            </div>
+            {/* VENTAS */}
+            <div className={`section-panel${activeSection==='ventas'?' active':''}`}>
+              <VentasSection />
+            </div>
+            {/* PROYECTOS */}
+            <div className={`section-panel${activeSection==='proyectos'?' active':''}`}>
+              <ProyectosSection />
+            </div>
+            {/* RESTO */}
+            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos'].includes(i.id)).map(item => (
               <div key={item.id} className={`section-panel${activeSection===item.id?' active':''}`}>
                 <div className="page-header">
                   <div>
