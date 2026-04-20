@@ -15,6 +15,9 @@ import ImpuestosSection from './ImpuestosSection'
 import BrandingSection from './BrandingSection'
 import RedesSection from './RedesSection'
 import MailingSection from './MailingSection'
+import ProyeccionSection from './ProyeccionSection'
+import BenchmarkSection from './BenchmarkSection'
+import AsistenteSection from './AsistenteSection'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -253,8 +256,20 @@ function AppShell({ onLogout }) {
             <div className={`section-panel${activeSection==='mailing'?' active':''}`}>
               <MailingSection />
             </div>
+            {/* PROYECCION */}
+            <div className={`section-panel${activeSection==='proyeccion'?' active':''}`}>
+              <ProyeccionSection />
+            </div>
+            {/* BENCHMARK */}
+            <div className={`section-panel${activeSection==='benchmark'?' active':''}`}>
+              <BenchmarkSection />
+            </div>
+            {/* ASISTENTE */}
+            <div className={`section-panel${activeSection==='asistente'?' active':''}`}>
+              <AsistenteSection />
+            </div>
             {/* RESTO */}
-            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos','facturas','facturas-recibidas','gastos','tesoreria','impuestos','branding','redes','mailing'].includes(i.id)).map(item => (
+            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos','facturas','facturas-recibidas','gastos','tesoreria','impuestos','branding','redes','mailing','proyeccion','benchmark','asistente'].includes(i.id)).map(item => (
               <div key={item.id} className={`section-panel${activeSection===item.id?' active':''}`}>
                 <div className="page-header">
                   <div>
