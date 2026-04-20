@@ -192,3 +192,32 @@
 @media (max-width:480px){
   .canales-grid{grid-template-columns:1fr;}
 }
+
+/* ══ BRANDING ══ */
+.brand-logos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media (max-width:768px){.brand-logos-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:480px){.brand-logos-grid{grid-template-columns:1fr;}}
+
+/* ══ REDES SOCIALES ══ */
+.rs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:4px;}
+.rs-net{background:#FFFFFF;border:0.5px solid rgba(28,45,68,0.1);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px;position:relative;}
+.rs-net.locked{opacity:0.7;cursor:pointer;}
+.rs-net-lock{position:absolute;top:10px;right:10px;font-size:0.65rem;font-weight:600;padding:2px 7px;background:rgba(28,45,68,0.08);border-radius:100px;color:rgba(28,45,68,0.5);display:flex;align-items:center;gap:4px;}
+.rs-net-status{display:flex;align-items:center;gap:5px;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;color:#22A06B;margin-bottom:4px;}
+.rs-net-status .dot{width:6px;height:6px;border-radius:50%;background:#22A06B;display:inline-block;}
+.rs-net-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.rs-net-ico.linkedin{background:#0077B5;color:#FFFFFF;}
+.rs-net-name{font-size:0.9rem;font-weight:600;color:#1C2D44;}
+.rs-net-handle{font-size:0.75rem;color:rgba(28,45,68,0.5);}
+.rs-net-stats{display:flex;gap:16px;margin-top:4px;}
+.rs-net-stat{display:flex;flex-direction:column;font-size:0.7rem;color:rgba(28,45,68,0.5);}
+.rs-net-stat strong{font-size:0.9rem;font-weight:600;color:#1C2D44;}
+.rs-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.rs-cal-head{font-size:0.65rem;font-weight:600;text-transform:uppercase;color:rgba(28,45,68,0.4);text-align:center;padding:4px 0;}
+.rs-cal-day{min-height:52px;background:rgba(28,45,68,0.02);border-radius:6px;padding:4px;font-size:0.75rem;}
+.rs-cal-day.today{background:rgba(46,90,140,0.08);border:0.5px solid rgba(46,90,140,0.2);}
+.rs-cal-day.empty{background:transparent;}
+.rs-cal-num{font-size:0.75rem;font-weight:500;color:rgba(28,45,68,0.6);}
+@media (max-width:1100px){.rs-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:600px){.rs-grid{grid-template-columns:1fr 1fr;}.rs-cal-day{min-height:38px;}}
+@media (max-width:480px){.rs-grid{grid-template-columns:1fr;}}
