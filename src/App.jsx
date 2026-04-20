@@ -18,7 +18,7 @@ import MailingSection from './MailingSection'
 import ProyeccionSection from './ProyeccionSection'
 import BenchmarkSection from './BenchmarkSection'
 import AsistenteSection from './AsistenteSection'
-import ClienteShell from './ClienteShell'
+import ClienteShell from './cliente/ClienteShell'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
