@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import './index.css'
 import InicioSection from './InicioSection'
+import AgendaSection from './AgendaSection'
+import ComunicacionSection from './ComunicacionSection'
 import ClientesSection from './ClientesSection'
 
 const phrases = [
@@ -184,12 +186,20 @@ function AppShell({ onLogout }) {
             <div className={`section-panel${activeSection==='inicio'?' active':''}`}>
               <InicioSection />
             </div>
+            {/* AGENDA */}
+            <div className={`section-panel${activeSection==='agenda'?' active':''}`}>
+              <AgendaSection />
+            </div>
+            {/* COMUNICACION */}
+            <div className={`section-panel${activeSection==='comunicacion'?' active':''}`}>
+              <ComunicacionSection />
+            </div>
             {/* CLIENTES */}
             <div className={`section-panel${activeSection==='clientes'?' active':''}`}>
               <ClientesSection />
             </div>
             {/* RESTO DE SECCIONES — se añaden en próximos pasos */}
-            {allItems.filter(i => i.id !== 'inicio' && i.id !== 'clientes').map(item => (
+            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes'].includes(i.id)).map(item => (
               <div key={item.id} className={`section-panel${activeSection===item.id?' active':''}`}>
                 <div className="page-header">
                   <div>
