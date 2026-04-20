@@ -129,7 +129,7 @@ export default function FacturasSection() {
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'nueva'})}>Editar</button>
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'recordar',factura:f})}>Recordar</button>
                         </>}
-                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}}>PDF</button>}
+                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => {}}>PDF</button>}
                       </div>
                     </td>
                   </tr>

@@ -147,7 +147,7 @@ export default function GastosSection() {
                     <td style={{padding:'10px 12px',color:'rgba(28,45,68,0.55)'}}>{g.fecha}</td>
                     <td style={{padding:'10px 12px',textAlign:'right',fontWeight:500,color:'#1C2D44'}}>{g.imp}</td>
                     <td style={{padding:'10px 12px'}}><span style={{fontSize:'0.72rem',fontWeight:600,color:g.dColor}}>{g.ded}</span></td>
-                    <td style={{padding:'10px 12px'}}><button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}}>Editar</button></td>
+                    <td style={{padding:'10px 12px'}}><button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={() => {}}>Editar</button></td>
                   </tr>
                 ))}
               </tbody>

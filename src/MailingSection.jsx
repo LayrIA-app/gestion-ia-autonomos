@@ -71,7 +71,7 @@ export default function MailingSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA preparó el próximo envío · listo para revisar · 142 destinatarios</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Importar contactos</button>
+          <button className="btn-ghost" onClick={() => setNuevaOpen(true)}>Importar contactos</button>
           <button className="btn-primary" onClick={() => setNuevaOpen(true)}>+ Nueva campaña</button>
         </div>
       </div>

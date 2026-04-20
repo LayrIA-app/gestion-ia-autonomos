@@ -170,7 +170,7 @@ export default function RedesSection() {
                 <span style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>{p.estado}</span>
               </div>
               <div style={{display:'flex',gap:8}}>
-                <button className="btn-ghost" style={{flex:1,padding:'6px',fontSize:'0.76rem'}}>Editar</button>
+                <button className="btn-ghost" style={{flex:1,padding:'6px',fontSize:'0.76rem'}} onClick={() => {}}>Editar</button>
                 <button style={{flex:1,padding:'6px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.76rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={e=>{e.stopPropagation();setPostModal(p)}}>Aprobar →</button>
               </div>
             </div>

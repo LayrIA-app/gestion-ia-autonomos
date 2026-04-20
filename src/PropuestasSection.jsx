@@ -2,180 +2,237 @@ import { useState } from 'react'
 import Modal from './Modal'
 import './sections.css'
 
-function ModalRegistrarHoras({ open, onClose, cliente }) {
+function ModalNuevaPropuesta({ open, onClose }) {
+  const [tipo, setTipo] = useState('consultoría')
   return (
-    <Modal open={open} onClose={onClose} title="Registrar horas" subtitle={cliente||'Proyecto'}>
-      <div className="dm-row">
-        <div className="dm-field"><div className="dm-label">Fecha</div><input className="dm-input" type="date" defaultValue="2026-04-18"/></div>
-        <div className="dm-field"><div className="dm-label">Horas trabajadas</div><input className="dm-input" type="number" placeholder="2.5" step="0.5"/></div>
+    <Modal open={open} onClose={onClose} title="Nueva propuesta · IA" subtitle="La IA generará una propuesta profesional completa lista para enviar">
+      <div className="dm-field">
+        <div className="dm-label">Tipo de propuesta</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginTop:6}}>
+          {['Consultoría','Retainer','Proyecto','Auditoría'].map(t => (
+            <div key={t} onClick={() => setTipo(t.toLowerCase())} style={{padding:'10px 14px',borderRadius:9,border:`0.5px solid ${tipo===t.toLowerCase()?'#1C2D44':'rgba(28,45,68,0.15)'}`,background:tipo===t.toLowerCase()?'rgba(28,45,68,0.05)':'transparent',cursor:'pointer',fontSize:'0.84rem',fontWeight:tipo===t.toLowerCase()?600:400,color:'#1C2D44',textAlign:'center'}}>{t}</div>
+          ))}
+        </div>
       </div>
-      <div className="dm-field"><div className="dm-label">Tarea / Concepto</div><input className="dm-input" type="text" placeholder="Ej: Configurar módulo WMS · reunión cliente..."/></div>
-      <div className="dm-field"><div className="dm-label">Notas adicionales</div><textarea className="dm-textarea" placeholder="Observaciones, incidencias, próximos pasos..."/></div>
-      <div style={{padding:10,background:'rgba(34,160,107,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#22A06B',marginBottom:4}}>✓ IA calculará automáticamente el importe facturable y actualizará la rentabilidad del proyecto.</div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Cliente</div><select className="dm-select"><option>Bodegas Iriarte</option><option>Digiform SL</option><option>Nuevo cliente...</option></select></div>
+        <div className="dm-field"><div className="dm-label">Duración</div><select className="dm-select"><option>1 mes</option><option>3 meses</option><option>6 meses</option><option>12 meses</option></select></div>
+      </div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Importe estimado</div><input className="dm-input" type="text" placeholder="28.000 €"/></div>
+        <div className="dm-field"><div className="dm-label">Fecha entrega</div><input className="dm-input" type="date" defaultValue="2026-04-25"/></div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Contexto para la IA</div><textarea className="dm-textarea" placeholder="Describe brevemente qué necesita el cliente..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Registrar horas</button>
+        <button className="dm-btn-primary">✦ Generar propuesta con IA</button>
       </div>
     </Modal>
   )
 }
 
-function ModalDetalleProyecto({ open, onClose, proyecto }) {
-  if (!proyecto) return null
+function ModalVerDraft({ open, onClose }) {
   return (
-    <Modal open={open} onClose={onClose} maxWidth={560} title={proyecto.titulo} subtitle={proyecto.periodo}>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:14}}>
-        <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Horas</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#1C2D44'}}>{proyecto.horas}</div><div style={{fontSize:'0.7rem',color:'rgba(28,45,68,0.5)'}}>de {proyecto.horasTotal}</div></div>
-        <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Rentabilidad</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#1C2D44'}}>{proyecto.tarifa}</div></div>
-        <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Margen</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#22A06B'}}>{proyecto.margen}</div></div>
+    <Modal open={open} onClose={onClose} title="Draft propuesta · Digiform SL" subtitle="IA completada al 80% · Revisa y edita antes de enviar">
+      <div className="dm-info-box" style={{background:'rgba(46,90,140,0.05)'}}>
+        <div className="dm-info-lbl">Resumen ejecutivo</div>
+        <div className="dm-info-val">Ampliación del proyecto de optimización de procesos. Objetivo: reducir tiempos de reporting un 40% adicional mediante automatización IA.</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:10}}>
+        <div className="dm-info-box"><div className="dm-info-lbl">Importe</div><div className="dm-info-val" style={{fontFamily:'var(--serif)',fontSize:'1.1rem'}}>8.500 €</div></div>
+        <div className="dm-info-box"><div className="dm-info-lbl">Duración</div><div className="dm-info-val">3 meses · Retainer</div></div>
       </div>
       <div className="dm-info-box" style={{marginBottom:10}}>
-        <div className="dm-info-lbl">Fases</div>
-        {proyecto.fases.map((f,i) => <div key={i} style={{fontSize:'0.82rem',color:f.startsWith('✓')?'rgba(28,45,68,0.5)':f.startsWith('→')?'#2E5A8C':'rgba(28,45,68,0.4)',padding:'3px 0',textDecoration:f.startsWith('✓')?'line-through':'none'}}>{f}</div>)}
+        <div className="dm-info-lbl">Servicios incluidos</div>
+        <div className="dm-info-val">• Automatización flujo de reporting<br/>• 3 sesiones de trabajo presenciales<br/>• Soporte IA continuo · 2h/semana<br/>• Documentación y formación equipo</div>
       </div>
-      <div className="dm-info-box">
-        <div className="dm-info-lbl">Progreso horas</div>
-        <div style={{height:8,background:'rgba(28,45,68,0.08)',borderRadius:4,overflow:'hidden',margin:'6px 0'}}>
-          <div style={{width:proyecto.pct,height:'100%',background:proyecto.barColor,borderRadius:4}}></div>
-        </div>
-        <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>{proyecto.pct} consumido</div>
+      <div style={{padding:10,background:'rgba(46,90,140,0.08)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C',marginBottom:14}}>✦ IA sugiere: Añadir caso de éxito de Metalúrgica Goi para reforzar credibilidad.</div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
+        <button className="dm-btn-ghost">Editar</button>
+        <button className="dm-btn-primary" onClick={onClose}>Enviar a Digiform →</button>
+      </div>
+    </Modal>
+  )
+}
+
+function ModalSeguimiento({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Seguimiento · Bodegas Iriarte" subtitle="Propuesta 28.000 € · Enviada hace 3 días">
+      <div className="dm-info-box" style={{background:'rgba(198,93,74,0.05)',marginBottom:10}}>
+        <div className="dm-info-lbl" style={{color:'#C65D4A'}}>⚡ Reunión mañana 09:00h</div>
+        <div className="dm-info-val">Bodegas Iriarte · Presencial DoN · Contacto: Ana Ruiz</div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Estado del seguimiento</div>
+        <select className="dm-select"><option>Enviada · pendiente respuesta</option><option>En revisión por el cliente</option><option>Negociando condiciones</option><option>Ganada ✓</option><option>Perdida</option></select>
+      </div>
+      <div className="dm-field"><div className="dm-label">Próxima acción</div><input className="dm-input" defaultValue="Reunión presencial mañana 09:00h DoN"/></div>
+      <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Observaciones, objeciones, acuerdos..."/></div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">Guardar seguimiento</button>
+      </div>
+    </Modal>
+  )
+}
+
+function ModalPerdida({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Análisis IA · ¿Por qué se perdió?" subtitle="Construcciones Unión · Web corporativa · 4.200 €">
+      <div className="dm-info-box" style={{marginBottom:10}}>
+        <div className="dm-info-lbl">Motivo registrado</div>
+        <div className="dm-info-val">Precio · Mar 2026</div>
+      </div>
+      <div className="dm-info-box" style={{background:'rgba(46,90,140,0.05)',marginBottom:10}}>
+        <div className="dm-info-lbl">Análisis IA</div>
+        <div className="dm-info-val">El precio fue 32% superior al que esperaban. La propuesta no incluía comparativa de ROI ni casos de éxito similares. La IA detecta que propuestas con estos elementos tienen un 45% más de conversión en tu sector.</div>
+      </div>
+      <div className="dm-info-box" style={{background:'rgba(34,160,107,0.05)'}}>
+        <div className="dm-info-lbl">Recomendaciones para próximas</div>
+        <div className="dm-info-val">• Incluir siempre ROI estimado con casos reales<br/>• Ofrecer opción modular (básico / completo)<br/>• Añadir testimonial de cliente del mismo sector</div>
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-primary">+ Registrar horas</button>
+        <button className="dm-btn-primary">Aplicar a siguientes propuestas</button>
       </div>
     </Modal>
   )
 }
 
-const proyectos = [
-  {
-    titulo:'Metalúrgica Goi · Digitalización almacén',periodo:'Mes 2 de 6 · Feb 2026 – Ago 2026',
-    estado:'En plazo ✓',estadoColor:'rgba(34,160,107,0.12)',estadoTxt:'#22A06B',
-    iconoBg:'rgba(34,160,107,0.12)',iconoStroke:'#22A06B',
-    horas:'48h',horasTotal:'120h',pct:'40%',barColor:'#22A06B',tarifa:'100 €/h',margen:'72%',
-    fases:['✓ Diagnóstico inicial','→ Implantación WMS · En curso','○ Formación equipo','○ Cierre y entrega'],
-    tareas:[{l:'Configurar módulo de entradas de almacén',f:'Mié 19',done:false,urgent:false},{l:'Reunión kick-off fase 2 con Mikel',f:'Hecho',done:true},{l:'Documentar flujo actual de picking',f:'Jue 20',done:false}],
-  },
-  {
-    titulo:'Digiform SL · Optimización procesos',periodo:'Mes 5 de 6 · Nov 2025 – May 2026',
-    estado:'Últimas semanas',estadoColor:'rgba(46,90,140,0.1)',estadoTxt:'#2E5A8C',
-    iconoBg:'rgba(46,90,140,0.1)',iconoStroke:'#2E5A8C',
-    horas:'82h',horasTotal:'100h',pct:'82%',barColor:'#2E5A8C',tarifa:'88 €/h',margen:'58%',
-    fases:['✓ Análisis procesos','✓ Rediseño flujos','✓ Implementación','→ Seguimiento y cierre · En curso'],
-    tareas:[{l:'Revisar KPIs con Txema',f:'Hoy',done:false},{l:'Preparar informe cierre mes 5',f:'Vie 22',done:false},{l:'Propuesta ampliación proyecto',f:'May 2',done:false}],
-  },
-  {
-    titulo:'Construcciones Mendía · RRHH digital',periodo:'Mes 3 de 3 · Feb 2026 – 23 abr 2026',
-    estado:'⚡ Entrega en 5 días',estadoColor:'rgba(198,93,74,0.1)',estadoTxt:'#C65D4A',
-    iconoBg:'rgba(198,93,74,0.1)',iconoStroke:'#C65D4A',
-    horas:'68h',horasTotal:'72h',pct:'94%',barColor:'#C65D4A',tarifa:'106 €/h',margen:'74%',
-    fases:['✓ Mapa de procesos RRHH','✓ Implementación software','→ Entrega y formación final · Urgente'],
-    tareas:[{l:'Preparar documentación de entrega',f:'⚡ Hoy',done:false,urgent:true},{l:'Sesión de formación con Miren Mendía',f:'Lun 21',done:false},{l:'Emitir factura final del proyecto',f:'Mié 23',done:false}],
-  },
-]
-
-function ProyectoCard({ p, onHoras, onDetalle }) {
-  return (
-    <div className="dia-card" style={{marginBottom:14}}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14,flexWrap:'wrap',gap:10}}>
-        <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <div style={{width:40,height:40,borderRadius:10,background:p.iconoBg,display:'flex',alignItems:'center',justifyContent:'center'}}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={p.iconoStroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div>
-            <div style={{fontFamily:'var(--serif)',fontSize:'1rem',fontWeight:500,color:'#1C2D44'}}>{p.titulo}</div>
-            <div style={{fontSize:'0.74rem',color:'rgba(28,45,68,0.5)',marginTop:2}}>{p.periodo}</div>
-          </div>
-        </div>
-        <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
-          <span style={{fontSize:'0.72rem',fontWeight:600,padding:'4px 10px',borderRadius:100,background:p.estadoColor,color:p.estadoTxt}}>{p.estado}</span>
-          <button className="btn-ghost" style={{padding:'5px 10px',fontSize:'0.74rem'}} onClick={() => onHoras(p.titulo)}>+ Horas</button>
-          <button className="btn-ghost" style={{padding:'5px 10px',fontSize:'0.74rem'}} onClick={() => onDetalle(p)}>Ver detalle</button>
-        </div>
-      </div>
-
-      <div className="proy-grid">
-        <div>
-          <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8}}>Fases</div>
-          {p.fases.map((f,i) => (
-            <div key={i} style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
-              <div style={{width:10,height:10,borderRadius:'50%',background:f.startsWith('✓')?'#22A06B':f.startsWith('→')?p.iconoStroke:'rgba(28,45,68,0.15)',flexShrink:0}}></div>
-              <span style={{fontSize:'0.78rem',color:f.startsWith('✓')?'rgba(28,45,68,0.6)':f.startsWith('→')?'#1C2D44':'rgba(28,45,68,0.4)',fontWeight:f.startsWith('→')?500:400,textDecoration:f.startsWith('✓')?'line-through':'none'}}>{f.replace('✓ ','').replace('→ ','').replace('○ ','')}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8}}>Time tracking</div>
-          <div style={{fontFamily:'var(--serif)',fontSize:'1.4rem',fontWeight:500,color:'#1C2D44',marginBottom:4}}>{p.horas}</div>
-          <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)',marginBottom:6}}>de {p.horasTotal} presupuestadas</div>
-          <div style={{height:5,background:'rgba(28,45,68,0.08)',borderRadius:3,overflow:'hidden'}}>
-            <div style={{width:p.pct,height:'100%',background:p.barColor,borderRadius:3}}></div>
-          </div>
-          <div style={{fontSize:'0.68rem',color:p.barColor==='#C65D4A'?'#C65D4A':'rgba(28,45,68,0.45)',marginTop:3}}>{p.pct} consumido</div>
-        </div>
-        <div>
-          <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8}}>Rentabilidad</div>
-          <div style={{fontFamily:'var(--serif)',fontSize:'1.4rem',fontWeight:500,color:'#1C2D44',marginBottom:2}}>{p.tarifa}</div>
-          <div style={{fontSize:'0.78rem',fontWeight:500,color:'#22A06B'}}>Margen: {p.margen}</div>
-        </div>
-      </div>
-
-      <div style={{marginTop:12,paddingTop:12,borderTop:'0.5px solid rgba(28,45,68,0.06)'}}>
-        <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8}}>Tareas activas</div>
-        {p.tareas.map((t,i) => (
-          <div key={i} style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
-            <input type="checkbox" defaultChecked={t.done} readOnly style={{accentColor:'#1C2D44'}}/>
-            <span style={{fontSize:'0.78rem',color:t.urgent?'#C65D4A':t.done?'rgba(28,45,68,0.5)':'#1C2D44',fontWeight:t.urgent?500:400,textDecoration:t.done?'line-through':'none',flex:1}}>{t.l}</span>
-            <span style={{fontSize:'0.68rem',color:t.urgent?'#C65D4A':'rgba(28,45,68,0.4)',fontWeight:t.urgent?600:400}}>{t.f}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export default function ProyectosSection() {
-  const [horasCliente, setHorasCliente] = useState(null)
-  const [detalleProyecto, setDetalleProyecto] = useState(null)
+export default function PropuestasSection({ onNavigate }) {
+  const [modal, setModal] = useState(null)
 
   return (
     <div>
-      <ModalRegistrarHoras open={!!horasCliente} onClose={() => setHorasCliente(null)} cliente={horasCliente} />
-      <ModalDetalleProyecto open={!!detalleProyecto} onClose={() => setDetalleProyecto(null)} proyecto={detalleProyecto} />
+      {modal === 'nueva' && <ModalNuevaPropuesta open onClose={() => setModal(null)} />}
+      {modal === 'draft' && <ModalVerDraft open onClose={() => setModal(null)} />}
+      {modal === 'seguimiento' && <ModalSeguimiento open onClose={() => setModal(null)} />}
+      {modal === 'perdida' && <ModalPerdida open onClose={() => setModal(null)} />}
 
       <div className="page-header">
         <div>
-          <h1 className="page-title">Proyectos</h1>
-          <p className="page-subtitle">Time tracking, fases, rentabilidad y estado de cada proyecto activo.</p>
-          <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA alerta: Construcciones Mendía entrega en 5 días · revisar horas</span></div>
+          <h1 className="page-title">Propuestas</h1>
+          <p className="page-subtitle">Constructor de propuestas con IA · Pipeline de ventas · Historial completo.</p>
+          <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA completó el 80% del borrador para Digiform · revisión pendiente</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
-          <button className="btn-primary">+ Nuevo proyecto</button>
+          <button className="btn-ghost" onClick={() => setModal('nueva')}>Plantillas</button>
+          <button className="btn-primary" onClick={() => setModal('nueva')}>+ Nueva propuesta</button>
         </div>
       </div>
 
       <div className="dia-kpis" style={{marginBottom:18}}>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Proyectos activos</div><div className="dia-kpi-val">4</div><div className="dia-kpi-trend up">en ejecución</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Horas facturables · sem</div><div className="dia-kpi-val">28h</div><div className="dia-kpi-trend warn">↓ Objetivo: 34h</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Rentabilidad media</div><div className="dia-kpi-val">94 €/h</div><div className="dia-kpi-trend up">↑ P74 sector</div></div>
-        <div className="dia-kpi"><div className="dia-kpi-lbl">Margen neto</div><div className="dia-kpi-val">68%</div><div className="dia-kpi-trend up">↑ muy saludable</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">En preparación</div><div className="dia-kpi-val">2</div><div className="dia-kpi-trend warn">⚡ 1 urgente</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Enviadas · mes</div><div className="dia-kpi-val">2</div><div className="dia-kpi-trend up">↑ vs 1 mes ant.</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Tasa conversión</div><div className="dia-kpi-val">62%</div><div className="dia-kpi-trend up">↑ Sector: 41%</div></div>
+        <div className="dia-kpi"><div className="dia-kpi-lbl">Valor pipeline</div><div className="dia-kpi-val">54.500 €</div><div className="dia-kpi-trend up">↑ potencial</div></div>
       </div>
 
-      {proyectos.map((p,i) => (
-        <ProyectoCard key={i} p={p} onHoras={setHorasCliente} onDetalle={setDetalleProyecto} />
-      ))}
+      <div className="dia-card" style={{marginBottom:14}}>
+        <div className="dia-card-head"><div className="dia-card-ttl">Pipeline de propuestas</div><div className="dia-card-sub">Estado de cada propuesta en tiempo real</div></div>
+        <div className="prop-pipeline">
 
-      <div className="dia-card" style={{background:'#1C2D44'}}>
-        <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.1em',textTransform:'uppercase',color:'#BCD4E8',marginBottom:8}}>✦ IA · Análisis de proyectos</div>
-        <div className="proy-ia-grid">
-          {[{t:'⚡ Mendía: cierre en riesgo',d:'Entrega en 5 días y 94% horas consumidas. Considera facturar horas extra si superas las 72h.'},{t:'📊 Digiform: rentabilidad baja',d:'58% de margen vs 68% de media. Proyecto con más horas de las previstas. Revisar tarifa en el siguiente.'},{t:'✓ Metalúrgica: ritmo ideal',d:'40% horas en mes 2. Margen del 72%. Momento ideal para proponer ampliación de alcance.'}].map((item,i) => (
-            <div key={i} style={{background:'rgba(250,247,242,0.06)',borderRadius:9,padding:12}}>
-              <div style={{fontSize:'0.78rem',fontWeight:500,color:'#FAF7F2',marginBottom:4}}>{item.t}</div>
-              <div style={{fontSize:'0.72rem',color:'rgba(250,247,242,0.6)',lineHeight:1.5}}>{item.d}</div>
+          {/* Borrador */}
+          <div style={{background:'rgba(28,45,68,0.03)',borderRadius:10,padding:14}}>
+            <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:10}}>Borrador</div>
+            <div style={{padding:12,background:'#FFFFFF',border:'0.5px solid rgba(28,45,68,0.1)',borderRadius:8,cursor:'pointer'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#2E5A8C'} onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(28,45,68,0.1)'} onClick={() => setModal('draft')}>
+              <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>Digiform SL</div>
+              <div style={{fontSize:'0.73rem',color:'rgba(28,45,68,0.55)',marginBottom:6}}>Ampliación proyecto · 8.500 €</div>
+              <div style={{fontSize:'0.68rem',color:'#2E5A8C',fontWeight:600}}>✦ IA completada al 80%</div>
+              <div style={{display:'flex',gap:6,marginTop:8}}>
+                <button className="btn-ghost" style={{flex:1,padding:4,fontSize:'0.68rem'}} onClick={e=>{e.stopPropagation();setModal('draft')}}>Ver draft</button>
+                <button style={{flex:1,padding:4,background:'#1C2D44',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.68rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={e=>{e.stopPropagation();setModal('draft')}}>Enviar</button>
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Enviada */}
+          <div style={{background:'rgba(28,45,68,0.03)',borderRadius:10,padding:14}}>
+            <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:10}}>Enviada · Pendiente</div>
+            <div style={{padding:12,background:'#FFFFFF',border:'0.5px solid rgba(198,93,74,0.3)',borderRadius:8,cursor:'pointer'}} onMouseEnter={e=>e.currentTarget.style.borderColor='#C65D4A'} onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(198,93,74,0.3)'}>
+              <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>Bodegas Iriarte</div>
+              <div style={{fontSize:'0.73rem',color:'rgba(28,45,68,0.55)',marginBottom:4}}>Estrategia digital · 28.000 €</div>
+              <div style={{fontSize:'0.68rem',color:'#C65D4A',fontWeight:600}}>⚡ Reunión mañana 09:00h</div>
+              <div style={{display:'flex',gap:6,marginTop:8}}>
+                <button className="btn-ghost" style={{flex:1,padding:4,fontSize:'0.68rem'}} onClick={() => setModal('draft')}>Editar</button>
+                <button style={{flex:1,padding:4,background:'#C65D4A',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.68rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => setModal('seguimiento')}>Seguir</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Aceptada */}
+          <div style={{background:'rgba(28,45,68,0.03)',borderRadius:10,padding:14}}>
+            <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:10}}>Aceptada ✓</div>
+            {[{n:'Garapen Consulting',d:'Optimización procesos · 12.000 €',s:'✓ Firmada · Inicio 1 mayo'},{n:'Innotek Basque',d:'Consultoría digital · 9.600 €',s:'✓ Firmada · En curso'}].map((p,i) => (
+              <div key={i} style={{padding:12,background:'#FFFFFF',border:'0.5px solid rgba(34,160,107,0.2)',borderRadius:8,marginBottom:8}}>
+                <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>{p.n}</div>
+                <div style={{fontSize:'0.73rem',color:'rgba(28,45,68,0.55)',marginBottom:4}}>{p.d}</div>
+                <div style={{fontSize:'0.68rem',color:'#22A06B',fontWeight:600}}>{p.s}</div>
+                <button style={{width:'100%',marginTop:8,padding:4,background:'rgba(34,160,107,0.1)',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.68rem',fontWeight:600,color:'#22A06B',cursor:'pointer'}} onClick={() => onNavigate && onNavigate('proyectos')}>Ver en Proyectos →</button>
+              </div>
+            ))}
+          </div>
+
+          {/* Perdida */}
+          <div style={{background:'rgba(28,45,68,0.03)',borderRadius:10,padding:14}}>
+            <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:10}}>Perdida · Archivada</div>
+            <div style={{padding:12,background:'#FFFFFF',border:'0.5px solid rgba(28,45,68,0.08)',borderRadius:8,opacity:0.7}}>
+              <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>Construcciones Unión</div>
+              <div style={{fontSize:'0.73rem',color:'rgba(28,45,68,0.55)',marginBottom:4}}>Web corporativa · 4.200 €</div>
+              <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.45)'}}>Motivo: precio · Mar 2026</div>
+              <button style={{width:'100%',marginTop:8,padding:4,background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.68rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => setModal('perdida')}>¿Por qué se perdió? IA</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Progreso */}
+      <div className="dia-card" style={{marginBottom:14}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10,flexWrap:'wrap',gap:8}}>
+          <div style={{fontSize:'0.84rem',fontWeight:500,color:'#1C2D44'}}>Progreso objetivo mensual · Abril 2026</div>
+          <div style={{fontSize:'0.84rem',fontWeight:600,color:'#2E5A8C'}}>11.400 € / 18.000 € <span style={{fontWeight:400,color:'rgba(28,45,68,0.5)'}}>63%</span></div>
+        </div>
+        <div style={{height:10,background:'rgba(28,45,68,0.08)',borderRadius:5,overflow:'hidden',marginBottom:8}}>
+          <div style={{width:'63%',height:'100%',background:'linear-gradient(90deg,#2E5A8C,#BCD4E8)',borderRadius:5}}></div>
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',fontSize:'0.72rem',color:'rgba(28,45,68,0.45)',flexWrap:'wrap',gap:4}}>
+          <span>Con Bodegas Iriarte confirmada llegarías a 19.200 € ↑</span>
+          <span>Faltan 12 días del mes</span>
+        </div>
+      </div>
+
+      <div className="dia-grid">
+        <div className="dia-card">
+          <div className="dia-card-head"><div className="dia-card-ttl">Cobros urgentes</div><div className="dia-card-sub">La IA gestiona los recordatorios</div></div>
+          <div style={{display:'flex',flexDirection:'column',gap:10}}>
+            {[{n:'Digiform SL · F-2026-038',i:'2.178 €',d:'Vencida hace 12 días · 3er recordatorio pendiente'},{n:'Metalúrgica Goi · F-2026-035',i:'2.904 €',d:'Vencida hace 18 días · IA sugiere llamar directamente'}].map((c,i) => (
+              <div key={i} style={{padding:12,background:'rgba(198,93,74,0.05)',borderRadius:10,border:'0.5px solid rgba(198,93,74,0.15)'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+                  <div style={{fontSize:'0.84rem',fontWeight:500,color:'#1C2D44'}}>{c.n}</div>
+                  <div style={{fontFamily:'var(--serif)',fontSize:'1rem',fontWeight:500,color:'#C65D4A'}}>{c.i}</div>
+                </div>
+                <div style={{fontSize:'0.73rem',color:'rgba(28,45,68,0.55)',marginBottom:8}}>{c.d}</div>
+                <div style={{display:'flex',gap:8}}>
+                  <button className="btn-ghost" style={{flex:1,padding:5,fontSize:'0.72rem'}} onClick={() => setModal('seguimiento')}>Ver draft IA</button>
+                  <button style={{flex:1,padding:5,background:'#C65D4A',border:'none',borderRadius:7,fontFamily:'var(--sans)',fontSize:'0.72rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => setModal('seguimiento')}>Enviar ahora</button>
+                </div>
+              </div>
+            ))}
+            <div style={{padding:10,background:'rgba(28,45,68,0.03)',borderRadius:8,textAlign:'center'}}>
+              <div style={{fontSize:'0.78rem',fontWeight:600,color:'#1C2D44'}}>Total pendiente</div>
+              <div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#C65D4A'}}>5.082 €</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="dia-card">
+          <div className="dia-card-head"><div className="dia-card-ttl">IA · Análisis comercial</div></div>
+          <div className="ins-list" style={{gap:9}}>
+            <div className="ins-item"><div className="ins-ico" style={{background:'rgba(46,90,140,0.1)'}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E5A8C" strokeWidth="2" strokeLinecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div className="ins-body"><div className="ins-title">Metalúrgica Goi · cliente ancla</div><div className="ins-desc">Genera el 42% de tu facturación. Diversifica: ningún cliente debería superar el 30%.</div></div></div>
+            <div className="ins-item"><div className="ins-ico green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div className="ins-body"><div className="ins-title">Abril: ritmo por encima del objetivo</div><div className="ins-desc">63% del objetivo a día 18. Si confirma Bodegas, cerrarías en 19.200€ (+7%).</div></div></div>
+            <div className="ins-item"><div className="ins-ico warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div className="ins-body"><div className="ins-title">5.082 € pendientes de cobro</div><div className="ins-desc">Envía recordatorio a Digiform esta tarde. Pueden llegar a olvidarlo.</div></div></div>
+          </div>
         </div>
       </div>
     </div>
