@@ -4,6 +4,70 @@ import './sections.css'
 
 const thS = {padding:'8px 12px',textAlign:'left',fontSize:'0.65rem',fontWeight:600,textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}
 
+const modelosFiscales = [
+  {mod:'303',freq:'Trimestral',pago:'Sí',desc:'IVA trimestral. Diferencia entre el IVA que cobras a clientes (repercutido) y el que pagas en tus gastos (soportado). Si cobras más del que pagas, ingresas la diferencia.'},
+  {mod:'130',freq:'Trimestral',pago:'Sí (bajo si tienes retenciones)',desc:'Pago fraccionado IRPF. 20% de tu rendimiento neto (ingresos − gastos) menos las retenciones del 15% que ya te practican tus clientes.'},
+  {mod:'111',freq:'Trimestral',pago:'Sí',desc:'Retenciones IRPF practicadas. Las retenciones del 15% que tus clientes te descuentan en factura las recaudan pero las ingresas tú en Hacienda.'},
+  {mod:'115',freq:'Trimestral',pago:'Sí',desc:'Retenciones por alquiler de local. Solo si tienes oficina o local alquilado: retienes el 19% del alquiler y lo ingresas a Hacienda.'},
+  {mod:'349',freq:'Trimestral',pago:'No',desc:'Operaciones intracomunitarias. Solo si facturas a empresas de la UE sin IVA. Informativo.'},
+  {mod:'390',freq:'Anual (enero)',pago:'No',desc:'Resumen anual IVA. Recapitulación de todos los 303 del año. Solo informativo, no implica pago adicional.'},
+  {mod:'190',freq:'Anual (enero)',pago:'No',desc:'Resumen anual retenciones. Recapitulación de todos los 111 del año.'},
+  {mod:'100',freq:'Anual (abr–jun)',pago:'Según resultado',desc:'Declaración de la Renta IRPF. Ingresos anuales − gastos deducibles − mínimo personal = base liquidable × tipo = cuota a pagar o devolver.'},
+]
+
+function ModalLeyendaFiscal({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} maxWidth={560} title="📖 Guía de modelos fiscales · Autónomos España" subtitle="Qué es cada modelo, cuándo se presenta y si implica pago">
+      <div style={{display:'flex',flexDirection:'column',gap:8,maxHeight:420,overflowY:'auto',marginBottom:14}}>
+        {modelosFiscales.map((m,i) => (
+          <div key={i} style={{padding:12,background:'rgba(28,45,68,0.03)',borderRadius:9,border:'0.5px solid rgba(28,45,68,0.07)'}}>
+            <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:5}}>
+              <span style={{fontWeight:700,fontSize:'0.9rem',color:'#1C2D44',minWidth:30}}>Mod. {m.mod}</span>
+              <span style={{fontSize:'0.7rem',padding:'2px 7px',borderRadius:100,background:m.pago==='No'?'rgba(34,160,107,0.1)':'rgba(198,93,74,0.1)',color:m.pago==='No'?'#22A06B':'#C65D4A',fontWeight:600}}>{m.pago==='No'?'Sin pago':'Con pago'}</span>
+              <span style={{fontSize:'0.7rem',color:'rgba(28,45,68,0.5)',marginLeft:'auto'}}>{m.freq}</span>
+            </div>
+            <div style={{fontSize:'0.78rem',color:'rgba(28,45,68,0.7)',lineHeight:1.5}}>{m.desc}</div>
+          </div>
+        ))}
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-primary" onClick={onClose}>Entendido</button>
+      </div>
+    </Modal>
+  )
+}
+
+function ModalPreparacionFiscal({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Preparar declaración trimestral" subtitle="1T 2026 · Modelos 303 (IVA) y 130 (IRPF)">
+      <div style={{padding:12,background:'rgba(46,90,140,0.06)',borderRadius:9,marginBottom:14}}>
+        <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#2E5A8C',marginBottom:5}}>IA · Resumen fiscal 1T</div>
+        <div style={{fontSize:'0.82rem',color:'#1C2D44'}}>IVA repercutido: <strong>1.995 €</strong> · IVA soportado: <strong>312 €</strong> · A ingresar modelo 303: <strong style={{color:'#C65D4A'}}>1.683 €</strong>. Pago fraccionado modelo 130: <strong style={{color:'#C65D4A'}}>218 €</strong>.</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:14}}>
+        {[{mod:'Modelo 303 · IVA',v:'1.683 €'},{mod:'Modelo 130 · IRPF',v:'218 €'}].map((r,i) => (
+          <div key={i} style={{background:'#FFFFFF',border:'0.5px solid rgba(28,45,68,0.1)',borderRadius:10,padding:14}}>
+            <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)',marginBottom:5}}>{r.mod}</div>
+            <div style={{fontFamily:'var(--serif)',fontSize:'1.4rem',fontWeight:500,color:'#C65D4A'}}>{r.v}</div>
+            <div style={{fontSize:'0.74rem',color:'rgba(28,45,68,0.55)'}}>Vence 20 de abril</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:14}}>
+        {['Facturas emitidas 1T revisadas (12)','Facturas recibidas 1T revisadas (8)','Gastos deducibles verificados (3.240 €)','IVA soportado comprobado (312 €)'].map((t,i) => (
+          <label key={i} style={{display:'flex',alignItems:'center',gap:8,fontSize:'0.82rem',color:'#1C2D44',cursor:'pointer'}}>
+            <input type="checkbox" defaultChecked={i<2} style={{accentColor:'#1C2D44'}}/>{t}
+          </label>
+        ))}
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary">Generar borrador y pagar →</button>
+      </div>
+    </Modal>
+  )
+}
+
 const modelos1T = [
   {num:'303',desc:'IVA trimestral',origen:'Facturas emitidas − IVA soportado gastos',imp:'1.683 €',eBg:'rgba(198,93,74,0.1)',eColor:'#C65D4A',estado:'⚡ Pagar',bg:'rgba(198,93,74,0.03)',impColor:'#C65D4A'},
   {num:'130',desc:'IRPF fraccionado autónomos',origen:'20% de los rendimientos netos 1T',imp:'218 €',eBg:'rgba(198,93,74,0.1)',eColor:'#C65D4A',estado:'⚡ Pagar',bg:'rgba(198,93,74,0.03)',impColor:'#C65D4A'},
@@ -39,6 +103,8 @@ export default function ImpuestosSection() {
   const [tabT, setTabT] = useState('t1')
   const [simVal, setSimVal] = useState(45000)
   const [modeloPago, setModeloPago] = useState(null)
+  const [leyendaOpen, setLeyendaOpen] = useState(false)
+  const [preparacionOpen, setPreparacionOpen] = useState(false)
 
   const simIva = Math.round(simVal * 0.063)
   const simIrpf = Math.round(simVal * 0.03)
@@ -48,6 +114,8 @@ export default function ImpuestosSection() {
   return (
     <div>
       <ModalPago open={!!modeloPago} onClose={() => setModeloPago(null)} modelo={modeloPago} />
+      <ModalLeyendaFiscal open={leyendaOpen} onClose={() => setLeyendaOpen(false)} />
+      <ModalPreparacionFiscal open={preparacionOpen} onClose={() => setPreparacionOpen(false)} />
 
       <div className="page-header">
         <div>
@@ -56,9 +124,9 @@ export default function ImpuestosSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA tiene listos Mod. 303 + 130 + 111 · 3.326€ · vencen en 3 días</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">📖 Guía modelos</button>
-          <button className="btn-ghost">Declaración Renta</button>
-          <button className="btn-primary">Preparar declaración →</button>
+          <button className="btn-ghost" onClick={() => setLeyendaOpen(true)}>📖 Guía modelos</button>
+          <button className="btn-ghost" onClick={() => setPreparacionOpen(true)}>Declaración Renta</button>
+          <button className="btn-primary" onClick={() => setPreparacionOpen(true)}>Preparar declaración →</button>
         </div>
       </div>
 

@@ -93,14 +93,54 @@ function Ticket({ ticket, onConfirm }) {
   )
 }
 
+function ModalImportarContable({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="↑ Importar gastos" subtitle="Importa desde tu herramienta de facturación o sube un fichero">
+      <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:14}}>
+        {[
+          {ico:'H',bg:'#1C2D44',nombre:'Holded',desc:'Importa facturas y gastos automáticamente'},
+          {ico:'C',bg:'#2E5A8C',nombre:'Contasimple',desc:'Sincroniza gastos e IVA soportado'},
+          {ico:'B',bg:'#22A06B',nombre:'Billin',desc:'Importa desde tu cuenta de Billin'},
+          {ico:'F',bg:'#8B5E34',nombre:'Factura Directa',desc:'Conecta y sincroniza automáticamente'},
+        ].map((t,i) => (
+          <div key={i} style={{cursor:'pointer',display:'flex',alignItems:'center',gap:14,padding:14,background:'rgba(28,45,68,0.03)',border:'0.5px solid rgba(28,45,68,0.1)',borderRadius:10}} onMouseEnter={e=>e.currentTarget.style.background='rgba(28,45,68,0.06)'} onMouseLeave={e=>e.currentTarget.style.background='rgba(28,45,68,0.03)'}>
+            <div style={{width:36,height:36,borderRadius:9,background:t.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'0.9rem',color:'#FAF7F2',fontWeight:700,flexShrink:0}}>{t.ico}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:'0.84rem',fontWeight:500,color:'#1C2D44'}}>{t.nombre}</div>
+              <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>{t.desc}</div>
+            </div>
+            <span style={{fontSize:'0.72rem',color:'#2E5A8C',fontWeight:500}}>Conectar →</span>
+          </div>
+        ))}
+        <div style={{height:1,background:'rgba(28,45,68,0.08)',margin:'4px 0'}}></div>
+        <div style={{cursor:'pointer',display:'flex',alignItems:'center',gap:14,padding:14,background:'rgba(28,45,68,0.03)',border:'0.5px solid rgba(28,45,68,0.1)',borderRadius:10}} onMouseEnter={e=>e.currentTarget.style.background='rgba(28,45,68,0.06)'} onMouseLeave={e=>e.currentTarget.style.background='rgba(28,45,68,0.03)'}>
+          <div style={{width:36,height:36,borderRadius:9,background:'rgba(46,90,140,0.1)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E5A8C" strokeWidth="2" strokeLinecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:'0.84rem',fontWeight:500,color:'#1C2D44'}}>Subir fichero CSV / Excel</div>
+            <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>Exporta desde cualquier herramienta y sube el fichero</div>
+          </div>
+          <span style={{fontSize:'0.72rem',color:'#2E5A8C',fontWeight:500}}>Subir →</span>
+        </div>
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+      </div>
+    </Modal>
+  )
+}
+
 export default function GastosSection() {
   const [nuevoOpen, setNuevoOpen] = useState(false)
   const [ocrOpen, setOcrOpen] = useState(false)
+  const [importarOpen, setImportarOpen] = useState(false)
 
   return (
     <div>
       <ModalNuevoGasto open={nuevoOpen} onClose={() => setNuevoOpen(false)} />
       <ModalOCR open={ocrOpen} onClose={() => setOcrOpen(false)} />
+      <ModalImportarContable open={importarOpen} onClose={() => setImportarOpen(false)} />
 
       <div className="page-header">
         <div>
@@ -110,7 +150,7 @@ export default function GastosSection() {
         </div>
         <div className="page-actions">
           <button className="btn-ghost" onClick={() => setOcrOpen(true)}>📷 Subir ticket</button>
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => setImportarOpen(true)}>↑ Importar</button>
           <button className="btn-primary" onClick={() => setNuevoOpen(true)}>+ Nuevo gasto</button>
         </div>
       </div>

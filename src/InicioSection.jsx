@@ -1,17 +1,47 @@
 import { useState } from 'react'
+import Modal from './Modal'
 import './sections.css'
 
 function showToast(msg) { alert(msg) }
+
+function ModalNuevaTarea({ open, onClose }) {
+  const [prio, setPrio] = useState('Normal')
+  const [rel, setRel] = useState('-- Sin cliente --')
+  return (
+    <Modal open={open} onClose={onClose} title="+ Nueva tarea" subtitle="La IA la añadirá a tu lista de hoy">
+      <div className="dm-field"><div className="dm-label">Descripción</div><input className="dm-input" type="text" placeholder="¿Qué tienes que hacer?" autoFocus/></div>
+      <div className="dm-row">
+        <div className="dm-field"><div className="dm-label">Fecha</div><input className="dm-input" type="date" defaultValue="2026-04-18"/></div>
+        <div className="dm-field"><div className="dm-label">Prioridad</div>
+          <select className="dm-select" value={prio} onChange={e => setPrio(e.target.value)}>
+            <option>⚡ Urgente</option><option>Normal</option><option>Baja</option>
+          </select>
+        </div>
+      </div>
+      <div className="dm-field"><div className="dm-label">Relacionada con</div>
+        <select className="dm-select" value={rel} onChange={e => setRel(e.target.value)}>
+          <option>-- Sin cliente --</option><option>Bodegas Iriarte</option><option>Metalúrgica Goi</option><option>Digiform SL</option><option>General</option>
+        </select>
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary" onClick={onClose}>Crear tarea</button>
+      </div>
+    </Modal>
+  )
+}
 
 export default function InicioSection() {
   const [activeTab, setActiveTab] = useState('hoy')
   const [collapseToasts, setCollapseToasts] = useState(true)
   const [collapseTareasExtraidas, setCollapseTareasExtraidas] = useState(false)
   const [collapseResumen, setCollapseResumen] = useState(true)
+  const [nuevaTareaOpen, setNuevaTareaOpen] = useState(false)
   const [collapseProgreso, setCollapseProgreso] = useState(true)
 
   return (
     <div>
+      <ModalNuevaTarea open={nuevaTareaOpen} onClose={() => setNuevaTareaOpen(false)} />
       <div className="page-header">
         <div>
           <h1 className="page-title">Buenos días, Iker ☀</h1>
@@ -23,7 +53,7 @@ export default function InicioSection() {
         </div>
         <div className="page-actions">
           <button className="btn-ghost" onClick={() => showToast('Exportando resumen del mes…')}>Exportar mes</button>
-          <button className="btn-primary" onClick={() => showToast('Abriendo nueva tarea…')}>+ Nueva tarea</button>
+          <button className="btn-primary" onClick={() => setNuevaTareaOpen(true)}>+ Nueva tarea</button>
         </div>
       </div>
 

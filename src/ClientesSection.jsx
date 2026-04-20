@@ -69,14 +69,38 @@ function ModalNuevoCliente({ open, onClose }) {
   )
 }
 
+function ModalImportCSV({ open, onClose }) {
+  return (
+    <Modal open={open} onClose={onClose} title="Importar clientes" subtitle="Sube un CSV y la IA detecta duplicados automáticamente">
+      <div className="dm-field">
+        <div style={{border:'1.5px dashed rgba(28,45,68,0.2)',borderRadius:10,padding:24,textAlign:'center',background:'rgba(28,45,68,0.02)',cursor:'pointer',marginBottom:4}} onMouseEnter={e=>e.currentTarget.style.background='rgba(28,45,68,0.05)'} onMouseLeave={e=>e.currentTarget.style.background='rgba(28,45,68,0.02)'}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2E5A8C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{marginBottom:8}}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div style={{fontSize:'0.84rem',fontWeight:500,color:'#1C2D44',marginBottom:4}}>Arrastra tu CSV aquí o haz clic para subir</div>
+          <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>Columnas: Nombre, Email, Teléfono, Empresa, Sector</div>
+        </div>
+      </div>
+      <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,marginBottom:14}}>
+        <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'#2E5A8C',marginBottom:4}}>IA · Detectará automáticamente</div>
+        <div style={{fontSize:'0.78rem',color:'rgba(28,45,68,0.7)'}}>Duplicados · Datos incompletos · Formato de columnas · Enriquecimiento con LinkedIn</div>
+      </div>
+      <div className="dm-actions">
+        <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
+        <button className="dm-btn-primary" onClick={onClose}>Importar →</button>
+      </div>
+    </Modal>
+  )
+}
+
 export default function ClientesSection() {
   const [fichaCliente, setFichaCliente] = useState(null)
   const [nuevoCliente, setNuevoCliente] = useState(false)
+  const [importCSVOpen, setImportCSVOpen] = useState(false)
 
   return (
     <div>
       <ModalFichaCliente open={!!fichaCliente} onClose={() => setFichaCliente(null)} cliente={fichaCliente} />
       <ModalNuevoCliente open={nuevoCliente} onClose={() => setNuevoCliente(false)} />
+      <ModalImportCSV open={importCSVOpen} onClose={() => setImportCSVOpen(false)} />
 
       <div className="page-header">
         <div>
@@ -85,7 +109,7 @@ export default function ClientesSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA detecta oportunidad: Innotek lleva 3 meses sin propuesta de ampliación</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => setImportCSVOpen(true)}>↑ Importar CSV</button>
           <button className="btn-primary" onClick={() => setNuevoCliente(true)}>+ Nuevo cliente</button>
         </div>
       </div>
