@@ -7,6 +7,11 @@ import ClientesSection from './ClientesSection'
 import PropuestasSection from './PropuestasSection'
 import VentasSection from './VentasSection'
 import ProyectosSection from './ProyectosSection'
+import FacturasSection from './FacturasSection'
+import FacturasRecibidasSection from './FacturasRecibidasSection'
+import GastosSection from './GastosSection'
+import TesoreriaSection from './TesoreriaSection'
+import ImpuestosSection from './ImpuestosSection'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -213,8 +218,28 @@ function AppShell({ onLogout }) {
             <div className={`section-panel${activeSection==='proyectos'?' active':''}`}>
               <ProyectosSection />
             </div>
+            {/* FACTURAS EMITIDAS */}
+            <div className={`section-panel${activeSection==='facturas'?' active':''}`}>
+              <FacturasSection />
+            </div>
+            {/* FACTURAS RECIBIDAS */}
+            <div className={`section-panel${activeSection==='facturas-recibidas'?' active':''}`}>
+              <FacturasRecibidasSection />
+            </div>
+            {/* GASTOS */}
+            <div className={`section-panel${activeSection==='gastos'?' active':''}`}>
+              <GastosSection />
+            </div>
+            {/* TESORERIA */}
+            <div className={`section-panel${activeSection==='tesoreria'?' active':''}`}>
+              <TesoreriaSection />
+            </div>
+            {/* IMPUESTOS */}
+            <div className={`section-panel${activeSection==='impuestos'?' active':''}`}>
+              <ImpuestosSection />
+            </div>
             {/* RESTO */}
-            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos'].includes(i.id)).map(item => (
+            {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos','facturas','facturas-recibidas','gastos','tesoreria','impuestos'].includes(i.id)).map(item => (
               <div key={item.id} className={`section-panel${activeSection===item.id?' active':''}`}>
                 <div className="page-header">
                   <div>
