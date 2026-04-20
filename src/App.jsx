@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './index.css'
+import InicioSection from './InicioSection'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -8,20 +9,16 @@ const phrases = [
   'Gestiona clientes desde el móvil',
 ]
 
-/* ══════════════════════════════════════════════════
-   PORTADA
-   ══════════════════════════════════════════════════ */
+/* ══ PORTADA ══ */
 function RoleScreen({ onSelectRole }) {
   const [counter, setCounter] = useState(0)
   const [twText, setTwText] = useState('')
-
   useEffect(() => {
     const target = 1847; let current = 0
     const step = Math.ceil(target / 60)
     const timer = setInterval(() => { current = Math.min(current + step, target); setCounter(current); if (current >= target) clearInterval(timer) }, 30)
     return () => clearInterval(timer)
   }, [])
-
   useEffect(() => {
     let phraseIdx = 0, charIdx = 0, deleting = false, timeout
     function tick() {
@@ -33,16 +30,12 @@ function RoleScreen({ onSelectRole }) {
     timeout = setTimeout(tick, 600)
     return () => clearTimeout(timeout)
   }, [])
-
   return (
     <div id="roleScreen">
-      <div className="rs-split"></div>
-      <div className="rs-fbg"></div>
+      <div className="rs-split"></div><div className="rs-fbg"></div>
       <div className="rs-inner">
         <div className="rs-logo-wrap">
-          <div className="rs-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#FAF7F2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#BCD4E8"/><circle cx="14" cy="14" r="1.5" fill="#BCD4E8"/><circle cx="20" cy="18" r="1.5" fill="#BCD4E8"/></svg>
-          </div>
+          <div className="rs-logo-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#FAF7F2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#BCD4E8"/><circle cx="14" cy="14" r="1.5" fill="#BCD4E8"/><circle cx="20" cy="18" r="1.5" fill="#BCD4E8"/></svg></div>
           <div className="rs-logo-text">Tu gestión <em>IA</em></div>
         </div>
         <div className="rs-tagline">Administración inteligente para cualquier autónomo</div>
@@ -53,10 +46,7 @@ function RoleScreen({ onSelectRole }) {
         </div>
         <h1 className="rs-subtitle">Selecciona cómo vas a entrar</h1>
         <div className="rs-tw-wrap"><span className="rs-tw-text">{twText}</span><span className="rs-tw-cursor">|</span></div>
-        <div className="rs-counter-row">
-          <div className="rs-counter-dot"></div>
-          <div className="rs-counter-txt"><span className="rs-counter-num">{counter.toLocaleString('es-ES')}</span> tareas resueltas hoy por la IA</div>
-        </div>
+        <div className="rs-counter-row"><div className="rs-counter-dot"></div><div className="rs-counter-txt"><span className="rs-counter-num">{counter.toLocaleString('es-ES')}</span> tareas resueltas hoy por la IA</div></div>
         <div className="rs-canales">
           <div className="rs-canal"><div className="rs-canal-ico" style={{background:'#1C2D44'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FAF7F2" strokeWidth="2.5" strokeLinecap="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></div><span className="rs-canal-lbl" style={{color:'#1C2D44'}}>VOZ IA</span></div>
           <div className="rs-canal"><div className="rs-canal-ico" style={{background:'#25D366'}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FAF7F2" strokeWidth="2.5" strokeLinecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span className="rs-canal-lbl" style={{color:'#25D366'}}>WHATSAPP</span></div>
@@ -82,18 +72,12 @@ function RoleScreen({ onSelectRole }) {
           </div>
         </div>
       </div>
-      <div className="rs-footer">
-        <div className="rs-footer-txt">COAXIONIA</div>
-        <div className="rs-footer-dot"></div>
-        <div className="rs-footer-txt">IA Adaptativa · 4ª Generación</div>
-      </div>
+      <div className="rs-footer"><div className="rs-footer-txt">COAXIONIA</div><div className="rs-footer-dot"></div><div className="rs-footer-txt">IA Adaptativa · 4ª Generación</div></div>
     </div>
   )
 }
 
-/* ══════════════════════════════════════════════════
-   LOGIN
-   ══════════════════════════════════════════════════ */
+/* ══ LOGIN ══ */
 function LoginScreen({ role, onLogin, onBack }) {
   const isAutonomo = role === 'autonomo'
   return (
@@ -102,10 +86,7 @@ function LoginScreen({ role, onLogin, onBack }) {
         <div className="login-left">
           <div className="ll-split"></div><div className="ll-fbg"></div>
           <div className="ll-inner">
-            <div className="ll-logo">
-              <div className="ll-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#1C2D44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#2E5A8C"/><circle cx="14" cy="14" r="1.5" fill="#2E5A8C"/><circle cx="20" cy="18" r="1.5" fill="#2E5A8C"/></svg></div>
-              <div className="ll-logo-text">Tu gestión <em>IA</em></div>
-            </div>
+            <div className="ll-logo"><div className="ll-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#1C2D44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#2E5A8C"/><circle cx="14" cy="14" r="1.5" fill="#2E5A8C"/><circle cx="20" cy="18" r="1.5" fill="#2E5A8C"/></svg></div><div className="ll-logo-text">Tu gestión <em>IA</em></div></div>
             <div className="ll-role-pill">{isAutonomo ? 'Perfil Autónomo' : 'Portal Cliente'}</div>
             <h1>{isAutonomo ? <>Tu negocio,<br/><em>ordenado.</em></> : <>Tu portal,<br/><em>siempre listo.</em></>}</h1>
             <p>{isAutonomo ? 'Factura, agenda, impuestos y clientes — gestionados por una IA que aprende contigo y te devuelve horas cada semana.' : 'Consulta facturas, propuestas y pagos con tu profesional de confianza. Todo en un solo lugar.'}</p>
@@ -125,10 +106,7 @@ function LoginScreen({ role, onLogin, onBack }) {
           <input className="lf-input" type="email" placeholder="nombre@tuemail.com"/>
           <label className="lf-label">Contraseña</label>
           <input className="lf-input" type="password" placeholder="••••••••"/>
-          <div className="lf-row">
-            <label className="lf-remember"><input type="checkbox" defaultChecked/>Mantener sesión iniciada</label>
-            <button className="lf-forgot">¿Olvidaste la contraseña?</button>
-          </div>
+          <div className="lf-row"><label className="lf-remember"><input type="checkbox" defaultChecked/>Mantener sesión iniciada</label><button className="lf-forgot">¿Olvidaste la contraseña?</button></div>
           <button className="login-btn" onClick={onLogin}>Acceder al panel</button>
           <div className="lr-divider">o continúa con</div>
           <div className="lr-sso">
@@ -145,40 +123,14 @@ function LoginScreen({ role, onLogin, onBack }) {
   )
 }
 
-/* ══════════════════════════════════════════════════
-   APPSHELL
-   ══════════════════════════════════════════════════ */
+/* ══ APPSHELL ══ */
 const navGroups = [
-  { id:'dia', label:'Mi día a día', open:true, items:[
-    { id:'inicio', label:'Inicio', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
-    { id:'agenda', label:'Agenda', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
-    { id:'comunicacion', label:'Comunicación', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> },
-  ]},
-  { id:'clientes', label:'Clientes', open:false, items:[
-    { id:'clientes', label:'Clientes', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> },
-  ]},
-  { id:'ventas', label:'Ventas', open:false, items:[
-    { id:'propuestas', label:'Propuestas', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 17l-6.5 3.5 2-7L2 9h7z"/></svg> },
-    { id:'ventas', label:'Ventas', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg> },
-    { id:'proyectos', label:'Proyectos', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> },
-  ]},
-  { id:'admin', label:'Admin & Fiscal', open:false, items:[
-    { id:'facturas', label:'Facturas emitidas', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> },
-    { id:'facturas-recibidas', label:'Facturas recibidas', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> },
-    { id:'gastos', label:'Gastos', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg> },
-    { id:'tesoreria', label:'Tesorería', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> },
-    { id:'impuestos', label:'Impuestos', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 7l8 10"/><path d="M9 12h3"/><path d="M13 17h3"/></svg> },
-  ]},
-  { id:'marca', label:'Marca', open:false, items:[
-    { id:'branding', label:'Branding', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="13.5" cy="6.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="1.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.8 0 1.5-.7 1.5-1.5 0-.4-.2-.7-.4-1-.3-.3-.4-.7-.4-1 0-.8.7-1.5 1.5-1.5H16c3.3 0 6-2.7 6-6 0-5.5-4.5-10-10-10z"/></svg> },
-    { id:'redes', label:'Redes sociales', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> },
-    { id:'mailing', label:'Mailing', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> },
-  ]},
-  { id:'premium', label:'Premium', open:false, items:[
-    { id:'proyeccion', label:'Proyección', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
-    { id:'benchmark', label:'Benchmark', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> },
-    { id:'asistente', label:'Canales IA', icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg> },
-  ]},
+  { id:'dia', label:'Mi día a día', items:[{id:'inicio',label:'Inicio',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>},{id:'agenda',label:'Agenda',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>},{id:'comunicacion',label:'Comunicación',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>}]},
+  { id:'clientes', label:'Clientes', items:[{id:'clientes',label:'Clientes',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}]},
+  { id:'ventas', label:'Ventas', items:[{id:'propuestas',label:'Propuestas',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 17l-6.5 3.5 2-7L2 9h7z"/></svg>},{id:'ventas',label:'Ventas',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>},{id:'proyectos',label:'Proyectos',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>}]},
+  { id:'admin', label:'Admin & Fiscal', items:[{id:'facturas',label:'Facturas emitidas',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>},{id:'facturas-recibidas',label:'Facturas recibidas',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>},{id:'gastos',label:'Gastos',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>},{id:'tesoreria',label:'Tesorería',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>},{id:'impuestos',label:'Impuestos',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 7l8 10"/><path d="M9 12h3"/><path d="M13 17h3"/></svg>}]},
+  { id:'marca', label:'Marca', items:[{id:'branding',label:'Branding',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="13.5" cy="6.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="1.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.8 0 1.5-.7 1.5-1.5 0-.4-.2-.7-.4-1-.3-.3-.4-.7-.4-1 0-.8.7-1.5 1.5-1.5H16c3.3 0 6-2.7 6-6 0-5.5-4.5-10-10-10z"/></svg>},{id:'redes',label:'Redes sociales',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>},{id:'mailing',label:'Mailing',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>}]},
+  { id:'premium', label:'Premium', items:[{id:'proyeccion',label:'Proyección',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>},{id:'benchmark',label:'Benchmark',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>},{id:'asistente',label:'Canales IA',icon:<svg className="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>}]},
 ]
 
 function AppShell({ onLogout }) {
@@ -186,71 +138,39 @@ function AppShell({ onLogout }) {
   const [openGroups, setOpenGroups] = useState({ dia: true })
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  function toggleGroup(id) {
-    setOpenGroups(prev => ({ ...prev, [id]: !prev[id] }))
-  }
+  function toggleGroup(id) { setOpenGroups(prev => ({ ...prev, [id]: !prev[id] })) }
+  function goTo(id) { setActiveSection(id); setSidebarOpen(false) }
 
-  function goTo(id) {
-    setActiveSection(id)
-    setSidebarOpen(false)
-  }
+  const allItems = navGroups.flatMap(g => g.items)
 
   return (
     <>
-      <div className={`sidebar-overlay${sidebarOpen ? ' open' : ''}`} onClick={() => setSidebarOpen(false)}></div>
+      <div className={`sidebar-overlay${sidebarOpen?' open':''}`} onClick={() => setSidebarOpen(false)}></div>
       <div id="appShell">
-        {/* TOPBAR */}
         <div className="topbar">
-          <button className="tb-hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="#1C2D44" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-          </button>
-          <div className="tb-logo">
-            <div className="tb-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#FAF7F2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#BCD4E8"/><circle cx="14" cy="14" r="1.5" fill="#BCD4E8"/><circle cx="20" cy="18" r="1.5" fill="#BCD4E8"/></svg></div>
-            <div className="tb-logo-text">Tu gestión <em>IA</em></div>
-          </div>
-          <div className="tb-search">
-            <span className="tb-search-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-            <input placeholder="Buscar clientes, facturas, tareas…"/>
-          </div>
+          <button className="tb-hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}><svg viewBox="0 0 24 24" fill="none" stroke="#1C2D44" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
+          <div className="tb-logo"><div className="tb-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#FAF7F2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#BCD4E8"/><circle cx="14" cy="14" r="1.5" fill="#BCD4E8"/><circle cx="20" cy="18" r="1.5" fill="#BCD4E8"/></svg></div><div className="tb-logo-text">Tu gestión <em>IA</em></div></div>
+          <div className="tb-search"><span className="tb-search-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><input placeholder="Buscar clientes, facturas, tareas…"/></div>
           <div className="tb-right">
-            <div className="tb-action">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-              <span className="tb-badge">4</span>
-            </div>
-            <div className="tb-user" onClick={onLogout} title="Salir">
-              <div className="tb-user-avatar">IK</div>
-              <div className="tb-user-info">
-                <span className="tb-user-name">Iker Arrieta</span>
-                <span className="tb-user-role">Autónomo · Consultor · <span style={{color:'#2E5A8C'}}>Salir</span></span>
-              </div>
-            </div>
+            <div className="tb-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span className="tb-badge">4</span></div>
+            <div className="tb-user" onClick={onLogout} title="Salir"><div className="tb-user-avatar">IK</div><div className="tb-user-info"><span className="tb-user-name">Iker Arrieta</span><span className="tb-user-role">Autónomo · Consultor · <span style={{color:'#2E5A8C'}}>Salir</span></span></div></div>
           </div>
         </div>
-
-        {/* BODY */}
         <div className="app-body">
-          {/* SIDEBAR */}
-          <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
-            <div className="sb-user-header">
-              <div className="sb-avatar">IK</div>
-              <div className="sb-info"><span className="sb-name">Iker Arrieta</span><span className="sb-role">Autónomo · Consultor</span></div>
-            </div>
-
+          <aside className={`sidebar${sidebarOpen?' open':''}`}>
+            <div className="sb-user-header"><div className="sb-avatar">IK</div><div className="sb-info"><span className="sb-name">Iker Arrieta</span><span className="sb-role">Autónomo · Consultor</span></div></div>
             {navGroups.map(group => (
-              <div key={group.id} className={`sb-section${openGroups[group.id] ? ' open' : ''}`}>
+              <div key={group.id} className={`sb-section${openGroups[group.id]?' open':''}`}>
                 <div className="sb-section-title" onClick={() => toggleGroup(group.id)}>{group.label}</div>
                 <div className="sb-section-items">
                   {group.items.map(item => (
-                    <div key={item.id} className={`sb-item${activeSection === item.id ? ' active' : ''}`} onClick={() => goTo(item.id)}>
-                      {item.icon}
-                      <span className="sb-item-label">{item.label}</span>
-                      <span className="sb-ia-badge">IA</span>
+                    <div key={item.id} className={`sb-item${activeSection===item.id?' active':''}`} onClick={() => goTo(item.id)}>
+                      {item.icon}<span className="sb-item-label">{item.label}</span><span className="sb-ia-badge">IA</span>
                     </div>
                   ))}
                 </div>
               </div>
             ))}
-
             <div style={{padding:'12px 16px',borderTop:'0.5px solid rgba(28,45,68,0.08)',marginTop:'auto'}}>
               <div onClick={onLogout} style={{display:'flex',alignItems:'center',gap:10,padding:'9px 12px',borderRadius:8,cursor:'pointer'}} onMouseEnter={e=>e.currentTarget.style.background='rgba(198,93,74,0.06)'} onMouseLeave={e=>e.currentTarget.style.background=''}>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(198,93,74,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -258,21 +178,19 @@ function AppShell({ onLogout }) {
               </div>
             </div>
           </aside>
-
-          {/* CONTENT */}
           <main className="content">
-            {/* Cada sección — por ahora placeholder hasta desarrollar cada una */}
-            {navGroups.flatMap(g => g.items).map(item => (
-              <div key={item.id} className={`section-panel${activeSection === item.id ? ' active' : ''}`}>
+            {/* INICIO — contenido completo */}
+            <div className={`section-panel${activeSection==='inicio'?' active':''}`}>
+              <InicioSection />
+            </div>
+            {/* RESTO DE SECCIONES — se añaden en próximos pasos */}
+            {allItems.filter(i => i.id !== 'inicio').map(item => (
+              <div key={item.id} className={`section-panel${activeSection===item.id?' active':''}`}>
                 <div className="page-header">
                   <div>
                     <h1 className="page-title">{item.label}</h1>
-                    <p className="page-subtitle">La IA está preparando esta sección.</p>
+                    <p className="page-subtitle">Próximo paso · La IA está preparando esta sección.</p>
                   </div>
-                </div>
-                <div style={{background:'#fff',borderRadius:16,padding:40,textAlign:'center',border:'0.5px dashed rgba(28,45,68,0.15)'}}>
-                  <p style={{fontFamily:'var(--serif)',fontSize:'1.1rem',color:'var(--navy)',marginBottom:8}}>Sección en construcción</p>
-                  <p style={{fontSize:'0.84rem',color:'var(--text-muted)'}}>El contenido de <strong>{item.label}</strong> se añadirá en el próximo paso.</p>
                 </div>
               </div>
             ))}
@@ -283,15 +201,11 @@ function AppShell({ onLogout }) {
   )
 }
 
-/* ══════════════════════════════════════════════════
-   APP PRINCIPAL
-   ══════════════════════════════════════════════════ */
+/* ══ APP ══ */
 export default function App() {
   const [screen, setScreen] = useState('role')
   const [role, setRole] = useState(null)
-
   function handleSelectRole(r) { setRole(r); setScreen('login') }
-
   if (screen === 'role') return <RoleScreen onSelectRole={handleSelectRole} />
   if (screen === 'login') return <LoginScreen role={role} onLogin={() => setScreen('app')} onBack={() => setScreen('role')} />
   return <AppShell onLogout={() => setScreen('role')} />
