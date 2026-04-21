@@ -265,6 +265,17 @@ export default function ClienteShell({ onLogout }) {
           <span style={{fontFamily:'var(--serif)',fontSize:'1.1rem',fontWeight:500,color:'#1C2D44'}}>Tu gestión <em style={{color:'#2E5A8C',fontStyle:'italic'}}>IA</em></span>
         </div>
         <div style={{display:'flex',alignItems:'center',gap:14}}>
+          {/* Buscador del portal cliente (HTML demo línea 7760) */}
+          <div style={{position:'relative'}} className="cl-search-wrap">
+            <input
+              type="text"
+              placeholder="Buscar en mi portal…"
+              style={{padding:'7px 14px 7px 34px',background:'rgba(28,45,68,0.05)',border:'0.5px solid rgba(28,45,68,0.12)',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.8rem',color:'#1C2D44',outline:'none',width:220}}
+            />
+            <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',opacity:0.35,pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C2D44" strokeWidth="2" strokeLinecap="round">
+              <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
           <div style={{textAlign:'right'}}>
             <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44'}}>Ana Ruiz</div>
             <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.5)'}}>Cliente · Bodegas Iriarte · <span onClick={onLogout} style={{cursor:'pointer',color:'#2E5A8C',fontWeight:500}}>Cambiar perfil</span></div>

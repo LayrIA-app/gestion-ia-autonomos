@@ -298,6 +298,9 @@
   .cs-grid-4{gap:12px;}
 }
 
+/* ══ CLIENTE PORTAL · buscador topbar se oculta en móvil ══ */
+@media (max-width:768px){.cl-search-wrap{display:none;}}
+
 /* ══ MAILING · strip calendario 6 meses ══ */
 .ml-cal-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:flex-start;}
 @media (max-width:1400px){.ml-cal-strip{grid-template-columns:repeat(3,1fr);}}
