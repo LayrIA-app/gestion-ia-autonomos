@@ -332,6 +332,16 @@ function AppInner() {
     if (!loading && hasSupabase && user && role) setScreen('app')
   }, [loading, hasSupabase, user, role])
 
+  /* Auth guard: si en Fase 2 entramos al app sin role resuelto (profile sin role
+     o fallo cargando profile), volvemos a la pantalla de selección de perfil.
+     Previene que un cliente sin role acabe viendo el AppShell del autónomo. */
+  useEffect(() => {
+    if (screen === 'app' && !role) {
+      setScreen('role')
+      if (hasSupabase) showToast('No hemos podido determinar tu perfil · vuelve a elegir', 'warn')
+    }
+  }, [screen, role, hasSupabase])
+
   function handleSelectRole(r) {
     setFakeUserRole(r)
     setScreen('login')
@@ -347,7 +357,8 @@ function AppInner() {
     screen === 'role' ? <RoleScreen onSelectRole={handleSelectRole} /> :
     screen === 'login' ? <LoginScreen role={role} onLogin={() => setScreen('app')} onBack={() => setScreen('role')} /> :
     role === 'cliente' ? <ClienteShell onLogout={handleLogout} /> :
-    <AppShell onLogout={handleLogout} />
+    role === 'autonomo' ? <AppShell onLogout={handleLogout} /> :
+    <RoleScreen onSelectRole={handleSelectRole} />
 
   return (<>{content}<Toaster /></>)
 }
