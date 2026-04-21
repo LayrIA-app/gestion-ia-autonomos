@@ -19,6 +19,8 @@ import ProyeccionSection from './ProyeccionSection'
 import BenchmarkSection from './BenchmarkSection'
 import AsistenteSection from './AsistenteSection'
 import ClienteShell from './cliente/ClienteShell'
+import PushNotifications from './components/PushNotifications'
+import BellAlerts from './components/BellAlerts'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -164,13 +166,14 @@ function AppShell({ onLogout }) {
   return (
     <>
       <div className={`sidebar-overlay${sidebarOpen?' open':''}`} onClick={() => setSidebarOpen(false)}></div>
+      <PushNotifications />
       <div id="appShell">
         <div className="topbar">
           <button className="tb-hamburger" onClick={() => setSidebarOpen(!sidebarOpen)}><svg viewBox="0 0 24 24" fill="none" stroke="#1C2D44" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
           <div className="tb-logo"><div className="tb-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 6L14 14L20 18" stroke="#FAF7F2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="6" r="1.5" fill="#BCD4E8"/><circle cx="14" cy="14" r="1.5" fill="#BCD4E8"/><circle cx="20" cy="18" r="1.5" fill="#BCD4E8"/></svg></div><div className="tb-logo-text">Tu gestión <em>IA</em></div></div>
           <div className="tb-search"><span className="tb-search-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><input placeholder="Buscar clientes, facturas, tareas…"/></div>
           <div className="tb-right">
-            <div className="tb-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span className="tb-badge">4</span></div>
+            <BellAlerts onNavigate={goTo} />
             <div className="tb-user" onClick={onLogout} title="Salir"><div className="tb-user-avatar">IK</div><div className="tb-user-info"><span className="tb-user-name">Iker Arrieta</span><span className="tb-user-role">Autónomo · Consultor · <span style={{color:'#2E5A8C'}}>Salir</span></span></div></div>
           </div>
         </div>
