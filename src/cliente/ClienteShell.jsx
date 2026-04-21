@@ -253,18 +253,27 @@ const nav = [
 export default function ClienteShell({ onLogout }) {
   const [seccion, setSeccion] = useState('proyecto')
   const [notifOpen, setNotifOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const goTo = (s) => { setSeccion(s); setSidebarOpen(false) }
 
   return (
     <div style={{position:'fixed',inset:0,background:'#FAF7F2',display:'flex',flexDirection:'column',zIndex:10}}>
+      {/* Overlay drawer móvil */}
+      <div className={`cl-overlay${sidebarOpen?' open':''}`} onClick={() => setSidebarOpen(false)}></div>
+
       {/* Topbar */}
-      <div style={{height:60,background:'#FFFFFF',borderBottom:'0.5px solid rgba(28,45,68,0.1)',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 24px',flexShrink:0}}>
+      <div className="cl-topbar">
         <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{width:32,height:32,borderRadius:9,background:'#1C2D44',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <button className="cl-hamburger" onClick={() => setSidebarOpen(v => !v)} aria-label="Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1C2D44" strokeWidth="2" strokeLinecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+          </button>
+          <div style={{width:32,height:32,borderRadius:9,background:'#1C2D44',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="#BCD4E8"/></svg>
           </div>
-          <span style={{fontFamily:'var(--serif)',fontSize:'1.1rem',fontWeight:500,color:'#1C2D44'}}>Tu gestión <em style={{color:'#2E5A8C',fontStyle:'italic'}}>IA</em></span>
+          <span className="cl-logo-text" style={{fontFamily:'var(--serif)',fontSize:'1.1rem',fontWeight:500,color:'#1C2D44'}}>Tu gestión <em style={{color:'#2E5A8C',fontStyle:'italic'}}>IA</em></span>
         </div>
-        <div style={{display:'flex',alignItems:'center',gap:14}}>
+        <div className="cl-topbar-right">
           {/* Buscador del portal cliente (HTML demo línea 7760) */}
           <div style={{position:'relative'}} className="cl-search-wrap">
             <input
@@ -276,7 +285,7 @@ export default function ClienteShell({ onLogout }) {
               <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </div>
-          <div style={{textAlign:'right'}}>
+          <div className="cl-user-info" style={{textAlign:'right'}}>
             <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44'}}>Ana Ruiz</div>
             <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.5)'}}>Cliente · Bodegas Iriarte · <span onClick={onLogout} style={{cursor:'pointer',color:'#2E5A8C',fontWeight:500}}>Cambiar perfil</span></div>
           </div>
@@ -306,13 +315,20 @@ export default function ClienteShell({ onLogout }) {
       </div>
 
       {/* Body */}
-      <div style={{display:'flex',flex:1,overflow:'hidden'}}>
-        {/* Sidebar nav */}
-        <div style={{width:220,background:'#FFFFFF',borderRight:'0.5px solid rgba(28,45,68,0.08)',padding:'16px 8px',display:'flex',flexDirection:'column',gap:2,flexShrink:0}}>
+      <div className="cl-body">
+        {/* Sidebar nav · drawer en móvil */}
+        <aside className={`cl-sidebar${sidebarOpen?' open':''}`}>
+          <div className="cl-user-header">
+            <div style={{width:40,height:40,borderRadius:'50%',background:'#1C2D44',color:'#FAF7F2',fontSize:'0.9rem',fontWeight:600,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>AR</div>
+            <div style={{display:'flex',flexDirection:'column',lineHeight:1.3,minWidth:0}}>
+              <span style={{fontSize:'0.9rem',fontWeight:500,color:'#1C2D44'}}>Ana Ruiz</span>
+              <span style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.55)'}}>Cliente · Bodegas Iriarte</span>
+            </div>
+          </div>
           {nav.map(n => (
-            <div key={n.id} onClick={() => setSeccion(n.id)} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',cursor:'pointer',borderRadius:8,background:seccion===n.id?'rgba(28,45,68,0.06)':'transparent',transition:'background .15s'}}>
-              <span style={{color:seccion===n.id?'#1C2D44':'rgba(28,45,68,0.5)'}}>{n.ico}</span>
-              <span style={{fontSize:'0.84rem',fontWeight:seccion===n.id?500:400,color:seccion===n.id?'#1C2D44':'rgba(28,45,68,0.6)',flex:1}}>{n.label}</span>
+            <div key={n.id} onClick={() => goTo(n.id)} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',cursor:'pointer',borderRadius:8,background:seccion===n.id?'rgba(28,45,68,0.06)':'transparent',transition:'background .15s'}}>
+              <span style={{color:seccion===n.id?'#1C2D44':'rgba(28,45,68,0.5)',display:'flex',flexShrink:0}}>{n.ico}</span>
+              <span style={{fontSize:'0.84rem',fontWeight:seccion===n.id?500:400,color:seccion===n.id?'#1C2D44':'rgba(28,45,68,0.6)',flex:1,minWidth:0}}>{n.label}</span>
               {n.badge && <span style={{fontSize:'0.6rem',fontWeight:600,padding:'2px 5px',borderRadius:4,background:'rgba(46,90,140,0.12)',color:'#2E5A8C'}}>{n.badge}</span>}
               {n.notif && <span style={{fontSize:'0.6rem',fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#C65D4A',color:'#FFFFFF'}}>{n.notif}</span>}
             </div>
@@ -323,16 +339,16 @@ export default function ClienteShell({ onLogout }) {
               <span style={{fontSize:'0.82rem',color:'rgba(28,45,68,0.5)'}}>Cerrar sesión</span>
             </div>
           </div>
-        </div>
+        </aside>
 
         {/* Main content */}
-        <div style={{flex:1,overflowY:'auto',padding:'28px 32px'}}>
-          {seccion === 'proyecto' && <SeccionProyecto onNavigate={setSeccion}/>}
+        <main className="cl-content">
+          {seccion === 'proyecto' && <SeccionProyecto onNavigate={goTo}/>}
           {seccion === 'facturas' && <SeccionFacturas/>}
           {seccion === 'propuestas' && <SeccionPropuestas/>}
           {seccion === 'mensajes' && <SeccionMensajes/>}
           {seccion === 'subir' && <SeccionSubir/>}
-        </div>
+        </main>
       </div>
     </div>
   )
