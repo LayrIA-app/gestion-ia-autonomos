@@ -157,9 +157,14 @@ function AppShell({ onLogout }) {
   const [activeSection, setActiveSection] = useState('inicio')
   const [openGroups, setOpenGroups] = useState({ dia: true })
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [unreadComms, setUnreadComms] = useState(1) /* mensajes sin leer simulados al cargar */
 
   function toggleGroup(id) { setOpenGroups(prev => ({ ...prev, [id]: !prev[id] })) }
-  function goTo(id) { setActiveSection(id); setSidebarOpen(false) }
+  function goTo(id) {
+    if (id === 'comunicacion') setUnreadComms(0)
+    setActiveSection(id)
+    setSidebarOpen(false)
+  }
 
   const allItems = navGroups.flatMap(g => g.items)
 
@@ -186,7 +191,11 @@ function AppShell({ onLogout }) {
                 <div className="sb-section-items">
                   {group.items.map(item => (
                     <div key={item.id} className={`sb-item${activeSection===item.id?' active':''}`} onClick={() => goTo(item.id)}>
-                      {item.icon}<span className="sb-item-label">{item.label}</span><span className="sb-ia-badge">IA</span>
+                      {item.icon}<span className="sb-item-label">{item.label}</span>
+                      {item.id === 'comunicacion' && unreadComms > 0 && (
+                        <span className="sb-unread-dot" aria-label={`${unreadComms} sin leer`}></span>
+                      )}
+                      <span className="sb-ia-badge">IA</span>
                     </div>
                   ))}
                 </div>
