@@ -270,7 +270,7 @@ function AppShell({ onLogout }) {
             </div>
             {/* ASISTENTE */}
             <div className={`section-panel${activeSection==='asistente'?' active':''}`}>
-              <AsistenteSection />
+              <AsistenteSection onNavigate={setActiveSection} />
             </div>
             {/* RESTO */}
             {allItems.filter(i => !['inicio','agenda','comunicacion','clientes','propuestas','ventas','proyectos','facturas','facturas-recibidas','gastos','tesoreria','impuestos','branding','redes','mailing','proyeccion','benchmark','asistente'].includes(i.id)).map(item => (
