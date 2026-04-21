@@ -37,6 +37,22 @@ export async function sendEmail({ to, subject, html, text, attachments }) {
   return postJson('/api/email/send', { to, subject, html, text, attachments })
 }
 
+export async function payInvoiceWithStripe({ numero, concepto, total, emailCliente }) {
+  const origin = typeof window !== 'undefined' ? window.location.origin : undefined
+  const res = await post('/api/stripe/create-checkout', { numero, concepto, total, emailCliente, origin })
+  const json = await res.json().catch(() => ({}))
+  if (res.status === 503) {
+    showToast(json.error || 'Cobros con tarjeta · disponibles en Fase 3', 'info')
+    return { ok: false, phase1: true }
+  }
+  if (!res.ok || !json.url) {
+    showToast(json.error || 'No se pudo iniciar el pago', 'error')
+    return { ok: false }
+  }
+  window.location.href = json.url
+  return { ok: true, redirected: true }
+}
+
 export async function downloadInvoicePdf(factura) {
   const res = await post('/api/pdf/invoice', factura)
   if (res.status === 503) {

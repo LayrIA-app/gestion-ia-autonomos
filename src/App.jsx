@@ -341,6 +341,17 @@ function AppInner() {
     if (!loading && hasSupabase && user && role) setScreen('app')
   }, [loading, hasSupabase, user, role])
 
+  /* Fase 3 · Stripe redirect back tras pago · mostrar toast y limpiar query params */
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const payment = params.get('payment')
+    const invoice = params.get('invoice')
+    if (payment === 'success') showToast(`Pago completado · ${invoice || 'factura'} · recibirás confirmación por email`, 'ok')
+    else if (payment === 'cancelled') showToast(`Pago cancelado · ${invoice || 'factura'} sigue pendiente`, 'warn')
+    if (payment) window.history.replaceState({}, '', window.location.pathname)
+  }, [])
+
   /* Auth guard: si en Fase 2 entramos al app sin role resuelto (profile sin role
      o fallo cargando profile), volvemos a la pantalla de selección de perfil.
      Previene que un cliente sin role acabe viendo el AppShell del autónomo. */
