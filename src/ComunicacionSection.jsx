@@ -28,7 +28,7 @@ function ModalDraft({ open, onClose, tipo }) {
   )
 }
 
-export default function ComunicacionSection() {
+export default function ComunicacionSection({ onNavigate }) {
   const [draft, setDraft] = useState(null)
 
   return (
@@ -37,6 +37,15 @@ export default function ComunicacionSection() {
 
       <div className="page-header">
         <div>
+          {onNavigate && (
+            <button
+              className="btn-ghost"
+              onClick={() => onNavigate('inicio')}
+              style={{ padding: '6px 12px', fontSize: '0.76rem', marginBottom: 10 }}
+            >
+              ← Volver a Inicio
+            </button>
+          )}
           <h1 className="page-title">Comunicación</h1>
           <p className="page-subtitle">Bandeja unificada · Email + WhatsApp + Portal cliente · Drafts preparados por IA.</p>
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA ha redactado 3 drafts · detectadas 5 tareas en conversaciones</span></div>

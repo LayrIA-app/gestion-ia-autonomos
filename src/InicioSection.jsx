@@ -31,7 +31,7 @@ function ModalNuevaTarea({ open, onClose }) {
   )
 }
 
-export default function InicioSection() {
+export default function InicioSection({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('hoy')
   const [collapseToasts, setCollapseToasts] = useState(true)
   const [collapseTareasExtraidas, setCollapseTareasExtraidas] = useState(false)
@@ -68,7 +68,7 @@ export default function InicioSection() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             Agenda
           </button>
-          <button className={`tab-btn${activeTab==='comunicacion'?' active':''}`} onClick={() => setActiveTab('comunicacion')}>
+          <button className="tab-btn" onClick={() => onNavigate?.('comunicacion')}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Comunicación <span className="tab-badge">4</span>
           </button>
@@ -262,33 +262,7 @@ export default function InicioSection() {
         </div>
       </div>
 
-      {/* ── TAB: COMUNICACIÓN ── */}
-      <div className={`tab-panel${activeTab==='comunicacion'?' active':''}`}>
-        <div className="dia-kpis">
-          <div className="dia-kpi"><div className="dia-kpi-lbl">Mensajes sin leer</div><div className="dia-kpi-val">4</div><div className="dia-kpi-trend warn">⚡ Requieren respuesta</div></div>
-          <div className="dia-kpi"><div className="dia-kpi-lbl">Drafts IA listos</div><div className="dia-kpi-val">3</div><div className="dia-kpi-trend up">↑ Listos para enviar</div></div>
-          <div className="dia-kpi"><div className="dia-kpi-lbl">Tiempo respuesta</div><div className="dia-kpi-val">1.8h</div><div className="dia-kpi-trend up">↓ 34% vs semana pasada</div></div>
-          <div className="dia-kpi"><div className="dia-kpi-lbl">Tareas extraídas</div><div className="dia-kpi-val">5</div><div className="dia-kpi-trend up">Detectadas en conversaciones</div></div>
-        </div>
-        <div className="dia-grid">
-          <div className="dia-card">
-            <div className="dia-card-head"><div className="dia-card-ttl">Bandeja unificada</div><div className="dia-card-sub">Email + WhatsApp · Hoy</div></div>
-            <div className="dia-tasks">
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(188,212,232,0.3)',borderColor:'#BCD4E8'}}></div><div className="dia-task-body"><div className="dia-task-title">Ana Ruiz · Metalúrgica Goi</div><div className="dia-task-meta">Re: Kick-off hoy — ¿a qué hora nos conectamos?</div></div><span className="dia-task-badge ia">Draft →</span></div>
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(37,211,102,0.15)',borderColor:'#25D366'}}></div><div className="dia-task-body"><div className="dia-task-title">Txema García · WhatsApp</div><div className="dia-task-meta">Genial la llamada. Mándame el resumen y miramos mayo.</div></div><span className="dia-task-badge ia">Draft →</span></div>
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(28,45,68,0.06)',borderColor:'rgba(28,45,68,0.15)'}}></div><div className="dia-task-body"><div className="dia-task-title">Bankinter · Cobro recibido 2.400 €</div><div className="dia-task-meta">Transferencia de Metalúrgica Goi · F-2026-039</div></div><span className="dia-task-badge" style={{background:'rgba(34,160,107,0.12)',color:'#22A06B'}}>✓ Registrado</span></div>
-            </div>
-          </div>
-          <div className="dia-card">
-            <div className="dia-card-head"><div className="dia-card-ttl">IA ha preparado</div><div className="dia-card-sub">Drafts listos para enviar</div></div>
-            <div className="dia-tasks">
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(188,212,232,0.3)',borderColor:'#BCD4E8'}}></div><div className="dia-task-body"><div className="dia-task-title">Respuesta a Ana Ruiz</div><div className="dia-task-meta">Confirma videollamada + adjunta agenda</div></div><span className="dia-task-badge ia">Ver →</span></div>
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(188,212,232,0.3)',borderColor:'#BCD4E8'}}></div><div className="dia-task-body"><div className="dia-task-title">Resumen llamada para Txema</div><div className="dia-task-meta">3 puntos acordados + próximos pasos</div></div><span className="dia-task-badge ia">Ver →</span></div>
-              <div className="dia-task"><div className="dia-task-check" style={{background:'rgba(188,212,232,0.3)',borderColor:'#BCD4E8'}}></div><div className="dia-task-body"><div className="dia-task-title">Recordatorio cobro F-038</div><div className="dia-task-meta">Email amable · Vencida 8 días</div></div><span className="dia-task-badge warn">Ver →</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Tab Comunicación navega a la sección (línea 4063 del HTML demo) — sin panel interno */}
 
       {/* ── TAB: IA INSIGHTS ── */}
       <div className={`tab-panel${activeTab==='insights'?' active':''}`}>

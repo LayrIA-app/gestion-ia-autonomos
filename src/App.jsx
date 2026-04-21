@@ -202,7 +202,7 @@ function AppShell({ onLogout }) {
           <main className="content">
             {/* INICIO — contenido completo */}
             <div className={`section-panel${activeSection==='inicio'?' active':''}`}>
-              <InicioSection />
+              <InicioSection onNavigate={setActiveSection} />
             </div>
             {/* AGENDA */}
             <div className={`section-panel${activeSection==='agenda'?' active':''}`}>
@@ -210,7 +210,7 @@ function AppShell({ onLogout }) {
             </div>
             {/* COMUNICACION */}
             <div className={`section-panel${activeSection==='comunicacion'?' active':''}`}>
-              <ComunicacionSection />
+              <ComunicacionSection onNavigate={setActiveSection} />
             </div>
             {/* CLIENTES */}
             <div className={`section-panel${activeSection==='clientes'?' active':''}`}>

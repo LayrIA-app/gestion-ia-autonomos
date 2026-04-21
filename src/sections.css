@@ -143,8 +143,9 @@
   .page-actions .btn-ghost,.page-actions .btn-primary{padding:7px 12px;font-size:0.78rem;}
 }
 
-/* Kanban clientes */
-.cl-kanban{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+/* Kanban clientes · 5 columnas (Lead · Propuesta · Negociación · Activo · Pausado) */
+.cl-kanban{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:flex-start;}
+@media (max-width:1400px){.cl-kanban{grid-template-columns:repeat(3,1fr);}}
 @media (max-width:1100px){.cl-kanban{grid-template-columns:repeat(2,1fr);}}
 @media (max-width:600px){.cl-kanban{grid-template-columns:1fr;}}
 

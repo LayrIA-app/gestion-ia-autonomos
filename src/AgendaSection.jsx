@@ -11,6 +11,35 @@ const colores = {
   alerta:{bg:'rgba(28,45,68,0.03)',border:'transparent',hora:'rgba(28,45,68,0.4)'},
 }
 
+/* Eventos mensuales abril 2026 — día, tipo, etiqueta. Coincide con HTML demo. */
+const eventosMes = {
+  2: { tipo: 'reunion', label: 'Reunión' },
+  7: { tipo: 'visita', label: 'Visita' },
+  9: { tipo: 'reunion', label: 'Llamada' },
+  10: { tipo: 'personal', label: 'Formación' },
+  14: { tipo: 'visita', label: 'Visita' },
+  16: { tipo: 'reunion', label: 'Propuesta' },
+  17: { tipo: 'today', label: 'Meet 12h' },
+  18: { tipo: 'reunion', label: 'Reunión' },
+  22: { tipo: 'personal', label: 'Networking' },
+  23: { tipo: 'reunion', label: 'Llamada' },
+  28: { tipo: 'visita', label: 'Visita' },
+  29: { tipo: 'reunion', label: 'Cierre' },
+}
+
+/* 1 abril 2026 es miércoles → 2 huecos vacíos antes. Mes de 30 días. */
+const padInicio = 2
+const diasMes = 30
+
+/* Agenda de hoy (17 abril) — mismos datos que Inicio tab Hoy */
+const agendaHoy = [
+  { hora: '09:00', titulo: 'Llamada Txema García · Digiform SL',     meta: 'Revisión avance 1T · 45 min · ✓ Completada',                   past: true },
+  { hora: '10:30', titulo: 'Propuesta Bodegas Iriarte',               meta: 'Preparar antes de la reunión de mañana · En curso',            now: true,  badge: 'IA: borrador listo para revisar →' },
+  { hora: '12:00', titulo: 'Videollamada · Ana Ruiz · Metalúrgica Goi', meta: 'Kick-off proyecto digitalización · Google Meet' },
+  { hora: '16:00', titulo: 'Bloque IA · Revisar emails + mailing',     meta: 'Tiempo libre detectado por IA para tareas de gestión',          badge: 'Sugerido por IA' },
+  { hora: '18:00', titulo: 'Cierre de día',                            meta: 'Revisar tareas completadas · Preparar mañana' },
+]
+
 const diasSemana = [
   {dia:'Lun 18',citas:[
     {hora:'09:00',dur:'60min',cliente:'Bodegas Iriarte',tema:'Propuesta estrategia',tipo:'terracotta',lugar:'Presencial DoN',urgente:true,contacto:'Ana Ruiz',briefing:'IA tiene: historial cliente, propuesta 28.000€, ROI estimado, 3 objeciones frecuentes.'},
@@ -99,6 +128,7 @@ export default function AgendaSection() {
   const [briefingDatos, setBriefingDatos] = useState(null)
   const [nuevaCita, setNuevaCita] = useState(false)
   const [checkeds, setCheckeds] = useState({})
+  const [vista, setVista] = useState('mes') // 'mes' | 'semana' | 'dia' — HTML demo default: mes
 
   return (
     <div>
@@ -126,26 +156,109 @@ export default function AgendaSection() {
 
       <div className="dia-grid">
         <div className="dia-card" style={{gridColumn:'1/-1'}}>
-          <div className="dia-card-head"><div className="dia-card-ttl">Semana del 18 al 24 de abril 2026</div><div className="dia-card-sub">Pulsa cualquier cita para ver el briefing IA</div></div>
-          <div className="ag-week-grid">
-            {diasSemana.map((dia,i) => (
-              <div key={i}>
-                <div style={{fontSize:'0.7rem',fontWeight:600,textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8,textAlign:'center'}}>{dia.dia}</div>
-                {dia.citas.map((cita,j) => {
-                  const c = colores[cita.tipo]||colores.gris
+          <div className="dia-card-head" style={{marginBottom:16}}>
+            <div>
+              <div className="dia-card-ttl">Agenda</div>
+              <div className="dia-card-sub">Abril 2026 · 18 eventos este mes</div>
+            </div>
+            <div style={{display:'flex',gap:4,padding:3,background:'#FAF7F2',border:'0.5px solid rgba(28,45,68,0.08)',borderRadius:9}}>
+              {[['mes','Mes'],['semana','Semana'],['dia','Día']].map(([k,l]) => (
+                <button key={k} onClick={() => setVista(k)} style={{padding:'6px 14px',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.76rem',fontWeight:500,cursor:'pointer',background:vista===k?'#FFFFFF':'transparent',color:vista===k?'#1C2D44':'rgba(28,45,68,0.55)',boxShadow:vista===k?'0 1px 3px rgba(28,45,68,0.1)':'none',transition:'all .15s'}}>{l}</button>
+              ))}
+            </div>
+          </div>
+
+          {vista === 'mes' && (
+            <div>
+              <div className="rs-cal">
+                {['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d => (
+                  <div key={d} className="rs-cal-head">{d}</div>
+                ))}
+                {Array.from({length:padInicio}, (_,i) => <div key={`e${i}`} className="rs-cal-day empty"></div>)}
+                {Array.from({length:diasMes}, (_,i) => {
+                  const d = i + 1
+                  const ev = eventosMes[d]
+                  const today = d === 17
+                  const tipoBg = {
+                    reunion: {bg:'#2E5A8C',color:'#fff'},
+                    visita:  {bg:'rgba(188,212,232,0.5)',color:'#1C2D44'},
+                    personal:{bg:'rgba(188,212,232,0.25)',color:'#1C2D44'},
+                    today:   {bg:'#1C2D44',color:'#FAF7F2'},
+                  }
+                  const pill = ev ? tipoBg[ev.tipo] : null
                   return (
-                    <div key={j} onClick={() => cita.contacto && setBriefingDatos(cita)} style={{cursor:cita.contacto?'pointer':'default',padding:10,background:c.bg,border:`0.5px solid ${c.border}`,borderRadius:8,marginBottom:6}} onMouseEnter={e=>{if(cita.contacto)e.currentTarget.style.opacity='0.8'}} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
-                      {cita.hora && <div style={{fontSize:'0.68rem',fontWeight:600,color:c.hora,marginBottom:2}}>{cita.hora}{cita.dur?' · '+cita.dur:''}</div>}
-                      <div style={{fontSize:'0.78rem',fontWeight:500,color:'#1C2D44',marginBottom:2}}>{cita.cliente}</div>
-                      <div style={{fontSize:'0.7rem',color:'rgba(28,45,68,0.55)'}}>{cita.tema}</div>
-                      {cita.urgente && <div style={{fontSize:'0.65rem',color:'#C65D4A',fontWeight:600,marginTop:4}}>⚡ Hoy · {cita.lugar}</div>}
-                      {cita.lugar && !cita.urgente && <div style={{fontSize:'0.65rem',color:c.hora,fontWeight:600,marginTop:4}}>{cita.lugar}</div>}
+                    <div key={d} className={`rs-cal-day${today?' today':''}`}>
+                      <span className="rs-cal-num">{d}</span>
+                      {ev && pill && (
+                        <span style={{display:'block',marginTop:4,padding:'1px 5px',borderRadius:4,fontSize:'0.6rem',fontWeight:600,background:pill.bg,color:pill.color,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ev.label}</span>
+                      )}
                     </div>
                   )
                 })}
               </div>
-            ))}
-          </div>
+              <div style={{display:'flex',gap:14,marginTop:14,flexWrap:'wrap'}}>
+                {[
+                  {c:'#2E5A8C',l:'Reunión/Llamada'},
+                  {c:'rgba(188,212,232,0.7)',l:'Visita cliente'},
+                  {c:'rgba(188,212,232,0.35)',l:'Formación/Red.'},
+                  {c:'#1C2D44',l:'Hoy'},
+                ].map((it,i) => (
+                  <div key={i} style={{display:'flex',alignItems:'center',gap:6,fontSize:'0.72rem',color:'rgba(28,45,68,0.6)'}}>
+                    <span style={{width:10,height:10,borderRadius:'50%',background:it.c,flexShrink:0}}></span>
+                    {it.l}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {vista === 'semana' && (
+            <>
+              <div style={{fontSize:'0.78rem',color:'rgba(28,45,68,0.6)',marginBottom:12}}>
+                Semana del 18 al 24 de abril · pulsa cualquier cita para ver el briefing IA
+              </div>
+              <div className="ag-week-grid">
+                {diasSemana.map((dia,i) => (
+                  <div key={i}>
+                    <div style={{fontSize:'0.7rem',fontWeight:600,textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8,textAlign:'center'}}>{dia.dia}</div>
+                    {dia.citas.map((cita,j) => {
+                      const c = colores[cita.tipo]||colores.gris
+                      return (
+                        <div key={j} onClick={() => cita.contacto && setBriefingDatos(cita)} style={{cursor:cita.contacto?'pointer':'default',padding:10,background:c.bg,border:`0.5px solid ${c.border}`,borderRadius:8,marginBottom:6}} onMouseEnter={e=>{if(cita.contacto)e.currentTarget.style.opacity='0.8'}} onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
+                          {cita.hora && <div style={{fontSize:'0.68rem',fontWeight:600,color:c.hora,marginBottom:2}}>{cita.hora}{cita.dur?' · '+cita.dur:''}</div>}
+                          <div style={{fontSize:'0.78rem',fontWeight:500,color:'#1C2D44',marginBottom:2}}>{cita.cliente}</div>
+                          <div style={{fontSize:'0.7rem',color:'rgba(28,45,68,0.55)'}}>{cita.tema}</div>
+                          {cita.urgente && <div style={{fontSize:'0.65rem',color:'#C65D4A',fontWeight:600,marginTop:4}}>⚡ Hoy · {cita.lugar}</div>}
+                          {cita.lugar && !cita.urgente && <div style={{fontSize:'0.65rem',color:c.hora,fontWeight:600,marginTop:4}}>{cita.lugar}</div>}
+                        </div>
+                      )
+                    })}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {vista === 'dia' && (
+            <>
+              <div style={{fontSize:'0.78rem',color:'rgba(28,45,68,0.6)',marginBottom:12}}>
+                Jueves 17 de abril · 5 bloques en el día
+              </div>
+              <div className="dia-agenda">
+                {agendaHoy.map((ev,i) => (
+                  <div key={i} className={`dia-agenda-item${ev.past?' past':''}`}>
+                    <div className="dia-agenda-time">{ev.hora}</div>
+                    <div className={`dia-agenda-dot${ev.now?' now':''}`}></div>
+                    <div className="dia-agenda-body" style={{gridColumn:3}}>
+                      <div className="dia-agenda-title">{ev.titulo}</div>
+                      <div className="dia-agenda-meta">{ev.meta}</div>
+                      {ev.badge && <div className={`dia-agenda-badge${ev.badge.startsWith('IA')?' ia':''}`}>{ev.badge}</div>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         <div className="dia-card">
