@@ -274,3 +274,58 @@
 .chat-send:hover{background:#2E5A8C;}
 .chat-disclaimer{font-size:0.68rem;color:rgba(28,45,68,0.35);text-align:center;margin-top:6px;}
 @media (max-width:900px){.chat-layout{grid-template-columns:1fr;height:auto;}.chat-sidebar{display:none;}.chat-main{min-height:450px;}}
+
+/* ══════════════════════════════════════════════════
+   GRIDS RESPONSIVOS REUTILIZABLES (reemplazan grids inline)
+   ══════════════════════════════════════════════════ */
+
+/* Agenda · vista semana 5 días */
+.ag-week-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+@media (max-width:1100px){.ag-week-grid{grid-template-columns:repeat(3,1fr);}}
+@media (max-width:768px){.ag-week-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.ag-week-grid{grid-template-columns:1fr;}}
+
+/* ClienteShell · grid de 4 columnas */
+.cs-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+@media (max-width:1100px){.cs-grid-4{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:480px){.cs-grid-4{grid-template-columns:1fr;}}
+
+/* ClienteShell y Proyectos · grid de 3 columnas */
+.cs-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+@media (max-width:1100px){.cs-grid-3{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:768px){.cs-grid-3{grid-template-columns:1fr;}}
+
+/* Proyectos · grid KPIs 3 columnas compacto */
+.proy-3col-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+@media (max-width:1100px){.proy-3col-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:600px){.proy-3col-grid{grid-template-columns:1fr;}}
+
+/* ══════════════════════════════════════════════════
+   BREAKPOINT 360 · compresión extrema para phones pequeños
+   ══════════════════════════════════════════════════ */
+@media (max-width:360px){
+  .dia-kpis{grid-template-columns:1fr !important;}
+  .dia-kpi-val{font-size:1.15rem;}
+  .cl-kanban,.prop-pipeline,.proy-grid,.proy-ia-grid,.canales-grid,.tesoreria-meses,.brand-logos-grid,.rs-grid,.alertas-grid{grid-template-columns:1fr !important;}
+  .bench-row{grid-template-columns:1.4fr 1fr;}
+  .bench-col:nth-child(3),.bench-col:nth-child(4),.bench-col:nth-child(5){display:none;}
+  .tab-btn{padding:5px 4px;font-size:0.62rem;}
+  .cs-grid-4,.cs-grid-3,.proy-3col-grid,.ag-week-grid{grid-template-columns:1fr !important;}
+}
+
+/* ══════════════════════════════════════════════════
+   BREAKPOINT 1400 · laptop grande · ajustes sutiles
+   ══════════════════════════════════════════════════ */
+@media (max-width:1400px){
+  .dia-kpis{gap:10px;}
+  .cs-grid-4{gap:12px;}
+}
+
+/* ══════════════════════════════════════════════════
+   TABLAS RESPONSIVAS (utility para secciones con tablas densas)
+   ══════════════════════════════════════════════════ */
+.resp-table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.resp-table{width:100%;min-width:680px;border-collapse:collapse;}
+@media (max-width:480px){
+  .resp-table{min-width:560px;}
+}

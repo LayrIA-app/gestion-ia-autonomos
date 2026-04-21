@@ -127,7 +127,7 @@ export default function AgendaSection() {
       <div className="dia-grid">
         <div className="dia-card" style={{gridColumn:'1/-1'}}>
           <div className="dia-card-head"><div className="dia-card-ttl">Semana del 18 al 24 de abril 2026</div><div className="dia-card-sub">Pulsa cualquier cita para ver el briefing IA</div></div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:10,overflowX:'auto',minWidth:500}}>
+          <div className="ag-week-grid">
             {diasSemana.map((dia,i) => (
               <div key={i}>
                 <div style={{fontSize:'0.7rem',fontWeight:600,textTransform:'uppercase',color:'rgba(28,45,68,0.4)',marginBottom:8,textAlign:'center'}}>{dia.dia}</div>

@@ -42,7 +42,7 @@ function SeccionProyecto({ onNavigate }) {
         <button onClick={() => onNavigate('mensajes')} style={{padding:'9px 18px',background:'#1C2D44',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Contactar con Iker →</button>
       </div>
 
-      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:14,marginBottom:20,overflowX:'auto'}}>
+      <div className="cs-grid-4" style={{marginBottom:20}}>
         {[{l:'Inversión total',v:'14.400 €',c:'#1C2D44',sub:'6 meses · 2.400 €/mes'},{l:'Pagado hasta hoy',v:'9.360 €',c:'#22A06B',sub:'4 facturas · IVA incluido'},{l:'Pendiente de pago',v:'5.040 €',c:'#D4A574',sub:'2 facturas restantes'},{l:'ROI estimado',v:'+35%',c:'#2E5A8C',sub:'Eficiencia comercial'}].map((k,i) => (
           <div key={i} style={{background:'#FFFFFF',border:'0.5px solid rgba(28,45,68,0.08)',borderRadius:12,padding:18,minWidth:120}}>
             <div style={{fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)',marginBottom:8}}>{k.l}</div>
@@ -94,7 +94,7 @@ function SeccionFacturas() {
         <h1 style={{fontFamily:'var(--serif)',fontSize:'1.8rem',fontWeight:500,color:'#1C2D44',marginBottom:4}}>Mis facturas</h1>
         <p style={{fontSize:'0.86rem',color:'rgba(28,45,68,0.55)'}}>Historial de facturación con Arrieta Consultores</p>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:16,marginBottom:24,overflowX:'auto',minWidth:300}}>
+      <div className="cs-grid-3" style={{marginBottom:24}}>
         {[{v:'6.000 €',l:'Total facturado',bg:'#FFFFFF',vc:'#1C2D44',lc:'rgba(28,45,68,0.45)'},{v:'4.200 €',l:'Pagado',bg:'rgba(34,160,107,0.08)',vc:'#22A06B',lc:'#22A06B'},{v:'1.800 €',l:'Pendiente',bg:'rgba(198,93,74,0.08)',vc:'#C65D4A',lc:'#C65D4A'}].map((k,i) => (
           <div key={i} style={{background:k.bg,border:`0.5px solid ${k.vc === '#1C2D44' ? 'rgba(28,45,68,0.08)' : k.vc+'33'}`,borderRadius:14,padding:18,textAlign:'center',minWidth:90}}>
             <div style={{fontFamily:'var(--serif)',fontSize:'1.6rem',fontWeight:500,color:k.vc}}>{k.v}</div>
@@ -145,7 +145,7 @@ function SeccionPropuestas() {
           </div>
           <span style={{fontSize:'0.72rem',fontWeight:600,padding:'4px 12px',borderRadius:100,background:aceptada?'rgba(34,160,107,0.1)':'rgba(212,165,116,0.2)',color:aceptada?'#22A06B':'#8B5E34',whiteSpace:'nowrap'}}>{aceptada?'Aceptada ✓':'Pendiente revisión'}</span>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:18,overflowX:'auto'}}>
+        <div className="cs-grid-3" style={{gap:12,marginBottom:18}}>
           {[{v:'12.400 €',l:'Inversión total',bg:'rgba(188,212,232,0.15)',c:'#1C2D44'},{v:'6 meses',l:'Duración',bg:'rgba(188,212,232,0.15)',c:'#1C2D44'},{v:'+35%',l:'ROI estimado',bg:'rgba(34,160,107,0.08)',c:'#22A06B'}].map((k,i) => (
             <div key={i} style={{background:k.bg,borderRadius:10,padding:14,textAlign:'center',minWidth:80}}>
               <div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:k.c}}>{k.v}</div>

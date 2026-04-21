@@ -61,7 +61,7 @@ function ModalDetalleProyecto({ open, onClose, proyecto }) {
   if (!proyecto) return null
   return (
     <Modal open={open} onClose={onClose} maxWidth={560} title={proyecto.titulo} subtitle={proyecto.periodo}>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:14}}>
+      <div className="proy-3col-grid" style={{marginBottom:14}}>
         <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Horas</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#1C2D44'}}>{proyecto.horas}</div><div style={{fontSize:'0.7rem',color:'rgba(28,45,68,0.5)'}}>de {proyecto.horasTotal}</div></div>
         <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Rentabilidad</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#1C2D44'}}>{proyecto.tarifa}</div></div>
         <div className="dm-info-box" style={{textAlign:'center'}}><div className="dm-info-lbl">Margen</div><div style={{fontFamily:'var(--serif)',fontSize:'1.3rem',fontWeight:500,color:'#22A06B'}}>{proyecto.margen}</div></div>
