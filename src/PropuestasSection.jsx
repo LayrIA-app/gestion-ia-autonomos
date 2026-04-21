@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 function ModalNuevaPropuesta({ open, onClose }) {
@@ -25,7 +26,7 @@ function ModalNuevaPropuesta({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Contexto para la IA</div><textarea className="dm-textarea" placeholder="Describe brevemente qué necesita el cliente..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Generar propuesta con IA</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Propuesta generada · revisa el borrador','ok'); onClose() }}>✦ Generar propuesta con IA</button>
       </div>
     </Modal>
   )
@@ -49,8 +50,8 @@ function ModalVerDraft({ open, onClose }) {
       <div style={{padding:10,background:'rgba(46,90,140,0.08)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C',marginBottom:14}}>✦ IA sugiere: Añadir caso de éxito de Metalúrgica Goi para reforzar credibilidad.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-ghost">Editar</button>
-        <button className="dm-btn-primary" onClick={onClose}>Enviar a Digiform →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('Editor de propuesta abierto','info'); onClose() }}>Editar</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Propuesta enviada a Digiform SL','ok'); onClose() }}>Enviar a Digiform →</button>
       </div>
     </Modal>
   )
@@ -70,7 +71,7 @@ function ModalSeguimiento({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Observaciones, objeciones, acuerdos..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Guardar seguimiento</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Seguimiento guardado','ok'); onClose() }}>Guardar seguimiento</button>
       </div>
     </Modal>
   )
@@ -93,7 +94,7 @@ function ModalPerdida({ open, onClose }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-primary">Aplicar a siguientes propuestas</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Recomendaciones aplicadas a la plantilla por defecto','ok'); onClose() }}>Aplicar a siguientes propuestas</button>
       </div>
     </Modal>
   )
@@ -245,7 +246,7 @@ function SimuladorPrecio() {
           <span style={{fontFamily:'var(--serif)',fontSize:'1.2rem',fontWeight:500,color:'#FAF7F2'}}>{fmt(total)}</span>
         </div>
       </div>
-      <button style={{width:'100%',marginTop:10,padding:9,background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.8rem',fontWeight:500,color:'#1C2D44',cursor:'pointer'}}>
+      <button style={{width:'100%',marginTop:10,padding:9,background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.8rem',fontWeight:500,color:'#1C2D44',cursor:'pointer'}} onClick={() => showToast('Abriendo constructor de propuesta con '+fmt(total)+' · '+horas+'h','info')}>
         Crear propuesta con este precio →
       </button>
     </div>

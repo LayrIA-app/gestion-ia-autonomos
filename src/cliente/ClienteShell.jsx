@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { showToast } from '../components/Toast'
 import '../sections.css'
 
 const notificaciones = [
@@ -118,7 +119,7 @@ function SeccionFacturas() {
                   <td style={{padding:'12px 18px',color:'rgba(28,45,68,0.55)'}}>{f.fecha}</td>
                   <td style={{padding:'12px 18px',fontWeight:500,color:'#1C2D44'}}>{f.importe}</td>
                   <td style={{padding:'12px 18px'}}><span style={{fontSize:'0.72rem',fontWeight:600,padding:'3px 10px',borderRadius:100,background:f.eBg,color:f.eColor}}>{f.estado}</span></td>
-                  <td style={{padding:'12px 18px'}}><button style={{padding:'4px 10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => {}}>PDF</button></td>
+                  <td style={{padding:'12px 18px'}}><button style={{padding:'4px 10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => showToast('Descargando PDF · '+f.num,'ok')}>PDF</button></td>
                 </tr>
               ))}
             </tbody>
@@ -158,7 +159,7 @@ function SeccionPropuestas() {
         </div>
         {!aceptada ? (
           <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-            <button style={{flex:1,padding:'10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.2)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => {}}>Solicitar cambios</button>
+            <button style={{flex:1,padding:'10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.2)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => showToast('Cambios solicitados · Iker los recibirá en su panel','info')}>Solicitar cambios</button>
             <button onClick={() => setAceptada(true)} style={{flex:1,padding:'10px',background:'#22A06B',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Aceptar propuesta ✓</button>
           </div>
         ) : (

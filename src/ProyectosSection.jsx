@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 function ModalNuevoProyecto({ open, onClose }) {
@@ -33,7 +34,7 @@ function ModalNuevoProyecto({ open, onClose }) {
       <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C',marginBottom:4}}>✦ La IA generará fases, hitos y tareas basándose en proyectos similares.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Crear proyecto con IA</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Proyecto creado · IA generó fases y tareas','ok'); onClose() }}>✦ Crear proyecto con IA</button>
       </div>
     </Modal>
   )
@@ -51,7 +52,7 @@ function ModalRegistrarHoras({ open, onClose, cliente }) {
       <div style={{padding:10,background:'rgba(34,160,107,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#22A06B',marginBottom:4}}>✓ IA calculará automáticamente el importe facturable y actualizará la rentabilidad del proyecto.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Registrar horas</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Horas registradas · rentabilidad actualizada','ok'); onClose() }}>Registrar horas</button>
       </div>
     </Modal>
   )
@@ -79,7 +80,7 @@ function ModalDetalleProyecto({ open, onClose, proyecto }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-primary">+ Registrar horas</button>
+        <button className="dm-btn-primary" onClick={() => { onClose(); setTimeout(() => showToast('Abriendo registro de horas · '+proyecto.titulo,'info'), 50) }}>+ Registrar horas</button>
       </div>
     </Modal>
   )
@@ -190,7 +191,7 @@ export default function ProyectosSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA alerta: Construcciones Mendía entrega en 5 días · revisar horas</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => showToast('Exportando proyectos · CSV disponible Fase 2','info')}>Exportar</button>
           <button className="btn-primary" onClick={() => setNuevoProyectoOpen(true)}>+ Nuevo proyecto</button>
         </div>
       </div>

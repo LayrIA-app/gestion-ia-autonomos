@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const listas = [
@@ -30,8 +31,8 @@ function ModalEnviarEmail({ open, onClose }) {
       <div style={{padding:10,background:'rgba(34,160,107,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#22A06B',marginBottom:4}}>✦ IA enviará en el momento de mayor apertura según el comportamiento de tu lista.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-ghost">Solo guardar</button>
-        <button className="dm-btn-primary">Programar envío →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('Borrador guardado','ok'); onClose() }}>Solo guardar</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Envío programado · martes 21 a las 08:15','ok'); onClose() }}>Programar envío →</button>
       </div>
     </Modal>
   )
@@ -48,7 +49,7 @@ function ModalNuevaCampaña({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Tono</div><select className="dm-select"><option>Cercano y directo (tu estilo habitual)</option><option>Más formal</option><option>Urgencia / acción</option></select></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Generar campaña con IA</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Campaña generada por IA · revisa el borrador','ok'); onClose() }}>✦ Generar campaña con IA</button>
       </div>
     </Modal>
   )
@@ -109,9 +110,9 @@ export default function MailingSection() {
           </div>
           <div style={{marginTop:16,paddingTop:16,borderTop:'0.5px dashed rgba(28,45,68,0.12)',display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
             <span style={{fontSize:'0.76rem',color:'rgba(28,45,68,0.6)',marginRight:4}}>Añadir contactos:</span>
-            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}}>↑ Subir CSV</button>
-            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}}>Importar de CRM</button>
-            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}}>+ Añadir uno a uno</button>
+            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}} onClick={() => showToast('Importar CSV · próximamente en Fase 2','info')}>↑ Subir CSV</button>
+            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}} onClick={() => showToast('Importación desde CRM · Fase 2','info')}>Importar de CRM</button>
+            <button className="btn-ghost" style={{fontSize:'0.76rem',padding:'5px 12px'}} onClick={() => setNuevaOpen(true)}>+ Añadir uno a uno</button>
           </div>
         </div>
       )}
@@ -154,11 +155,11 @@ export default function MailingSection() {
                   <p style={{marginBottom:8}}>Hace unos años aceptaba cualquier proyecto que llegara. Eso me costó meses de trabajo mal pagado y noches sin dormir pensando en si ibas a cobrar.</p>
                   <p>Si estás en un momento parecido y quieres hablarlo, puedo hacer hueco esta semana.</p>
                 </div>
-                <div style={{marginTop:14,textAlign:'center'}}><button style={{padding:'10px 24px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Hablamos →</button></div>
+                <div style={{marginTop:14,textAlign:'center'}}><button style={{padding:'10px 24px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => showToast('CTA del email · apuntará al calendario de Iker','info')}>Hablamos →</button></div>
               </div>
             </div>
             <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-              <button className="btn-ghost" style={{flex:1}}>Editar email</button>
+              <button className="btn-ghost" style={{flex:1}} onClick={() => showToast('Editor de email abierto','info')}>Editar email</button>
               <button style={{flex:1,padding:'9px 18px',background:'#22A06B',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => setEnviarOpen(true)}>Aprobar y programar →</button>
             </div>
           </div>
@@ -196,7 +197,7 @@ export default function MailingSection() {
               <div className="dia-card-ttl">Calendario de envíos · próximos 6 meses</div>
               <div className="dia-card-sub">Planificación trimestral preparada por IA · ajustada a tu estacionalidad</div>
             </div>
-            <button className="btn-ghost" style={{padding:'7px 14px',fontSize:'0.78rem'}}>Ver año completo</button>
+            <button className="btn-ghost" style={{padding:'7px 14px',fontSize:'0.78rem'}} onClick={() => showToast('Vista anual completa · próximamente','info')}>Ver año completo</button>
           </div>
           <div className="ml-cal-strip">
             {[

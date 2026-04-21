@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const cats = ['Comida de trabajo','Transporte','Material oficina','Software','Formación','Otros']
@@ -37,7 +38,7 @@ function ModalNuevoGasto({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Con qué cliente, para qué proyecto..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Añadir gasto</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Gasto añadido · IVA y deducibilidad calculados','ok'); onClose() }}>✦ Añadir gasto</button>
       </div>
     </Modal>
   )
@@ -54,7 +55,7 @@ function ModalOCR({ open, onClose }) {
       <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C'}}>✦ La IA extrae proveedor, importe, IVA y fecha. Tú solo confirmas.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Procesar con IA</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Ticket procesado · datos extraídos por OCR','ok'); onClose() }}>Procesar con IA</button>
       </div>
     </Modal>
   )
@@ -187,7 +188,7 @@ export default function GastosSection() {
                     <td style={{padding:'10px 12px',color:'rgba(28,45,68,0.55)'}}>{g.fecha}</td>
                     <td style={{padding:'10px 12px',textAlign:'right',fontWeight:500,color:'#1C2D44'}}>{g.imp}</td>
                     <td style={{padding:'10px 12px'}}><span style={{fontSize:'0.72rem',fontWeight:600,color:g.dColor}}>{g.ded}</span></td>
-                    <td style={{padding:'10px 12px'}}><button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={() => {}}>Editar</button></td>
+                    <td style={{padding:'10px 12px'}}><button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={() => showToast('Editando · '+g.concepto,'info')}>Editar</button></td>
                   </tr>
                 ))}
               </tbody>

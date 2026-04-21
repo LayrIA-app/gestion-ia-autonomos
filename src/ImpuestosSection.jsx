@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import Countdown from './components/Countdown'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 /* Vencimiento 1T 2026: 20 abril a las 23:59:59 — countdown vivo hasta esa hora. */
@@ -66,7 +67,7 @@ function ModalPreparacionFiscal({ open, onClose }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Generar borrador y pagar →</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Borrador 1T generado · 3.326 € listos para domiciliar','ok'); onClose() }}>Generar borrador y pagar →</button>
       </div>
     </Modal>
   )
@@ -97,7 +98,7 @@ function ModalPago({ open, onClose, modelo }) {
       <div style={{padding:10,background:'rgba(34,160,107,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#22A06B',marginBottom:4}}>✓ Tras pagar, la IA marcará el modelo como pagado y actualizará tu tesorería automáticamente.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-danger">Pagar {modelo.imp} →</button>
+        <button className="dm-btn-danger" onClick={() => { showToast('Pago de '+modelo.imp+' procesado · Mod. '+modelo.num,'ok'); onClose() }}>Pagar {modelo.imp} →</button>
       </div>
     </Modal>
   )
@@ -190,7 +191,7 @@ export default function ImpuestosSection() {
                   <td style={{padding:'10px 12px',fontSize:'0.76rem',color:'rgba(28,45,68,0.6)'}}>Ingresos − gastos deducibles</td>
                   <td style={{padding:'10px 12px',textAlign:'right',fontFamily:'var(--serif)',color:'#1C2D44'}}>~19.691 €</td>
                   <td style={{padding:'10px 12px',textAlign:'center',fontSize:'0.76rem',color:'rgba(28,45,68,0.6)'}}>Abr–Jun 2027</td>
-                  <td style={{padding:'10px 12px'}}><button style={{padding:'4px 10px',background:'#2E5A8C',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Simular →</button></td>
+                  <td style={{padding:'10px 12px'}}><button style={{padding:'4px 10px',background:'#2E5A8C',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => showToast('Simulación Renta 2027 · ~19.691 € estimado','info')}>Simular →</button></td>
                 </tr>
               </tbody>
             </table>
@@ -235,7 +236,7 @@ export default function ImpuestosSection() {
                 <span style={{fontFamily:'var(--serif)',fontSize:'0.95rem',fontWeight:500,color:'#FAF7F2'}}>~19.691 €</span>
               </div>
             </div>
-            <button style={{width:'100%',padding:9,background:'#2E5A8C',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Ver simulación completa Renta →</button>
+            <button style={{width:'100%',padding:9,background:'#2E5A8C',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => showToast('Simulación completa Renta 2027 · 97.920€ rendimiento neto estimado','info')}>Ver simulación completa Renta →</button>
           </div>
           <div className="dia-card">
             <div className="dia-card-head"><div className="dia-card-ttl">IA · Planificación fiscal</div></div>

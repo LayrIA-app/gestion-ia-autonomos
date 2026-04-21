@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const th = {padding:'8px 12px',textAlign:'left',fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}
@@ -40,7 +41,7 @@ function ModalConfirmarFactura({ open, onClose }) {
       <div style={{padding:10,background:'rgba(34,160,107,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#22A06B',marginBottom:4}}>✓ Al confirmar, la IA actualizará automáticamente el IVA soportado y los gastos deducibles.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Confirmar factura ✓</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Factura confirmada · IVA y gastos deducibles actualizados','ok'); onClose() }}>Confirmar factura ✓</button>
       </div>
     </Modal>
   )
@@ -93,9 +94,9 @@ export default function FacturasRecibidasSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA clasificó 3 facturas recibidas · 1 pendiente de confirmar</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">📷 Foto ticket</button>
+          <button className="btn-ghost" onClick={() => showToast('Abre cámara OCR · Fase 2 procesa el ticket','info')}>📷 Foto ticket</button>
           <button className="btn-ghost" onClick={() => setEmailReenvioOpen(true)}>📧 Email</button>
-          <button className="btn-primary">+ Registrar manual</button>
+          <button className="btn-primary" onClick={() => showToast('Formulario de registro manual · próximamente','info')}>+ Registrar manual</button>
         </div>
       </div>
 
@@ -115,7 +116,7 @@ export default function FacturasRecibidasSection() {
               <div style={{fontSize:'0.8rem',fontWeight:600,color:'#1C2D44',marginBottom:3}}>{c.label}</div>
               <div style={{fontSize:'0.68rem',color:'rgba(28,45,68,0.5)',marginBottom:8}}>{c.sub}</div>
               {c.badge ? <span style={{fontSize:'0.68rem',fontWeight:600,padding:'2px 8px',borderRadius:100,background:'rgba(34,160,107,0.12)',color:'#22A06B'}}>{c.badge}</span>
-                : <button style={{fontSize:'0.68rem',fontWeight:600,padding:'2px 8px',borderRadius:100,background:'rgba(46,90,140,0.1)',color:'#2E5A8C',border:'none',cursor:'pointer'}}>Conectar →</button>}
+                : <button style={{fontSize:'0.68rem',fontWeight:600,padding:'2px 8px',borderRadius:100,background:'rgba(46,90,140,0.1)',color:'#2E5A8C',border:'none',cursor:'pointer'}} onClick={() => showToast('Integración contable · disponible en Fase 2','info')}>Conectar →</button>}
             </div>
           ))}
         </div>
@@ -145,7 +146,7 @@ export default function FacturasRecibidasSection() {
                     <td style={{padding:'10px 12px'}}>
                       {f.pendiente
                         ? <button style={{padding:'4px 10px',background:'#1C2D44',border:'none',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => setConfirmarOpen(true)}>Confirmar ✓</button>
-                        : <button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}}>Ver</button>}
+                        : <button className="btn-ghost" style={{padding:'3px 8px',fontSize:'0.7rem'}} onClick={() => showToast('Vista factura · '+f.prov,'info')}>Ver</button>}
                     </td>
                   </tr>
                 ))}

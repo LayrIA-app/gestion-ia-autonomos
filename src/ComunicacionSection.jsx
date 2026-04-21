@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const emailIco = <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -21,8 +22,8 @@ function ModalDraft({ open, onClose, tipo }) {
       <div className="dm-field"><div className="dm-label">Cuerpo</div><textarea className="dm-textarea" style={{minHeight:160}} defaultValue={d.cuerpo}/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Descartar</button>
-        <button className="dm-btn-ghost">Guardar borrador</button>
-        <button className="dm-btn-primary">Enviar ahora →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('Borrador guardado','ok'); onClose() }}>Guardar borrador</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Email enviado a '+d.para.split('<')[1].replace('>',''),'ok'); onClose() }}>Enviar ahora →</button>
       </div>
     </Modal>
   )
@@ -51,8 +52,8 @@ export default function ComunicacionSection({ onNavigate }) {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA ha redactado 3 drafts · detectadas 5 tareas en conversaciones</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Canales</button>
-          <button className="btn-primary">+ Nuevo mensaje</button>
+          <button className="btn-ghost" onClick={() => onNavigate?.('asistente')}>Canales</button>
+          <button className="btn-primary" onClick={() => showToast('Nuevo mensaje · compositor abierto','info')}>+ Nuevo mensaje</button>
         </div>
       </div>
 
@@ -151,7 +152,7 @@ export default function ComunicacionSection({ onNavigate }) {
               {[{label:'Email · iker@arrietaconsultores.com',active:true},{label:'WhatsApp Business · +34 688 123 456',active:true},{label:'Voz IA · número dedicado',active:false}].map((c,i) => (
                 <div key={i} style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 10px',background:c.active?'rgba(34,160,107,0.05)':'rgba(28,45,68,0.03)',borderRadius:8}}>
                   <div style={{display:'flex',alignItems:'center',gap:8}}><div style={{width:8,height:8,borderRadius:'50%',background:c.active?'#22A06B':'rgba(28,45,68,0.2)'}}></div><span style={{fontSize:'0.8rem',fontWeight:c.active?500:400,color:c.active?'#1C2D44':'rgba(28,45,68,0.5)'}}>{c.label}</span></div>
-                  {c.active ? <span style={{fontSize:'0.7rem',color:'#22A06B',fontWeight:600}}>Activo</span> : <button style={{fontSize:'0.7rem',padding:'3px 8px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.2)',borderRadius:5,cursor:'pointer',fontFamily:'var(--sans)',color:'rgba(28,45,68,0.5)'}}>Activar</button>}
+                  {c.active ? <span style={{fontSize:'0.7rem',color:'#22A06B',fontWeight:600}}>Activo</span> : <button style={{fontSize:'0.7rem',padding:'3px 8px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.2)',borderRadius:5,cursor:'pointer',fontFamily:'var(--sans)',color:'rgba(28,45,68,0.5)'}} onClick={() => showToast('Voz IA · activable en plan avanzado','info')}>Activar</button>}
                 </div>
               ))}
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const colores = {
@@ -93,7 +94,7 @@ function ModalBriefing({ open, onClose, datos }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-primary">Abrir briefing completo →</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Briefing completo de '+datos.cliente+' abierto','info'); onClose() }}>Abrir briefing completo →</button>
       </div>
     </Modal>
   )
@@ -118,7 +119,7 @@ function ModalNuevaCita({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Notas para la IA</div><textarea className="dm-textarea" placeholder="La IA usará estas notas para preparar el briefing..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Crear cita y briefing IA</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Cita creada · briefing IA en preparación','ok'); onClose() }}>✦ Crear cita y briefing IA</button>
       </div>
     </Modal>
   )
@@ -142,7 +143,7 @@ export default function AgendaSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA ha preparado el briefing de las 3 reuniones de esta semana</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Sincronizar</button>
+          <button className="btn-ghost" onClick={() => showToast('Sincronización con Google Calendar · Fase 2','info')}>Sincronizar</button>
           <button className="btn-primary" onClick={() => setNuevaCita(true)}>+ Nueva cita</button>
         </div>
       </div>

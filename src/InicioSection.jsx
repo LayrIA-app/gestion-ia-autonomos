@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
-
-function showToast(msg) { alert(msg) }
 
 function ModalNuevaTarea({ open, onClose }) {
   const [prio, setPrio] = useState('Normal')

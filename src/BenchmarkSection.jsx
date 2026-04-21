@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const metricas = [
@@ -31,7 +32,7 @@ function ModalRecomendaciones({ open, onClose }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-primary">Crear plan de acción →</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Plan de acción creado · 3 prioridades asignadas','ok'); onClose() }}>Crear plan de acción →</button>
       </div>
     </Modal>
   )
@@ -54,7 +55,7 @@ export default function BenchmarkSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA detecta P35 en horas facturables · mayor oportunidad de mejora</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Cambiar sector</button>
+          <button className="btn-ghost" onClick={() => showToast('Comparativa cambiada · sector servicios a empresas','info')}>Cambiar sector</button>
           <button className="btn-primary" onClick={() => setRecOpen(true)}>Ver recomendaciones</button>
         </div>
       </div>

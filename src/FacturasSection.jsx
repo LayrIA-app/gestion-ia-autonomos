@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const th = {padding:'10px 12px',textAlign:'left',fontSize:'0.68rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}
@@ -33,7 +34,7 @@ function ModalNuevaFactura({ open, onClose }) {
       <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C',marginBottom:4}}>✦ IA aplicará automáticamente el IRPF (15%) y calculará el total neto.</div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Generar factura</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Factura generada por IA · lista para enviar','ok'); onClose() }}>✦ Generar factura</button>
       </div>
     </Modal>
   )
@@ -48,8 +49,8 @@ function ModalRevisarEnviar({ open, onClose, factura }) {
       <div className="dm-field"><div className="dm-label">Mensaje</div><textarea className="dm-textarea" defaultValue={`Hola,\n\nAdjunto la factura ${factura.num} por importe de ${factura.total} con vencimiento a 30 días.\n\nQuedo a tu disposición.\n\nIker Arrieta`}/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-ghost">Solo descargar PDF</button>
-        <button className="dm-btn-primary">Enviar factura →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('PDF descargado · '+factura.num,'ok'); onClose() }}>Solo descargar PDF</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Factura '+factura.num+' enviada a '+factura.email,'ok'); onClose() }}>Enviar factura →</button>
       </div>
     </Modal>
   )
@@ -65,7 +66,7 @@ function ModalRecordatorio({ open, onClose, factura }) {
       <div className="dm-field"><div className="dm-label">Mensaje IA</div><textarea className="dm-textarea" style={{minHeight:140}} defaultValue={`Hola,\n\nTe escribo en relación a la factura ${factura.num} (${factura.total}) que venció hace unos días.\n\nSi ya la has tramitado, ignora este mensaje. Si tienes algún inconveniente, dime y lo resolvemos.\n\nQuedo a tu disposición,\nIker`}/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Enviar recordatorio →</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Recordatorio enviado a '+factura.email,'ok'); onClose() }}>Enviar recordatorio →</button>
       </div>
     </Modal>
   )
@@ -87,7 +88,7 @@ export default function FacturasSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA tiene lista F-2026-043 para Metalúrgica Goi · pendiente envío</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => showToast('Exportando historial · CSV disponible en Fase 2','info')}>Exportar</button>
           <button className="btn-primary" onClick={() => setModal({tipo:'nueva'})}>+ Nueva factura</button>
         </div>
       </div>
@@ -129,7 +130,7 @@ export default function FacturasSection() {
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'nueva'})}>Editar</button>
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'recordar',factura:f})}>Recordar</button>
                         </>}
-                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => {}}>PDF</button>}
+                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => showToast('PDF de '+f.num+' descargado','ok')}>PDF</button>}
                       </div>
                     </td>
                   </tr>

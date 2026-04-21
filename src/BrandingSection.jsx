@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const colores = [
@@ -59,7 +60,7 @@ function ModalEditarIdentidad({ open, onClose }) {
       )}
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Guardar cambios</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Identidad actualizada','ok'); onClose() }}>Guardar cambios</button>
       </div>
     </Modal>
   )
@@ -80,7 +81,7 @@ export default function BrandingSection() {
         </div>
         <div className="page-actions">
           <button className="btn-ghost" onClick={() => setEditarOpen(true)}>Editar identidad</button>
-          <button className="btn-primary">Descargar kit de marca</button>
+          <button className="btn-primary" onClick={() => showToast('Descargando kit de marca · ZIP con logos, paleta y tipografía','ok')}>Descargar kit de marca</button>
         </div>
       </div>
 
@@ -139,13 +140,13 @@ export default function BrandingSection() {
                 </div>
                 <div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',marginBottom:3}}>{l.nombre}</div>
                 <div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)',marginBottom:10}}>{l.desc}</div>
-                <button className="btn-ghost" style={{width:'100%',fontSize:'0.72rem',padding:5}}>Descargar</button>
+                <button className="btn-ghost" style={{width:'100%',fontSize:'0.72rem',padding:5}} onClick={() => showToast('Descargando '+l.nombre+' · PNG + SVG','ok')}>Descargar</button>
               </div>
             ))}
           </div>
           <div style={{display:'flex',gap:10,marginTop:16,flexWrap:'wrap'}}>
             <button className="btn-ghost" style={{flex:1}} onClick={() => setEditarOpen(true)}>Subir nuevo logo</button>
-            <button style={{flex:1,padding:9,background:'#1C2D44',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}}>Descargar kit completo →</button>
+            <button style={{flex:1,padding:9,background:'#1C2D44',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={() => showToast('Descargando kit completo · ZIP 4.8 MB','ok')}>Descargar kit completo →</button>
           </div>
         </div>
 

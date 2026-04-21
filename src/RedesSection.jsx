@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const postColors = {educativo:'#2E5A8C',caso:'#22A06B',personal:'#D4A574',promo:'#C65D4A'}
@@ -34,8 +35,8 @@ function ModalPost({ open, onClose, post }) {
       </div>
       <div style={{padding:10,background:'rgba(46,90,140,0.06)',borderRadius:8,fontSize:'0.78rem',color:'#2E5A8C',marginBottom:4}}>✦ IA optimizó el asunto y las hashtags para máximo alcance en tu audiencia.</div>
       <div className="dm-actions">
-        <button className="dm-btn-ghost" onClick={onClose}>Guardar borrador</button>
-        <button className="dm-btn-primary">Aprobar y programar →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('Borrador guardado','ok'); onClose() }}>Guardar borrador</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Post aprobado y programado · '+post.fecha,'ok'); onClose() }}>Aprobar y programar →</button>
       </div>
     </Modal>
   )
@@ -56,8 +57,8 @@ export default function RedesSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA preparó el post de LinkedIn · listo para aprobar y publicar</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Biblioteca</button>
-          <button className="btn-primary">Generar posts</button>
+          <button className="btn-ghost" onClick={() => showToast('Biblioteca de posts · 24 piezas archivadas','info')}>Biblioteca</button>
+          <button className="btn-primary" onClick={() => setPostModal(posts[1])}>Generar posts</button>
         </div>
       </div>
 
@@ -119,8 +120,8 @@ export default function RedesSection() {
             ))}
           </div>
           <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-            <button style={{flex:1,padding:'9px 16px',background:'transparent',border:'0.5px solid rgba(250,247,242,0.25)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',color:'rgba(250,247,242,0.7)',cursor:'pointer'}}>Ver argumentación completa</button>
-            <button style={{flex:1,padding:'9px 16px',background:'#BCD4E8',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',cursor:'pointer'}}>Regenerar plan con IA</button>
+            <button style={{flex:1,padding:'9px 16px',background:'transparent',border:'0.5px solid rgba(250,247,242,0.25)',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',color:'rgba(250,247,242,0.7)',cursor:'pointer'}} onClick={() => showToast('Argumentación IA · datos de benchmark sector servicios','info')}>Ver argumentación completa</button>
+            <button style={{flex:1,padding:'9px 16px',background:'#BCD4E8',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:500,color:'#1C2D44',cursor:'pointer'}} onClick={() => showToast('Regenerando plan con IA · nuevo en 60s','info')}>Regenerar plan con IA</button>
           </div>
         </div>
       )}
@@ -174,7 +175,7 @@ export default function RedesSection() {
                 <span style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.5)'}}>{p.estado}</span>
               </div>
               <div style={{display:'flex',gap:8}}>
-                <button className="btn-ghost" style={{flex:1,padding:'6px',fontSize:'0.76rem'}} onClick={() => {}}>Editar</button>
+                <button className="btn-ghost" style={{flex:1,padding:'6px',fontSize:'0.76rem'}} onClick={(e)=>{e.stopPropagation();setPostModal(p)}}>Editar</button>
                 <button style={{flex:1,padding:'6px',background:'#1C2D44',border:'none',borderRadius:8,fontFamily:'var(--sans)',fontSize:'0.76rem',fontWeight:500,color:'#FAF7F2',cursor:'pointer'}} onClick={e=>{e.stopPropagation();setPostModal(p)}}>Aprobar →</button>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const meses = [
@@ -36,7 +37,7 @@ function ModalNuevoMovimiento({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Concepto</div><input className="dm-input" type="text" placeholder="Ej: Cobro factura F-2026-043 · Cuota RETA abril..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Añadir movimiento</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Movimiento añadido · flujo de caja actualizado','ok'); onClose() }}>Añadir movimiento</button>
       </div>
     </Modal>
   )
@@ -56,7 +57,7 @@ export default function TesoreriaSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA proyecta tensión de tesorería en septiembre · anticipa facturación</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => showToast('Exportando movimientos · CSV Q1 2026','ok')}>Exportar</button>
           <button className="btn-primary" onClick={() => setNuevoOpen(true)}>+ Movimiento</button>
         </div>
       </div>

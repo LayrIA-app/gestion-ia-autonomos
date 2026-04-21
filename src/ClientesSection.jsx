@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 /* 8 clientes · datos verbatim de la demo HTML (líneas 4873-4963). Cartera activa de Iker. */
@@ -56,8 +57,8 @@ function ModalFichaCliente({ open, onClose, cliente }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
-        <button className="dm-btn-ghost">Nueva propuesta</button>
-        <button className="dm-btn-primary">Ir al proyecto →</button>
+        <button className="dm-btn-ghost" onClick={() => { showToast('Nueva propuesta para '+cliente.nombre+' · IA lo prepara','info'); onClose() }}>Nueva propuesta</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Abriendo proyecto de '+cliente.nombre,'info'); onClose() }}>Ir al proyecto →</button>
       </div>
     </Modal>
   )
@@ -81,7 +82,7 @@ function ModalNuevoCliente({ open, onClose }) {
       <div className="dm-field"><div className="dm-label">Notas</div><textarea className="dm-textarea" placeholder="Contexto del cliente, cómo llegó, necesidades..."/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">✦ Crear cliente</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Cliente creado · IA enriquecerá el perfil','ok'); onClose() }}>✦ Crear cliente</button>
       </div>
     </Modal>
   )

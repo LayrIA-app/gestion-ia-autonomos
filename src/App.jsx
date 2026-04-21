@@ -21,6 +21,7 @@ import AsistenteSection from './AsistenteSection'
 import ClienteShell from './cliente/ClienteShell'
 import PushNotifications from './components/PushNotifications'
 import BellAlerts from './components/BellAlerts'
+import { Toaster } from './components/Toast'
 
 const phrases = [
   'Genera tu factura en 10 segundos',
@@ -126,7 +127,7 @@ function LoginScreen({ role, onLogin, onBack }) {
           <input className="lf-input" type="email" placeholder="nombre@tuemail.com"/>
           <label className="lf-label">Contraseña</label>
           <input className="lf-input" type="password" placeholder="••••••••"/>
-          <div className="lf-row"><label className="lf-remember"><input type="checkbox" defaultChecked/>Mantener sesión iniciada</label><button className="lf-forgot">¿Olvidaste la contraseña?</button></div>
+          <div className="lf-row"><label className="lf-remember"><input type="checkbox" defaultChecked/>Mantener sesión iniciada</label><button className="lf-forgot" onClick={() => alert('Enlace de recuperación enviado al email introducido.')}>¿Olvidaste la contraseña?</button></div>
           <button className="login-btn" onClick={onLogin}>Acceder al panel</button>
           <div className="lr-divider">o continúa con</div>
           <div className="lr-sso">
@@ -304,8 +305,10 @@ export default function App() {
   const [screen, setScreen] = useState('role')
   const [role, setRole] = useState(null)
   function handleSelectRole(r) { setRole(r); setScreen('login') }
-  if (screen === 'role') return <RoleScreen onSelectRole={handleSelectRole} />
-  if (screen === 'login') return <LoginScreen role={role} onLogin={() => setScreen('app')} onBack={() => setScreen('role')} />
-  if (role === 'cliente') return <ClienteShell onLogout={() => setScreen('role')} />
-  return <AppShell onLogout={() => setScreen('role')} />
+  const content =
+    screen === 'role' ? <RoleScreen onSelectRole={handleSelectRole} /> :
+    screen === 'login' ? <LoginScreen role={role} onLogin={() => setScreen('app')} onBack={() => setScreen('role')} /> :
+    role === 'cliente' ? <ClienteShell onLogout={() => setScreen('role')} /> :
+    <AppShell onLogout={() => setScreen('role')} />
+  return (<>{content}<Toaster /></>)
 }

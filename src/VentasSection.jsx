@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 function ModalRecordatorio({ open, onClose, cobro }) {
@@ -14,7 +15,7 @@ function ModalRecordatorio({ open, onClose, cobro }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary">Enviar recordatorio →</button>
+        <button className="dm-btn-primary" onClick={() => { showToast('Recordatorio enviado a '+cobro.email,'ok'); onClose() }}>Enviar recordatorio →</button>
       </div>
     </Modal>
   )
@@ -39,7 +40,7 @@ export default function VentasSection({ onNavigate }) {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA preparó recordatorio de cobro para F-038 · vencida 12 días</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar</button>
+          <button className="btn-ghost" onClick={() => showToast('Exportando informe comercial · abril 2026','ok')}>Exportar</button>
           <button className="btn-primary" onClick={() => onNavigate && onNavigate('facturas')}>Ir a Facturas →</button>
         </div>
       </div>

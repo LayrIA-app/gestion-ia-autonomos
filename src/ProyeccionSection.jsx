@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { showToast } from './components/Toast'
 import './sections.css'
 
 const escenarios = [
@@ -45,8 +46,8 @@ export default function ProyeccionSection() {
           <div className="ia-bar"><div className="ia-bar-dot"></div><span className="ia-bar-txt">✦ IA proyecta {total}€ a ritmo actual · simula escenarios a la derecha</span></div>
         </div>
         <div className="page-actions">
-          <button className="btn-ghost">Exportar informe</button>
-          <button className="btn-primary">Ver recomendaciones IA</button>
+          <button className="btn-ghost" onClick={() => showToast('Exportando proyección 2026 · PDF en camino','ok')}>Exportar informe</button>
+          <button className="btn-primary" onClick={() => showToast('Recomendaciones IA · ver escenarios y alertas predictivas abajo','info')}>Ver recomendaciones IA</button>
         </div>
       </div>
 
