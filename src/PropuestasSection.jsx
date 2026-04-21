@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import { showToast } from './components/Toast'
+import { sendEmail, aiDraftEmail } from './lib/api'
 import './sections.css'
 
 function ModalNuevaPropuesta({ open, onClose }) {
@@ -51,7 +52,15 @@ function ModalVerDraft({ open, onClose }) {
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cerrar</button>
         <button className="dm-btn-ghost" onClick={() => { showToast('Editor de propuesta abierto','info'); onClose() }}>Editar</button>
-        <button className="dm-btn-primary" onClick={() => { showToast('Propuesta enviada a Digiform SL','ok'); onClose() }}>Enviar a Digiform →</button>
+        <button className="dm-btn-primary" onClick={async () => {
+          const r = await sendEmail({
+            to: 'txema@digiformsl.com',
+            subject: 'Propuesta · Digiform SL · Ampliación optimización de procesos',
+            html: `<p>Hola Txema,</p><p>Adjunto la propuesta de ampliación del proyecto de optimización de procesos.</p><ul><li><strong>Importe:</strong> 8.500 €</li><li><strong>Duración:</strong> 3 meses · Retainer</li><li><strong>ROI estimado:</strong> reducción 40% tiempo reporting</li></ul><p>Disponible para llamada cuando la revises.</p><p>Iker Arrieta</p>`,
+          })
+          if (r.ok) { showToast('Propuesta enviada a txema@digiformsl.com','ok'); onClose() }
+          else if (r.phase1) onClose()
+        }}>Enviar a Digiform →</button>
       </div>
     </Modal>
   )

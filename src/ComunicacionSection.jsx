@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import { showToast } from './components/Toast'
+import { sendEmail } from './lib/api'
 import './sections.css'
 
 const emailIco = <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -23,7 +24,16 @@ function ModalDraft({ open, onClose, tipo }) {
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Descartar</button>
         <button className="dm-btn-ghost" onClick={() => { showToast('Borrador guardado','ok'); onClose() }}>Guardar borrador</button>
-        <button className="dm-btn-primary" onClick={() => { showToast('Email enviado a '+d.para.split('<')[1].replace('>',''),'ok'); onClose() }}>Enviar ahora →</button>
+        <button className="dm-btn-primary" onClick={async () => {
+          const to = d.para.split('<')[1]?.replace('>','') || d.para
+          const r = await sendEmail({
+            to, subject: d.asunto,
+            text: d.cuerpo,
+            html: d.cuerpo.split('\n').map(l => `<p>${l}</p>`).join(''),
+          })
+          if (r.ok) { showToast('Email enviado a '+to,'ok'); onClose() }
+          else if (r.phase1) onClose()
+        }}>Enviar ahora →</button>
       </div>
     </Modal>
   )

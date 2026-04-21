@@ -24,3 +24,10 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Variables de entorno (Fase 2)
+.env
+.env.local
+.env.production
+.env.development
+!.env.example

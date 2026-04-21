@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import { showToast } from './components/Toast'
+import { sendEmail, downloadInvoicePdf } from './lib/api'
 import './sections.css'
 
 const th = {padding:'10px 12px',textAlign:'left',fontSize:'0.68rem',fontWeight:600,letterSpacing:'0.08em',textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}
@@ -49,8 +50,24 @@ function ModalRevisarEnviar({ open, onClose, factura }) {
       <div className="dm-field"><div className="dm-label">Mensaje</div><textarea className="dm-textarea" defaultValue={`Hola,\n\nAdjunto la factura ${factura.num} por importe de ${factura.total} con vencimiento a 30 días.\n\nQuedo a tu disposición.\n\nIker Arrieta`}/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-ghost" onClick={() => { showToast('PDF descargado · '+factura.num,'ok'); onClose() }}>Solo descargar PDF</button>
-        <button className="dm-btn-primary" onClick={() => { showToast('Factura '+factura.num+' enviada a '+factura.email,'ok'); onClose() }}>Enviar factura →</button>
+        <button className="dm-btn-ghost" onClick={async () => {
+          const r = await downloadInvoicePdf({
+            numero: factura.num, cliente: factura.cliente, concepto: factura.concepto,
+            fecha: factura.fecha, base: factura.base, iva: factura.iva,
+            irpf: (Number(String(factura.base).replace(/[^\d]/g,'')) * 0.15).toFixed(0),
+            total: factura.total,
+          })
+          if (r.ok) { showToast('PDF descargado · '+factura.num,'ok'); onClose() }
+        }}>Solo descargar PDF</button>
+        <button className="dm-btn-primary" onClick={async () => {
+          const r = await sendEmail({
+            to: factura.email,
+            subject: `Factura ${factura.num} · Arrieta Consultores`,
+            html: `<p>Hola,</p><p>Adjunto la factura <strong>${factura.num}</strong> por importe de <strong>${factura.total}</strong> con vencimiento a 30 días.</p><p>Quedo a tu disposición.</p><p>Iker Arrieta</p>`,
+          })
+          if (r.ok) { showToast('Factura '+factura.num+' enviada a '+factura.email,'ok'); onClose() }
+          else if (r.phase1) onClose()
+        }}>Enviar factura →</button>
       </div>
     </Modal>
   )
@@ -66,7 +83,15 @@ function ModalRecordatorio({ open, onClose, factura }) {
       <div className="dm-field"><div className="dm-label">Mensaje IA</div><textarea className="dm-textarea" style={{minHeight:140}} defaultValue={`Hola,\n\nTe escribo en relación a la factura ${factura.num} (${factura.total}) que venció hace unos días.\n\nSi ya la has tramitado, ignora este mensaje. Si tienes algún inconveniente, dime y lo resolvemos.\n\nQuedo a tu disposición,\nIker`}/></div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary" onClick={() => { showToast('Recordatorio enviado a '+factura.email,'ok'); onClose() }}>Enviar recordatorio →</button>
+        <button className="dm-btn-primary" onClick={async () => {
+          const r = await sendEmail({
+            to: factura.email,
+            subject: `Recordatorio pago ${factura.num}`,
+            html: `<p>Hola,</p><p>Te escribo en relación a la factura <strong>${factura.num}</strong> (${factura.total}) que venció hace unos días.</p><p>Si ya la has tramitado, ignora este mensaje. Si tienes algún inconveniente, dime y lo resolvemos.</p><p>Quedo a tu disposición,<br/>Iker</p>`,
+          })
+          if (r.ok) { showToast('Recordatorio enviado a '+factura.email,'ok'); onClose() }
+          else if (r.phase1) onClose()
+        }}>Enviar recordatorio →</button>
       </div>
     </Modal>
   )
@@ -130,7 +155,15 @@ export default function FacturasSection() {
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'nueva'})}>Editar</button>
                           <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => setModal({tipo:'recordar',factura:f})}>Recordar</button>
                         </>}
-                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={() => showToast('PDF de '+f.num+' descargado','ok')}>PDF</button>}
+                        {f.accion === 'pdf' && <button className="btn-ghost" style={{padding:'4px 10px',fontSize:'0.72rem'}} onClick={async () => {
+                          const r = await downloadInvoicePdf({
+                            numero: f.num, cliente: f.cliente, concepto: f.concepto, fecha: f.fecha,
+                            base: f.base, iva: f.iva,
+                            irpf: (Number(String(f.base).replace(/[^\d]/g,'')) * 0.15).toFixed(0),
+                            total: f.total,
+                          })
+                          if (r.ok) showToast('PDF de '+f.num+' descargado','ok')
+                        }}>PDF</button>}
                       </div>
                     </td>
                   </tr>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { showToast } from '../components/Toast'
+import { downloadInvoicePdf } from '../lib/api'
 import '../sections.css'
 
 const notificaciones = [
@@ -119,7 +120,16 @@ function SeccionFacturas() {
                   <td style={{padding:'12px 18px',color:'rgba(28,45,68,0.55)'}}>{f.fecha}</td>
                   <td style={{padding:'12px 18px',fontWeight:500,color:'#1C2D44'}}>{f.importe}</td>
                   <td style={{padding:'12px 18px'}}><span style={{fontSize:'0.72rem',fontWeight:600,padding:'3px 10px',borderRadius:100,background:f.eBg,color:f.eColor}}>{f.estado}</span></td>
-                  <td style={{padding:'12px 18px'}}><button style={{padding:'4px 10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={() => showToast('Descargando PDF · '+f.num,'ok')}>PDF</button></td>
+                  <td style={{padding:'12px 18px'}}><button style={{padding:'4px 10px',background:'transparent',border:'0.5px solid rgba(28,45,68,0.15)',borderRadius:6,fontFamily:'var(--sans)',fontSize:'0.72rem',color:'rgba(28,45,68,0.6)',cursor:'pointer'}} onClick={async () => {
+                    const importeNum = Number(String(f.importe).replace(/[^\d,]/g,'').replace(',','.')) || 0
+                    const base = (importeNum / 1.21).toFixed(2)
+                    const iva = (importeNum - base).toFixed(2)
+                    const r = await downloadInvoicePdf({
+                      numero: f.num, cliente: 'Bodegas Iriarte', concepto: f.concepto,
+                      fecha: f.fecha, base, iva, irpf: (base*0.15).toFixed(2), total: f.importe,
+                    })
+                    if (r.ok) showToast('PDF '+f.num+' descargado','ok')
+                  }}>PDF</button></td>
                 </tr>
               ))}
             </tbody>

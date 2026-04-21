@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
 import { showToast } from './components/Toast'
+import { sendEmail } from './lib/api'
 import './sections.css'
 
 function ModalRecordatorio({ open, onClose, cobro }) {
@@ -15,7 +16,15 @@ function ModalRecordatorio({ open, onClose, cobro }) {
       </div>
       <div className="dm-actions">
         <button className="dm-btn-ghost" onClick={onClose}>Cancelar</button>
-        <button className="dm-btn-primary" onClick={() => { showToast('Recordatorio enviado a '+cobro.email,'ok'); onClose() }}>Enviar recordatorio →</button>
+        <button className="dm-btn-primary" onClick={async () => {
+          const r = await sendEmail({
+            to: cobro.email,
+            subject: `Recordatorio pago ${cobro.factura}`,
+            html: `<p>Hola ${cobro.contacto},</p><p>Te escribo en relación a la factura <strong>${cobro.factura}</strong> (${cobro.i}) que venció hace ${cobro.dias} días.</p><p>Si ya la has tramitado, ignora este mensaje. Si tienes algún inconveniente, dime y lo resolvemos.</p><p>Quedo a tu disposición,<br/>Iker</p>`,
+          })
+          if (r.ok) { showToast('Recordatorio enviado a '+cobro.email,'ok'); onClose() }
+          else if (r.phase1) onClose()
+        }}>Enviar recordatorio →</button>
       </div>
     </Modal>
   )
