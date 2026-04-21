@@ -85,7 +85,7 @@ export default function MailingSection() {
 
       <div className="tab-scroll-wrap">
         <div className="tab-bar">
-          {[{id:'listas',l:'Listas'},{id:'campanas',l:'Tipos de campaña'},{id:'proximo',l:'Próximo envío'},{id:'stats',l:'Estadísticas'}].map(t => (
+          {[{id:'listas',l:'Listas'},{id:'campanas',l:'Tipos de campaña'},{id:'proximo',l:'Próximo envío'},{id:'calendario',l:'Calendario'},{id:'stats',l:'Estadísticas'}].map(t => (
             <button key={t.id} className={`tab-btn${tab===t.id?' active':''}`} onClick={() => setTab(t.id)}>{t.l}</button>
           ))}
         </div>
@@ -183,6 +183,84 @@ export default function MailingSection() {
                   <div style={{width:14,height:14,borderRadius:'50%',border:`2px solid ${mo.active?'#22A06B':'rgba(28,45,68,0.2)'}`,background:mo.active?'#22A06B':'transparent',flexShrink:0}}></div>
                   <div><div style={{fontSize:'0.82rem',fontWeight:500,color:'#1C2D44'}}>{mo.m}</div><div style={{fontSize:'0.72rem',color:'rgba(28,45,68,0.55)'}}>{mo.d}</div></div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {tab === 'calendario' && (
+        <div className="dia-card">
+          <div className="dia-card-head">
+            <div>
+              <div className="dia-card-ttl">Calendario de envíos · próximos 6 meses</div>
+              <div className="dia-card-sub">Planificación trimestral preparada por IA · ajustada a tu estacionalidad</div>
+            </div>
+            <button className="btn-ghost" style={{padding:'7px 14px',fontSize:'0.78rem'}}>Ver año completo</button>
+          </div>
+          <div className="ml-cal-strip">
+            {[
+              { mes:'Abril', current:true, items:[
+                { tipo:'info', label:'Informativo · 8' },
+                { tipo:'sector', label:'Sector · 21' },
+                { tipo:'promo', label:'Promo · 28' },
+              ]},
+              { mes:'Mayo', items:[
+                { tipo:'info', label:'Informativo · 5' },
+                { tipo:'sector', label:'Sector · 12' },
+                { tipo:'mix', label:'Mix · 15' },
+                { tipo:'sector', label:'Sector · 26' },
+              ]},
+              { mes:'Junio', items:[
+                { tipo:'info', label:'Informativo · 2' },
+                { tipo:'sector', label:'Sector · 9' },
+                { tipo:'camp', label:'Planes 2S · 16' },
+                { tipo:'mix', label:'Mix · 23' },
+              ]},
+              { mes:'Julio', items:[
+                { tipo:'info', label:'Informativo · 7' },
+                { tipo:'mix', label:'Mix · 15' },
+              ]},
+              { mes:'Agosto', pausa:true, items:[] },
+              { mes:'Septiembre', items:[
+                { tipo:'camp', label:'Vuelta · 8' },
+                { tipo:'sector', label:'Sector · 15' },
+                { tipo:'mix', label:'Mix · 22' },
+                { tipo:'info', label:'Informativo · 29' },
+              ]},
+            ].map((m,i) => {
+              const colors = { info:'#2E5A8C', sector:'#BCD4E8', promo:'#D4A574', camp:'#22A06B', mix:'#1C2D44' }
+              const bgs    = { info:'#FAF7F2', sector:'#FAF7F2', promo:'#FAF7F2', camp:'#FAF7F2', mix:'#FAF7F2' }
+              return (
+                <div key={i} style={{padding:14,background:m.current?'rgba(46,90,140,0.05)':m.pausa?'rgba(28,45,68,0.03)':'#FFFFFF',border:m.current?'0.5px solid rgba(46,90,140,0.2)':'0.5px solid rgba(28,45,68,0.08)',borderRadius:10,minWidth:0,display:'flex',flexDirection:'column',gap:6,opacity:m.pausa?0.7:1}}>
+                  <div style={{fontSize:'0.7rem',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:m.current?'#2E5A8C':'rgba(28,45,68,0.55)',marginBottom:4}}>
+                    {m.mes}{m.current && ' · actual'}
+                  </div>
+                  {m.pausa ? (
+                    <div style={{fontSize:'0.74rem',fontStyle:'italic',color:'rgba(28,45,68,0.5)',textAlign:'center',padding:'12px 0'}}>Pausa veraniega</div>
+                  ) : (
+                    m.items.map((it,j) => (
+                      <div key={j} style={{padding:'5px 8px',background:bgs[it.tipo],borderLeft:'none',borderRadius:6,border:`0.5px solid ${colors[it.tipo]}30`,display:'flex',alignItems:'center',gap:6,fontSize:'0.72rem',color:'#1C2D44'}}>
+                        <span style={{width:8,height:8,borderRadius:2,background:colors[it.tipo],flexShrink:0}}></span>
+                        {it.label}
+                      </div>
+                    ))
+                  )}
+                </div>
+              )
+            })}
+          </div>
+          {/* Leyenda */}
+          <div style={{display:'flex',gap:16,flexWrap:'wrap',marginTop:16,paddingTop:14,borderTop:'0.5px solid rgba(28,45,68,0.06)'}}>
+            {[
+              {c:'#2E5A8C',l:'Informativo'},
+              {c:'#BCD4E8',l:'Sector'},
+              {c:'#D4A574',l:'Promocional'},
+              {c:'#22A06B',l:'Campaña temática'},
+              {c:'#1C2D44',l:'Mix completo'},
+            ].map((le,i) => (
+              <div key={i} style={{display:'flex',alignItems:'center',gap:6,fontSize:'0.72rem',color:'rgba(28,45,68,0.7)'}}>
+                <div style={{width:10,height:10,borderRadius:3,background:le.c}}></div>{le.l}
               </div>
             ))}
           </div>

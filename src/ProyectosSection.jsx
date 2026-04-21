@@ -96,11 +96,11 @@ const proyectos = [
   },
   {
     titulo:'Digiform SL · Optimización procesos',periodo:'Mes 5 de 6 · Nov 2025 – May 2026',
-    estado:'Últimas semanas',estadoColor:'rgba(46,90,140,0.1)',estadoTxt:'#2E5A8C',
+    estado:'En revisión final',estadoColor:'rgba(46,90,140,0.1)',estadoTxt:'#2E5A8C',
     iconoBg:'rgba(46,90,140,0.1)',iconoStroke:'#2E5A8C',
-    horas:'82h',horasTotal:'100h',pct:'82%',barColor:'#2E5A8C',tarifa:'88 €/h',margen:'58%',
-    fases:['✓ Análisis procesos','✓ Rediseño flujos','✓ Implementación','→ Seguimiento y cierre · En curso'],
-    tareas:[{l:'Revisar KPIs con Txema',f:'Hoy',done:false},{l:'Preparar informe cierre mes 5',f:'Vie 22',done:false},{l:'Propuesta ampliación proyecto',f:'May 2',done:false}],
+    horas:'112h',horasTotal:'120h',pct:'93%',barColor:'#D4A574',tarifa:'80 €/h',margen:'58%',
+    fases:['✓ Auditoría de procesos','✓ Diseño de mejoras','✓ Implementación','→ Revisión y cierre · En curso'],
+    tareas:[{l:'Presentar informe final a Txema García',f:'⚡ Hoy',done:false,urgent:true},{l:'Revisar KPIs de mejora con el equipo',f:'Vie 18',done:false}],
   },
   {
     titulo:'Construcciones Mendía · RRHH digital',periodo:'Mes 3 de 3 · Feb 2026 – 23 abr 2026',

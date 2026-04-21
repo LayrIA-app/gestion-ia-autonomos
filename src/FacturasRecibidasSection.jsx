@@ -14,8 +14,9 @@ const canales = [
 const recibidas = [
   {prov:'Bodegas Iriarte',sub:'cliente · portal',concepto:'Factura materiales reunión',canal:'👤 Portal',cBg:'rgba(46,90,140,0.1)',cColor:'#2E5A8C',fecha:'18 abr',imp:'847,00 €',iva:'21%',ded:'Pendiente',dBg:'rgba(212,165,116,0.15)',dColor:'#8B5E34',est:'⚡ Confirmar',eBg:'rgba(198,93,74,0.1)',eColor:'#C65D4A',bg:'rgba(46,90,140,0.04)',pendiente:true},
   {prov:'Notion',sub:'proveedor',concepto:'Suscripción anual',canal:'📧 Email',cBg:'rgba(28,45,68,0.07)',cColor:'rgba(28,45,68,0.6)',fecha:'12 abr',imp:'96,00 €',iva:'21% · 20€',ded:'100%',dBg:'rgba(34,160,107,0.1)',dColor:'#22A06B',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
-  {prov:'Amazon Business',sub:'proveedor',concepto:'Material oficina',canal:'📧 Email',cBg:'rgba(28,45,68,0.07)',cColor:'rgba(28,45,68,0.6)',fecha:'08 abr',imp:'124,30 €',iva:'21% · 26€',ded:'100%',dBg:'rgba(34,160,107,0.1)',dColor:'#22A06B',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
-  {prov:'Gasolinera BP',sub:'ticket',concepto:'Desplazamiento cliente',canal:'📷 OCR',cBg:'rgba(28,45,68,0.07)',cColor:'rgba(28,45,68,0.6)',fecha:'05 abr',imp:'68,40 €',iva:'21% · 14€',ded:'50%',dBg:'rgba(212,165,116,0.15)',dColor:'#8B5E34',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
+  {prov:'Kutxabank',sub:'banco',concepto:'Comisiones cuenta abril',canal:'🏦 Integración',cBg:'rgba(46,90,140,0.08)',cColor:'#2E5A8C',fecha:'10 abr',imp:'18,50 €',iva:'21% · 3,89€',ded:'100%',dBg:'rgba(34,160,107,0.1)',dColor:'#22A06B',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
+  {prov:'Amazon Business',sub:'proveedor',concepto:'Material oficina',canal:'📧 Email',cBg:'rgba(28,45,68,0.07)',cColor:'rgba(28,45,68,0.6)',fecha:'08 abr',imp:'38,50 €',iva:'21% · 8€',ded:'100%',dBg:'rgba(34,160,107,0.1)',dColor:'#22A06B',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
+  {prov:'Gasolinera Eroski',sub:'ticket',concepto:'Desplazamiento cliente',canal:'📷 OCR',cBg:'rgba(28,45,68,0.07)',cColor:'rgba(28,45,68,0.6)',fecha:'05 abr',imp:'68,40 €',iva:'21% · 14€',ded:'50%',dBg:'rgba(212,165,116,0.15)',dColor:'#8B5E34',est:'✓ Procesada',eBg:'rgba(34,160,107,0.12)',eColor:'#22A06B',bg:''},
 ]
 
 function ModalConfirmarFactura({ open, onClose }) {

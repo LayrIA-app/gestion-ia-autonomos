@@ -83,10 +83,14 @@ export default function RedesSection() {
               <div className="rs-net-stat"><strong>4.2%</strong>Engagement</div>
             </div>
           </div>
-          {[{ico:'📷',nombre:'Instagram'},{ico:'𝕏',nombre:'X · Twitter'},{ico:'♪',nombre:'TikTok'}].map((r,i) => (
-            <div key={i} className="rs-net locked">
+          {[
+            {id:'instagram', nombre:'Instagram',  bg:'linear-gradient(135deg,#F58529,#DD2A7B,#8134AF)', svg:<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>},
+            {id:'x',         nombre:'X · Twitter', bg:'#000000', svg:<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>},
+            {id:'tiktok',    nombre:'TikTok',     bg:'#010101', svg:<svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.33a8.16 8.16 0 0 0 4.77 1.52V6.4a4.85 4.85 0 0 1-1.84-.71z"/></svg>},
+          ].map((r) => (
+            <div key={r.id} className="rs-net locked">
               <div className="rs-net-lock"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Premium</div>
-              <div className="rs-net-ico" style={{fontSize:'1.4rem'}}>{r.ico}</div>
+              <div className="rs-net-ico" style={{background:r.bg,display:'flex',alignItems:'center',justifyContent:'center'}}>{r.svg}</div>
               <div className="rs-net-name">{r.nombre}</div>
               <div className="rs-net-handle">Conexión disponible</div>
               <div className="rs-net-stats"><div className="rs-net-stat" style={{opacity:0.5}}><strong>—</strong>Sin activar</div></div>

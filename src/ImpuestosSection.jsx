@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import Countdown from './components/Countdown'
 import './sections.css'
+
+/* Vencimiento 1T 2026: 20 abril a las 23:59:59 — countdown vivo hasta esa hora. */
+const VENCIMIENTO_1T = new Date(2026, 3, 20, 23, 59, 59)
 
 const thS = {padding:'8px 12px',textAlign:'left',fontSize:'0.65rem',fontWeight:600,textTransform:'uppercase',color:'rgba(28,45,68,0.45)'}
 
@@ -137,13 +141,18 @@ export default function ImpuestosSection() {
         <div className="dia-kpi"><div className="dia-kpi-lbl">Gastos deducibles · 1T</div><div className="dia-kpi-val">3.240 €</div><div className="dia-kpi-trend up">↑ 81% del total</div></div>
       </div>
 
-      {/* Alerta */}
+      {/* Alerta con countdown HH:MM:SS vivo hasta 20 abril 2026 */}
       <div style={{background:'rgba(198,93,74,0.06)',border:'0.5px solid rgba(198,93,74,0.25)',borderRadius:12,padding:'14px 20px',marginBottom:18,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C65D4A" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           <div>
-            <div style={{fontSize:'0.88rem',fontWeight:600,color:'#C65D4A'}}>⚡ Vencen el 20 de abril · en 3 días</div>
-            <div style={{fontSize:'0.76rem',color:'rgba(28,45,68,0.6)',marginTop:1}}>Mod. 303 (1.683 €) + Mod. 130 (218 €) + Mod. 111 (1.425 €) = 3.326 € · La IA los tiene preparados</div>
+            <div style={{fontSize:'0.88rem',fontWeight:600,color:'#C65D4A',display:'flex',alignItems:'center',gap:10,flexWrap:'wrap'}}>
+              <span>⚡ Vencen el 20 de abril ·</span>
+              <span style={{padding:'2px 10px',background:'rgba(198,93,74,0.15)',borderRadius:6,fontSize:'0.78rem'}}>
+                <Countdown target={VENCIMIENTO_1T} compact style={{color:'#C65D4A'}} />
+              </span>
+            </div>
+            <div style={{fontSize:'0.76rem',color:'rgba(28,45,68,0.6)',marginTop:3}}>Mod. 303 (1.683 €) + Mod. 130 (218 €) + Mod. 111 (1.425 €) = 3.326 € · La IA los tiene preparados</div>
           </div>
         </div>
         <button onClick={() => setModeloPago({num:'303+130+111',desc:'IVA + IRPF + Retenciones',imp:'3.326 €'})} style={{padding:'9px 18px',background:'#C65D4A',border:'none',borderRadius:9,fontFamily:'var(--sans)',fontSize:'0.82rem',fontWeight:600,color:'#FAF7F2',cursor:'pointer',whiteSpace:'nowrap'}}>Pagar todo ahora →</button>
@@ -234,6 +243,7 @@ export default function ImpuestosSection() {
               <div className="ins-item"><div className="ins-ico warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div className="ins-body"><div className="ins-title">3 modelos vencen en 3 días · 3.326 €</div><div className="ins-desc">Comprueba saldo en Kutxabank antes de domiciliar.</div></div></div>
               <div className="ins-item"><div className="ins-ico green"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg></div><div className="ins-body"><div className="ins-title">Tipo efectivo estimado: 21%</div><div className="ins-desc">Por debajo de la media de tu sector (24%). Gastos bien optimizados.</div></div></div>
               <div className="ins-item"><div className="ins-ico warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div className="ins-body"><div className="ins-title">Renta 2027 · reserva ~20.000 €</div><div className="ins-desc">Empieza a apartar mensualmente. Con tu ritmo actual: ~1.666 €/mes.</div></div></div>
+              <div className="ins-item"><div className="ins-ico blue"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div className="ins-body"><div className="ins-title">Mod. 347 · 2 clientes a declarar en febrero 2027</div><div className="ins-desc">Metalúrgica Goi (28.500 €) y Garapen Consulting (9.600 €) superan el umbral de 3.005,06 € · La IA prepara el resumen.</div></div></div>
             </div>
           </div>
         </div>
