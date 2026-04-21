@@ -114,7 +114,16 @@ function LoginScreen({ role, onLogin, onBack }) {
     try {
       const { error } = await signIn(email, password)
       if (error) {
-        showToast(error.message || 'Credenciales no válidas', 'error')
+        const raw = (error.message || '').toLowerCase()
+        const friendly =
+          /invalid[_ ]?login[_ ]?credentials|invalid[_ ]?credentials/.test(raw) ? 'Email o contraseña incorrectos' :
+          /email[_ ]?not[_ ]?confirmed/.test(raw) ? 'Email sin confirmar · revisa tu bandeja' :
+          /invalid[_ ]?api[_ ]?key/.test(raw) ? 'Servicio no disponible · contacta con soporte' :
+          /rate[_ ]?limit|too many/.test(raw) ? 'Demasiados intentos · espera unos minutos' :
+          /user[_ ]?not[_ ]?found/.test(raw) ? 'Email o contraseña incorrectos' :
+          /network|fetch/.test(raw) ? 'Sin conexión · revisa tu red' :
+          error.message || 'No se ha podido iniciar sesión'
+        showToast(friendly, 'error')
       } else {
         onLogin()
       }
